@@ -12,12 +12,17 @@ namespace ent
 
 	struct player : ent::entity
 	{
-		static constexpr int SIZE = 2.0f;
+		static constexpr float SIZE = 0.7f;
+		static constexpr float DECEL = 0.0005f;
+		static constexpr float ACCEL = 0.001f;
+		static constexpr float MAX_SPEED = 0.05f;
 
 		player();
 		void reset();
 		void process(const game::world&);
 		void render(game::renderer&, const game::asset&) const;
+
+		float xv, yv;
 	};
 }
 

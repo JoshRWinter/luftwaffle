@@ -3,6 +3,23 @@
 
 namespace game
 {
+	struct input
+	{
+		input()
+			: direction(0.0f)
+			, speed(0.0f)
+			, up(false)
+			, down(false)
+			, right(false)
+			, left(false)
+		{}
+
+		float direction;
+		float speed;
+
+		bool up, down, right, left;
+	};
+
 	struct world
 	{
 		world(win::roll&);
@@ -12,6 +29,7 @@ namespace game
 		void reset();
 
 		win::point cursor;
+		game::input input;
 
 		struct
 		{
