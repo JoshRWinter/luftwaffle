@@ -9,6 +9,7 @@ namespace game
 	class renderer;
 }
 
+#include "asset.hpp"
 #include "entity/entity.hpp"
 #include "render/renderer.hpp"
 #include "world.hpp"

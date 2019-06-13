@@ -8,17 +8,17 @@ namespace game
 		world(win::roll&);
 
 		void process();
-		void render();
+		void render(game::renderer&);
 		void reset();
 
-		struct { float x, y; } cursor;
+		win::point cursor;
 
 		struct
 		{
 			ent::player player;
 		} entity;
 
-		game::renderer renderer;
+		game::asset asset;
 	};
 }
 

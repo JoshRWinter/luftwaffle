@@ -1,7 +1,7 @@
 #include "luftwaffle.hpp"
 
 game::world::world(win::roll &roll)
-	: renderer(roll)
+	: asset(roll)
 {
 	reset();
 }
@@ -11,18 +11,14 @@ void game::world::process()
 	entity.player.process(*this);
 }
 
-void game::world::render()
+void game::world::render(game::renderer &renderer)
 {
-	entity.player.render(renderer);
+	entity.player.render(renderer, asset);
 
 	renderer.quad.send();
 }
 
 void game::world::reset()
 {
-	cursor.x = 0.0f;
-	cursor.y = 0.0f;
-
-
 	entity.player.reset();
 }

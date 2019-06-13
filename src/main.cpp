@@ -7,6 +7,7 @@ int main()
 
 	win::roll roll("asset");
 	game::world world(roll);
+	game::renderer renderer(roll);
 
 	bool quit = false;
 	display.event_button([&quit](const win::button button, bool press)
@@ -19,17 +20,17 @@ int main()
 		}
 	});
 
-	display.event_mouse([&world, &display](const int x, const int y)
+	display.event_mouse([&world, &renderer, &display](const int x, const int y)
 	{
-		world.cursor.x = (((float)x / display.width()) * (world.renderer.screen.right * 2.0f)) - world.renderer.screen.right;
-		world.cursor.y = -(((float)y / display.height()) * (world.renderer.screen.top * 2.0f)) + world.renderer.screen.top;
+		world.cursor.x = (((float)x / display.width()) * (renderer.screen.right * 2.0f)) - renderer.screen.right;
+		world.cursor.y = -(((float)y / display.height()) * (renderer.screen.top * 2.0f)) + renderer.screen.top;
 	});
 
 	while(display.process() && !quit)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 		world.process();
-		world.render();
+		world.render(renderer);
 
 		display.swap();
 	}

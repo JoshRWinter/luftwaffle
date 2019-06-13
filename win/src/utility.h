@@ -81,6 +81,15 @@ struct area
 	float left, right, bottom, top;
 };
 
+struct point
+{
+	point() : x(0.0f), y(0.0f) {}
+	point(float xx, float yy) : x(xx), y(yy) {}
+
+	float x;
+	float y;
+};
+
 class data
 {
 public:

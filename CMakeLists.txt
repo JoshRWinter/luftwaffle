@@ -13,6 +13,9 @@ add_executable(luftwaffle
 	src/world.cpp
 	src/world.hpp
 
+	src/asset.cpp
+	src/asset.hpp
+
 	src/entity/entity.cpp
 	src/entity/entity.hpp
 	src/entity/player.cpp

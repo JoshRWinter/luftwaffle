@@ -37,14 +37,12 @@ namespace game
 		} uniform;
 	};
 
-	class renderer
+	struct renderer
 	{
-	public:
 		renderer(win::roll&);
 
 		// render passes
 		win::area screen;
-		win::atlas atlas;
 		game::quad quad;
 	};
 }

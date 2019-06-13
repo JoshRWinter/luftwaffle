@@ -17,7 +17,7 @@ namespace ent
 		player();
 		void reset();
 		void process(const game::world&);
-		void render(game::renderer&) const;
+		void render(game::renderer&, const game::asset&) const;
 	};
 }
 
