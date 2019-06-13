@@ -1,3 +1,5 @@
+#include <chrono>
+
 #include "luftwaffle.hpp"
 
 int main()
@@ -28,11 +30,15 @@ int main()
 
 	while(display.process() && !quit)
 	{
+		auto start = std::chrono::high_resolution_clock::now();
+
 		glClear(GL_COLOR_BUFFER_BIT);
 		world.process();
 		world.render(renderer);
 
 		display.swap();
+
+		while(std::chrono::duration<double, std::micro>(std::chrono::high_resolution_clock::now() - start).count() < 16667);
 	}
 
 	return 0;
