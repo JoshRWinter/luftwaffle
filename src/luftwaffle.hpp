@@ -5,9 +5,11 @@
 
 namespace game
 {
-	class world;
-	class renderer;
+	struct world;
+	struct renderer;
 }
+
+#undef small // lol microsoft
 
 #include "asset.hpp"
 #include "entity/entity.hpp"
