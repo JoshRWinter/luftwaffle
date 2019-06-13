@@ -7,3 +7,6 @@ src/render/quad.frag:z
 
 # atlases
 asset/common.atlas:z
+
+# fonts
+asset/font/arial.ttf

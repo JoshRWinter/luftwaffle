@@ -74,6 +74,7 @@ void game::quad::add(const ent::entity &entity, const unsigned short *texcoords)
 void game::quad::send()
 {
 	glBindVertexArray(vao);
+	glUseProgram(program);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo.position_size_rotation);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * buffer.position_size_rotation.size(), buffer.position_size_rotation.data(), GL_DYNAMIC_DRAW);

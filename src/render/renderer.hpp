@@ -39,11 +39,20 @@ namespace game
 
 	struct renderer
 	{
-		renderer(win::roll&);
+		renderer(win::display&, win::roll&);
+
+		void drawfps();
 
 		// render passes
 		win::area screen;
 		game::quad quad;
+
+		// fonts
+		struct
+		{
+			win::font small;
+		} font;
+		win::font_renderer font_renderer;
 	};
 }
 

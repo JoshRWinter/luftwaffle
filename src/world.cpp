@@ -16,6 +16,8 @@ void game::world::render(game::renderer &renderer)
 	entity.player.render(renderer, asset);
 
 	renderer.quad.send();
+
+	renderer.drawfps();
 }
 
 void game::world::reset()

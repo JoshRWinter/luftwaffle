@@ -11,7 +11,7 @@ int main()
 
 	win::roll roll("asset");
 	game::world world(roll);
-	game::renderer renderer(roll);
+	game::renderer renderer(display, roll);
 
 	bool quit = false;
 	display.event_button([&quit, &world](const win::button button, bool press)
