@@ -34,6 +34,7 @@ namespace game
 		struct
 		{
 			ent::player player;
+			ent::toaster toaster;
 		} entity;
 
 		game::asset asset;

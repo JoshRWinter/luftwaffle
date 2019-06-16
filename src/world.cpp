@@ -9,11 +9,15 @@ game::world::world(win::roll &roll)
 void game::world::process()
 {
 	entity.player.process(*this);
+	entity.toaster.process();
 }
 
 void game::world::render(game::renderer &renderer)
 {
+	renderer.quad.set_center(entity.player.x, entity.player.y);
+
 	entity.player.render(renderer, asset);
+	entity.toaster.render(renderer, asset);
 
 	renderer.quad.send();
 

@@ -1,0 +1,33 @@
+#include <math.h>
+
+#include "../luftwaffle.hpp"
+
+ent::toaster::toaster()
+{
+	iteration = 0;
+
+	reset();
+}
+
+void ent::toaster::process()
+{
+}
+
+void ent::toaster::render(game::renderer &renderer, const game::asset &assets) const
+{
+	renderer.quad.add(*this, assets.atlas.coords(game::asset::aid::PLAYER));
+}
+
+void ent::toaster::reset()
+{
+	++iteration;
+
+	health = 100;
+	spawn_timer = mersenne(SPAWN_TIMER_LOW, SPAWN_TIMER_HIGH);
+
+	x = 4.0f;//mersenne(-8.0f, 8.0f);
+	y = 0.0f; //mersenne(-8.0f, 8.0f);
+	w = WIDTH;
+	h = HEIGHT;
+	rot = (M_PI / 2.0f) * mersenne(1, 4);
+}

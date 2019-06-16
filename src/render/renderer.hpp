@@ -10,6 +10,7 @@ namespace game
 	public:
 		quad(win::roll&, const win::area&);
 
+		void set_center(float, float);
 		void add(const ent::entity&, const unsigned short*);
 		void send();
 
@@ -17,6 +18,8 @@ namespace game
 		win::program program;
 		win::vao vao;
 		win::ebo ebo;
+
+		win::point center;
 
 		struct
 		{

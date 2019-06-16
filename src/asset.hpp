@@ -5,7 +5,7 @@ namespace game
 {
 	struct asset
 	{
-		enum class atlas
+		enum aid // atlas id
 		{
 			PLAYER = 0
 		};

@@ -24,6 +24,23 @@ namespace ent
 
 		float xv, yv;
 	};
+
+	struct toaster : ent::entity
+	{
+		static constexpr float WIDTH = 1.0f;
+		static constexpr float HEIGHT = 1.0f;
+		static constexpr float SPAWN_TIMER_LOW = 300;
+		static constexpr float SPAWN_TIMER_HIGH = 500;
+
+		toaster();
+		void process();
+		void render(game::renderer&, const game::asset&) const;
+		void reset();
+
+		int health;
+		int iteration;
+		int spawn_timer;
+	};
 }
 
 #endif
