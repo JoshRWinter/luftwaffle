@@ -21,7 +21,7 @@ void ent::player::reset()
 
 void ent::player::process(const game::world &world)
 {
-	rot = atan2f(-world.cursor.y, -world.cursor.x);
+	rot = atan2f(world.cursor.y, world.cursor.x);
 
 	xv = win::zerof(xv, DECEL);
 	yv = win::zerof(yv, DECEL);
