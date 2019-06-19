@@ -9,8 +9,16 @@ ent::toaster::toaster()
 	reset();
 }
 
-void ent::toaster::process()
+void ent::toaster::process(game::world &world)
 {
+	if(health < 1)
+		reset();
+
+	if(--spawn_timer == 0)
+	{
+		world.entity.waffles.push_back(ent::waffle(*this));
+		spawn_timer = mersenne(SPAWN_TIMER_LOW, SPAWN_TIMER_HIGH);
+	}
 }
 
 void ent::toaster::render(game::renderer &renderer, const game::asset &assets) const

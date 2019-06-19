@@ -35,6 +35,7 @@ namespace game
 		{
 			ent::player player;
 			ent::toaster toaster;
+			std::vector<ent::waffle> waffles;
 		} entity;
 
 		game::asset asset;

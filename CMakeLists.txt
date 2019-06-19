@@ -20,6 +20,7 @@ add_executable(luftwaffle
 	src/entity/entity.hpp
 	src/entity/player.cpp
 	src/entity/toaster.cpp
+	src/entity/waffle.cpp
 
 	src/render/renderer.cpp
 	src/render/renderer.hpp

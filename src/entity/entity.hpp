@@ -1,6 +1,8 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
+#include <vector>
+
 namespace ent
 {
 	struct entity
@@ -33,13 +35,29 @@ namespace ent
 		static constexpr float SPAWN_TIMER_HIGH = 500;
 
 		toaster();
-		void process();
+		void process(game::world&);
 		void render(game::renderer&, const game::asset&) const;
 		void reset();
 
 		int health;
 		int iteration;
 		int spawn_timer;
+	};
+
+	struct waffle : ent::entity
+	{
+		static constexpr float WIDTH = 1.15f;
+		static constexpr float HEIGHT = 1.15f;
+		static constexpr float SPAWN_SLIDE = 10;
+		static constexpr float SPAWN_SLIDE_SPEED = 0.1f;
+
+		waffle(const ent::toaster&);
+
+		static void process(game::world&);
+		static void render(game::renderer&, const game::asset&, const std::vector<ent::waffle>&);
+
+		int spawn_slide;
+		int health;
 	};
 }
 
