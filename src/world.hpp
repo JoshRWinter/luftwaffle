@@ -8,6 +8,8 @@ namespace game
 		input()
 			: direction(0.0f)
 			, speed(0.0f)
+			, left_click(false)
+			, right_click(false)
 			, up(false)
 			, down(false)
 			, right(false)
@@ -17,6 +19,8 @@ namespace game
 		float direction;
 		float speed;
 
+		bool left_click;
+		bool right_click;
 		bool up, down, right, left;
 	};
 
@@ -36,6 +40,7 @@ namespace game
 			ent::player player;
 			ent::toaster toaster;
 			std::vector<ent::waffle> waffles;
+			std::vector<ent::laser> lasers;
 		} entity;
 
 		game::asset asset;

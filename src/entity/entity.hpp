@@ -17,17 +17,20 @@ namespace ent
 
 	struct player : ent::entity
 	{
-		static constexpr float SIZE = 0.7f;
+		static constexpr float WIDTH = 0.7f;
+		static constexpr float HEIGHT = 0.7f;
 		static constexpr float DECEL = 0.0005f;
 		static constexpr float ACCEL = 0.001f;
 		static constexpr float MAX_SPEED = 0.05f;
+		static constexpr float FIRE_COOLDOWN = 10;
 
 		player();
 		void reset();
-		void process(const game::world&);
+		void process(game::world&);
 		void render(game::renderer&, const game::asset&) const;
 
 		float xv, yv;
+		int fire_cooldown;
 	};
 
 	struct toaster : ent::entity
@@ -74,6 +77,23 @@ namespace ent
 
 	private:
 		void choose_wander_target();
+	};
+
+	struct laser : ent::entity
+	{
+		static constexpr float WIDTH = 0.5f;
+		static constexpr float HEIGHT = 0.15f;
+		static constexpr float SPEED = 0.1f;
+		static constexpr float TTL = 50;
+
+		laser(float, float, float);
+
+		static void process(game::world&);
+		static void render(game::renderer&, const game::asset&, const std::vector<ent::laser>&);
+
+		int ttl;
+		float xv;
+		float yv;
 	};
 }
 

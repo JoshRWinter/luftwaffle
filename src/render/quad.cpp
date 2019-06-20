@@ -65,8 +65,8 @@ void game::quad::set_center(float x, float y)
 
 void game::quad::add(const ent::entity &entity, const unsigned short *texcoords)
 {
-	buffer.position_size_rotation.push_back(entity.x - (center.x + (entity.w / 2.0f)));
-	buffer.position_size_rotation.push_back(entity.y - (center.y + (entity.h / 2.0f)));
+	buffer.position_size_rotation.push_back((entity.x + (entity.w / 2.0f)) - center.x);
+	buffer.position_size_rotation.push_back((entity.y + (entity.y / 2.0f)) - center.y);
 	buffer.position_size_rotation.push_back(entity.w);
 	buffer.position_size_rotation.push_back(entity.h);
 	buffer.position_size_rotation.push_back(entity.rot);

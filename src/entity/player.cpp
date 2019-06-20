@@ -10,16 +10,17 @@ ent::player::player()
 void ent::player::reset()
 {
 	x = 0.0f;
-	w = SIZE;
-	h = SIZE;
+	w = WIDTH;
+	h = HEIGHT;
 	y = 0.0f;
 	rot = 0.0f;
 
 	xv = 0.0f;
 	yv = 0.0f;
+	fire_cooldown = 0;
 }
 
-void ent::player::process(const game::world &world)
+void ent::player::process(game::world &world)
 {
 	align(atan2f(world.cursor.y, world.cursor.x), 0.2f);
 
@@ -36,6 +37,19 @@ void ent::player::process(const game::world &world)
 
 	x += xv;
 	y += yv;
+
+	// shoot freakin lasers
+	if(world.input.left_click)
+	{
+		if(fire_cooldown <= 0)
+		{
+			world.entity.lasers.push_back(ent::laser(x + (ent::player::WIDTH / 2.0f), y + (ent::player::HEIGHT / 2.0f), rot));
+
+			fire_cooldown = FIRE_COOLDOWN;
+			fprintf(stderr, "spawn %d\n", world.entity.lasers.size());
+		}
+		else --fire_cooldown;
+	}
 }
 
 void ent::player::render(game::renderer &renderer, const game::asset &asset) const
