@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include "../luftwaffle.hpp"
 
 bool ent::entity::collide(const ent::entity &entity, float tolerance) const
