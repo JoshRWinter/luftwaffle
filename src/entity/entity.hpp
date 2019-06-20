@@ -8,6 +8,9 @@ namespace ent
 	struct entity
 	{
 		bool collide(const ent::entity&, float tolerance = 0.0f) const;
+		bool collide(float, float) const;
+		bool in_range(const ent::entity&, float) const;
+		void align(float, float);
 
 		float x, y, w, h, rot;
 	};
@@ -46,10 +49,16 @@ namespace ent
 
 	struct waffle : ent::entity
 	{
-		static constexpr float WIDTH = 1.15f;
-		static constexpr float HEIGHT = 1.15f;
+		static constexpr float WIDTH = 0.8f;
+		static constexpr float HEIGHT = 0.8f;
 		static constexpr float SPAWN_SLIDE = 10;
 		static constexpr float SPAWN_SLIDE_SPEED = 0.1f;
+		static constexpr float WANDER_RANGE = 7.0f;
+		static constexpr float TURN_SPEED = 0.03f;
+		static constexpr float SPEED = 0.03f;
+		static constexpr float WAIT_TIMER_LOW = 30;
+		static constexpr float WAIT_TIMER_HIGH = 210;
+		static constexpr float WAIT_PROBABLITY = 300;
 
 		waffle(const ent::toaster&);
 
@@ -57,7 +66,14 @@ namespace ent
 		static void render(game::renderer&, const game::asset&, const std::vector<ent::waffle>&);
 
 		int spawn_slide;
+		int wait;
 		int health;
+		float direction;
+		win::point target; // go to here
+		win::point spawn_point;
+
+	private:
+		void choose_wander_target();
 	};
 }
 
