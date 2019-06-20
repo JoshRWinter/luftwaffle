@@ -46,7 +46,7 @@ void ent::waffle::process(game::world &world)
 		else --waffle->wait;
 
 		if(mersenne(WAIT_PROBABLITY))
-			waffle->wait = mersenne(WAIT_TIMER_HIGH, WAIT_TIMER_LOW);
+			waffle->wait = mersenne(WAIT_TIMER_LOW, WAIT_TIMER_HIGH);
 
 		if(waffle->collide(waffle->target.x, waffle->target.y))
 			waffle->choose_wander_target();
