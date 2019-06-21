@@ -7,7 +7,8 @@ namespace game
 	{
 		enum aid // atlas id
 		{
-			PLAYER = 0
+			PLAYER = 0,
+			WAFFLE1 = 1
 		};
 
 		asset(win::roll&);

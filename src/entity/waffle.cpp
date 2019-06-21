@@ -59,7 +59,7 @@ void ent::waffle::render(game::renderer &renderer, const game::asset &asset, con
 {
 	for(const ent::waffle &waffle : waffles)
 	{
-		renderer.quad.add(waffle, asset.atlas.coords(game::asset::aid::PLAYER));
+		renderer.quad.add(waffle, asset.atlas.coords(game::asset::aid::WAFFLE1));
 	}
 }
 

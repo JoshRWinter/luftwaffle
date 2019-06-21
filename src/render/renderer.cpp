@@ -8,6 +8,7 @@ game::renderer::renderer(win::display &display, win::roll &roll)
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glClearColor(0.0f, 0.85f, 1.0f, 1.0f);
 
 	font_renderer = display.make_font_renderer(display.width(), display.height(), screen.left, screen.right, screen.bottom, screen.top);
 	font.small = font_renderer.make_font(roll["asset/font/arial.ttf"], 0.275f);

@@ -52,8 +52,8 @@ namespace ent
 
 	struct waffle : ent::entity
 	{
-		static constexpr float WIDTH = 0.8f;
-		static constexpr float HEIGHT = 0.8f;
+		static constexpr float WIDTH = 1.2f;
+		static constexpr float HEIGHT = 1.2f;
 		static constexpr float SPAWN_SLIDE = 10;
 		static constexpr float SPAWN_SLIDE_SPEED = 0.1f;
 		static constexpr float WANDER_RANGE = 7.0f;
