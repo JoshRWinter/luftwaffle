@@ -46,7 +46,6 @@ void ent::player::process(game::world &world)
 			world.entity.lasers.push_back(ent::laser(x + (ent::player::WIDTH / 2.0f), y + (ent::player::HEIGHT / 2.0f), rot));
 
 			fire_cooldown = FIRE_COOLDOWN;
-			fprintf(stderr, "spawn %d\n", world.entity.lasers.size());
 		}
 		else --fire_cooldown;
 	}
