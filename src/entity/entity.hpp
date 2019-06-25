@@ -81,9 +81,9 @@ namespace ent
 
 	struct laser : ent::entity
 	{
-		static constexpr float WIDTH = 0.5f;
-		static constexpr float HEIGHT = 0.15f;
-		static constexpr float SPEED = 0.1f;
+		static constexpr float WIDTH = 0.2f;
+		static constexpr float HEIGHT = 0.1f;
+		static constexpr float SPEED = 0.3f;
 		static constexpr float TTL = 50;
 
 		laser(float, float, float);

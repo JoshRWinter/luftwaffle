@@ -34,6 +34,6 @@ void ent::laser::render(game::renderer &renderer, const game::asset &asset, cons
 {
 	for(const ent::laser &laser : lasers)
 	{
-		renderer.quad.add(laser, asset.atlas.coords(game::asset::aid::PLAYER));
+		renderer.quad.add(laser, asset.atlas.coords(game::asset::aid::LASER));
 	}
 }

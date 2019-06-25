@@ -47,8 +47,9 @@ void ent::player::process(game::world &world)
 
 			fire_cooldown = FIRE_COOLDOWN;
 		}
-		else --fire_cooldown;
 	}
+	if(fire_cooldown > 0)
+		--fire_cooldown;
 }
 
 void ent::player::render(game::renderer &renderer, const game::asset &asset) const
