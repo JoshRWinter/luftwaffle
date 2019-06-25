@@ -35,8 +35,8 @@ namespace ent
 
 	struct toaster : ent::entity
 	{
-		static constexpr float WIDTH = 1.0f;
-		static constexpr float HEIGHT = 1.0f;
+		static constexpr float WIDTH = 0.72f;
+		static constexpr float HEIGHT = 0.90f;
 		static constexpr float SPAWN_TIMER_LOW = 300;
 		static constexpr float SPAWN_TIMER_HIGH = 500;
 
@@ -54,7 +54,7 @@ namespace ent
 	{
 		static constexpr float WIDTH = 0.7f;
 		static constexpr float HEIGHT = 0.7f;
-		static constexpr float SPAWN_SLIDE = 10;
+		static constexpr float SPAWN_SLIDE = 8;
 		static constexpr float SPAWN_SLIDE_SPEED = 0.1f;
 		static constexpr float WANDER_RANGE = 7.0f;
 		static constexpr float TURN_SPEED = 0.03f;

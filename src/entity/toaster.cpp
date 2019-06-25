@@ -24,7 +24,7 @@ void ent::toaster::process(game::world &world)
 
 void ent::toaster::render(game::renderer &renderer, const game::asset &assets) const
 {
-	renderer.quad.add(*this, assets.atlas.coords(game::asset::aid::PLAYER));
+	renderer.quad.add(*this, assets.atlas.coords(game::asset::aid::TOASTER));
 }
 
 void ent::toaster::reset()
