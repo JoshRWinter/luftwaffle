@@ -9,7 +9,7 @@ static void handle_button(bool&, game::world&, win::button, bool);
 int main()
 {
 	win::system system;
-	win::display display = system.make_display("LUFTWAFFLE", 1280,  720);
+	win::display display = system.make_display("LUFTWAFFLE", 1600,  900);
 
 	win::roll roll("asset");
 	game::world world(roll);
