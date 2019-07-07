@@ -37,6 +37,7 @@ namespace game
 
 #undef small // lol microsoft
 
+#include "objectpool.hpp"
 #include "asset.hpp"
 #include "entity/entity.hpp"
 #include "render/renderer.hpp"
