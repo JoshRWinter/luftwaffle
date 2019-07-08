@@ -40,6 +40,9 @@ namespace game
 #include "objectpool.hpp"
 #include "asset.hpp"
 #include "entity/entity.hpp"
+#include "component/component.hpp"
+#include "component/componentdb.hpp"
+#include "system/system.hpp"
 #include "render/renderer.hpp"
 #include "world.hpp"
 

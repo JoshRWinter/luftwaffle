@@ -35,15 +35,9 @@ namespace game
 		win::point cursor;
 		game::input input;
 
-		struct
-		{
-			ent::player player;
-			ent::toaster toaster;
-			std::vector<ent::waffle> waffles;
-			std::vector<ent::laser> lasers;
-		} entity;
-
 		game::asset asset;
+
+		comp::componentdb componentdb;
 	};
 }
 

@@ -4,21 +4,28 @@
 #include <vector>
 #include <memory>
 
-template <typename T> class objectpool
+template <typename T, int MAXIMUM> class objectpool
 {
 public:
-	objectpool(const int m)
-		: maximum(m)
-		, num(0)
+	objectpool()
+		: num(0)
 		, highest(-1)
-		, rawstorage(new unsigned char[sizeof(T) * maximum])
+		, rawstorage(new unsigned char[sizeof(T) * MAXIMUM])
 	{}
 
 	~objectpool()
 	{
+		reset();
+	}
+
+	void reset()
+	{
 		T *storage = (T*)rawstorage.get();
 		for(int i = 0; i <= highest; ++i)
 			storage[i].~T();
+
+		num = 0;
+		highest = -1;
 	}
 
 	objectpool(const objectpool&) = delete;
@@ -63,9 +70,9 @@ public:
 private:
 	template <typename... Ts> T *append(Ts&&... args)
 	{
-		if(num >= maximum)
+		if(num >= MAXIMUM)
 		{
-			fprintf(stderr, "objectpool: maximum occupancy (%d) exceeded\n", maximum);
+			fprintf(stderr, "objectpool (%s): maximum occupancy (%d) exceeded\n", typeid(T).name(), MAXIMUM);
 			abort();
 		}
 
@@ -86,7 +93,6 @@ private:
 		return (T*)(new (storage + index) T(std::forward<Ts>(args)...));
 	}
 
-	const int maximum;
 	int num; // number of live objects in the pool
 	int highest; // highest index a live object has occupied
 	std::unique_ptr<unsigned char[]> rawstorage;
