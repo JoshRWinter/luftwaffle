@@ -2,6 +2,6 @@
 
 void sys::player(game::world &world)
 {
-	if(world.componentdb.player == NULL)
+	if(world.objectdb.player.count() == 0)
 		ent::new_player(world);
 }

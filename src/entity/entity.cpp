@@ -6,35 +6,21 @@ ent::entity::entity()
 		components[i] = NULL;
 }
 
-comp::component *ent::entity::component(const comp::type type)
-{
-	for(int i = 0; i < ent::MAX_COMPONENTS; ++i)
-	{
-		if(components[i] == NULL)
-			continue;
-
-		if(components[i]->type == type)
-			return components[i];
-	}
-
-	return NULL;
-}
-
-void ent::entity::attach(comp::component *const c)
+void ent::entity::attach(comp::component &c)
 {
 	for(int i = 0; i < ent::MAX_COMPONENTS; ++i)
 	{
 		if(components[i] != NULL)
 			continue;
 
-		components[i] = c;
+		components[i] = &c;
 		return;
 	}
 
 	win::bug("exceeded max components for an entity");
 }
 
-comp::component *ent::entity::detach(const comp::type type)
+comp::component &ent::entity::detach(const comp::type type)
 {
 	for(int i = 0; i < ent::MAX_COMPONENTS; ++i)
 	{
@@ -44,7 +30,7 @@ comp::component *ent::entity::detach(const comp::type type)
 		if(components[i]->type != type)
 			continue;
 
-		comp::component *c = components[i];
+		comp::component &c = *components[i];
 		components[i] = NULL;
 		return c;
 	}
@@ -58,21 +44,12 @@ comp::component *ent::entity::detach(const comp::type type)
 
 void ent::new_player(game::world &world)
 {
-	if(world.componentdb.player != NULL)
+	if(world.objectdb.player.count() != 0)
 		win::bug("already a player");
 
-	ent::entity *entity = world.componentdb.pool.entities.create();
+	ent::entity &entity = world.objectdb.entities.create();
 
-	comp::physical *physical = world.componentdb.pool.physicals.create(entity, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-	comp::atlas_renderable *renderable = world.componentdb.pool.atlas_renderables_player.create(entity, world.asset.atlas.coords(game::asset::aid::PLAYER));
-	comp::player *player = world.componentdb.pool.player.create(entity);
-
-	entity->attach(physical);
-	entity->attach(renderable);
-	entity->attach(player);
-
-	world.componentdb.physicals.push_back(physical);
-	world.componentdb.atlas_renderables_player.push_back(renderable);
-	world.componentdb.player = player;
-	fprintf(stderr, "%d renderable players\n", world.componentdb.atlas_renderables_player.size());
+	entity.attach(world.objectdb.physicals.create(entity, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f));
+	entity.attach(world.objectdb.atlas_renderables_player.create(entity, world.asset.atlas.coords(game::asset::aid::PLAYER)));
+	entity.attach(world.objectdb.player.create(entity));
 }

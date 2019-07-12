@@ -37,7 +37,7 @@ namespace game
 
 		game::asset asset;
 
-		comp::componentdb componentdb;
+		game::objectdb objectdb;
 	};
 }
 

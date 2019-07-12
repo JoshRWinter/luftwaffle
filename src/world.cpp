@@ -13,7 +13,7 @@ void game::world::process()
 
 void game::world::render(game::renderer &renderer)
 {
-	for(comp::atlas_renderable *renderable : componentdb.atlas_renderables_player)
+	for(comp::atlas_renderable &renderable : objectdb.atlas_renderables_player)
 		renderer.quad.add(renderable);
 
 	glBindTexture(GL_TEXTURE_2D, asset.atlas.texture());
@@ -24,5 +24,5 @@ void game::world::render(game::renderer &renderer)
 
 void game::world::reset()
 {
-	componentdb.reset();
+	objectdb.reset();
 }

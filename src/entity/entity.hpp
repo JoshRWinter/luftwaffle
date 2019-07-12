@@ -3,13 +3,6 @@
 
 #include "../luftwaffle.hpp"
 
-namespace comp
-{
-	struct component;
-	enum class type;
-	struct componentdb;
-}
-
 namespace ent
 {
 	constexpr int MAX_COMPONENTS = 4;
@@ -19,9 +12,22 @@ namespace ent
 
 		comp::component *components[MAX_COMPONENTS];
 
-		comp::component *component(comp::type);
-		void attach(comp::component*);
-		comp::component *detach(comp::type);
+		template<typename T> T *component(const comp::type type)
+		{
+			for(int i = 0; i < ent::MAX_COMPONENTS; ++i)
+			{
+				if(components[i] == NULL)
+					continue;
+
+				if(components[i]->type == type)
+					return (T*)components[i];
+			}
+
+			return NULL;
+		}
+
+		void attach(comp::component&);
+		comp::component &detach(comp::type);
 	};
 
 	void new_player(game::world&);

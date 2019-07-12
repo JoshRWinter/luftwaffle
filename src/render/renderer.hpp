@@ -11,7 +11,7 @@ namespace game
 		quad(win::roll&, const win::area&);
 
 		void set_center(float, float);
-		void add(const comp::atlas_renderable*);
+		void add(const comp::atlas_renderable&);
 		void send();
 
 	private:

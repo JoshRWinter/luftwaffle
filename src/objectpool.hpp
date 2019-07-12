@@ -4,13 +4,97 @@
 #include <vector>
 #include <memory>
 
+template <typename T> struct objectpool_node
+{
+	objectpool_node() = default;
+
+	template <typename... Ts> objectpool_node(bool, Ts&&... args)
+	{
+		new (object_raw) T(std::forward<Ts>(args)...);
+	}
+
+	void destruct()
+	{
+		((T*)object_raw)->~T();
+	}
+
+	unsigned char object_raw[sizeof(T)];
+	objectpool_node<T> *next;
+	objectpool_node<T> *prev;
+};
+
+template <typename T> class objectpool_iterator
+{
+public:
+	objectpool_iterator(objectpool_node<T> *h)
+		: node(h)
+	{}
+
+	T &operator*()
+	{
+		return *((T*)node->object_raw);
+	}
+
+	void operator++()
+	{
+		node = node->next;
+	}
+
+	bool operator==(const objectpool_iterator<T> &other) const
+	{
+		return node == other.node;
+	}
+
+	bool operator!=(const objectpool_iterator<T> &other) const
+	{
+		return node != other.node;
+	}
+
+private:
+	objectpool_node<T> *node;
+};
+
+template <typename T> class objectpool_const_iterator
+{
+public:
+	objectpool_const_iterator(const objectpool_node<T> *h)
+		: node(h)
+	{}
+
+	const T &operator*() const
+	{
+		return *((T*)node->object_raw);
+	}
+
+	void operator++()
+	{
+		node = node->next;
+	}
+
+	bool operator==(const objectpool_const_iterator<T> &other) const
+	{
+		return node == other.node;
+	}
+
+	bool operator!=(const objectpool_const_iterator<T> &other) const
+	{
+		return node != other.node;
+	}
+
+private:
+	const objectpool_node<T> *node;
+};
+
 template <typename T, int MAXIMUM> class objectpool
 {
+	friend class objectpool_iterator<T>;
+
 public:
 	objectpool()
 		: num(0)
-		, highest(-1)
-		, rawstorage(new unsigned char[sizeof(T) * MAXIMUM])
+		, head(NULL)
+		, tail(NULL)
+		, storage(new objectpool_node<T>[MAXIMUM])
 	{}
 
 	~objectpool()
@@ -18,45 +102,59 @@ public:
 		reset();
 	}
 
-	void reset()
+	template <typename... Ts> T &create(Ts&&... args)
 	{
-		T *storage = (T*)rawstorage.get();
-		for(int i = 0; i <= highest; ++i)
-			storage[i].~T();
+		objectpool_node<T> *node;
 
-		num = 0;
-		highest = -1;
-	}
-
-	objectpool(const objectpool&) = delete;
-	void operator=(const objectpool&) = delete;
-
-	template <typename... Ts> T *create(Ts&&... args)
-	{
 		if(freelist.empty())
 		{
-			T *o = append(std::forward<Ts>(args)...);
-			++num;
-
-			return o;
+			node = append(std::forward<Ts>(args)...);
 		}
 		else
 		{
 			const int index = freelist.back();
 			freelist.erase(freelist.end() - 1);
 
-			T *o = replace(index, std::forward<Ts>(args)...);
-			++num;
-
-			return o;
+			node = replace(index, std::forward<Ts>(args)...);
 		}
+
+		node->prev = tail;
+		node->next = NULL;
+
+		if(tail != NULL)
+		{
+			tail->next = node;
+			tail = node;
+		}
+		else
+		{
+			// list is empty
+			head = node;
+			tail = node;
+		}
+
+		++num;
+		return *((T*)node->object_raw);
 	}
 
-	void destroy(const T *const obj)
+	void destroy(const T &obj)
 	{
 		// figure out what index <obj> is
-		const unsigned long long index = obj - (T*)rawstorage.get();
+		const objectpool_node<T> *const node = (objectpool_node<T>*)&obj;
+		const unsigned long long index = node - storage.get();
 		freelist.push_back(index);
+
+		storage[index].destruct();
+
+		if(node->prev == NULL)
+			head = node->next;
+		else
+			node->prev->next = node->next;
+
+		if(node->next == NULL)
+			tail = node->prev;
+		else
+			node->next->prev = node->prev;
 
 		if(--num == 0)
 			freelist.clear();
@@ -67,8 +165,38 @@ public:
 		return num;
 	}
 
+	objectpool_iterator<T> begin()
+	{
+		return objectpool_iterator<T>(head);
+	}
+
+	objectpool_iterator<T> end()
+	{
+		return objectpool_iterator<T>(NULL);
+	}
+
+	objectpool_const_iterator<T> begin() const
+	{
+		return objectpool_const_iterator<T>(head);
+	}
+
+	objectpool_const_iterator<T> end() const
+	{
+		return objectpool_const_iterator<T>(NULL);
+	}
+
+	void reset()
+	{
+		for(T &t : *this)
+		{
+			destroy(t);
+		}
+
+		freelist.clear();
+	}
+
 private:
-	template <typename... Ts> T *append(Ts&&... args)
+	template <typename... Ts> objectpool_node<T> *append(Ts&&... args)
 	{
 		if(num >= MAXIMUM)
 		{
@@ -76,26 +204,18 @@ private:
 			abort();
 		}
 
-		T *storage = (T*)rawstorage.get();
-
-		if(num <= highest)
-			storage[num].~T();
-		else
-			highest = num;
-
-		return (T*)(new (storage + num) T(std::forward<Ts>(args)...));
+		return new (storage.get() + num) objectpool_node<T>(true, std::forward<Ts>(args)...);
 	}
 
-	template <typename... Ts> T *replace(const int index, Ts&&... args)
+	template <typename... Ts> objectpool_node<T> *replace(const int index, Ts&&... args)
 	{
-		T *storage = (T*)rawstorage.get();
-		storage[index].~T();
-		return (T*)(new (storage + index) T(std::forward<Ts>(args)...));
+		return new (storage.get() + index) objectpool_node<T>(true, std::forward<Ts>(args)...);
 	}
 
 	int num; // number of live objects in the pool
-	int highest; // highest index a live object has occupied
-	std::unique_ptr<unsigned char[]> rawstorage;
+	objectpool_node<T> *head;
+	objectpool_node<T> *tail;
+	std::unique_ptr<objectpool_node<T>[]> storage;
 	std::vector<int> freelist;
 };
 

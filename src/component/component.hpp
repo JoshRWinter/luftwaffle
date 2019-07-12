@@ -3,6 +3,11 @@
 
 #include "../luftwaffle.hpp"
 
+namespace ent
+{
+	struct entity;
+}
+
 namespace comp
 {
 	enum class type
@@ -15,18 +20,18 @@ namespace comp
 
 	struct component
 	{
-		component(comp::type t, ent::entity *p)
+		component(comp::type t, ent::entity &p)
 			: type(t)
 			, parent(p)
 		{}
 
 		comp::type type;
-		ent::entity *parent;
+		ent::entity &parent;
 	};
 
 	struct physical : comp::component
 	{
-		physical(ent::entity *parent, float xpos, float ypos, float width, float height, float rotation)
+		physical(ent::entity &parent, float xpos, float ypos, float width, float height, float rotation)
 			: component(comp::type::PHYSICAL, parent)
 			, x(xpos)
 			, y(ypos)
@@ -40,7 +45,7 @@ namespace comp
 
 	struct atlas_renderable : comp::component
 	{
-		atlas_renderable(ent::entity *parent, const unsigned short *tc)
+		atlas_renderable(ent::entity &parent, const unsigned short *tc)
 			: component(comp::type::ATLAS_RENDERABLE, parent)
 			, texcoords(tc)
 		{}
@@ -50,7 +55,7 @@ namespace comp
 
 	struct player : comp::component
 	{
-		player(ent::entity *parent)
+		player(ent::entity &parent)
 			: component(comp::type::PLAYER, parent)
 		{}
 	};

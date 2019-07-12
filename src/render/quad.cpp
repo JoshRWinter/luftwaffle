@@ -63,20 +63,20 @@ void game::quad::set_center(float x, float y)
 	center.y = y;
 }
 
-void game::quad::add(const comp::atlas_renderable *renderable)
+void game::quad::add(const comp::atlas_renderable &renderable)
 {
-	comp::physical *physical = (comp::physical*)renderable->parent->component(comp::type::PHYSICAL);
+	comp::physical &physical = *renderable.parent.component<comp::physical>(comp::type::PHYSICAL);
 
-	buffer.position_size_rotation.push_back(physical->x - physical->x);
-	buffer.position_size_rotation.push_back(physical->y - physical->y);
-	buffer.position_size_rotation.push_back(physical->w);
-	buffer.position_size_rotation.push_back(physical->h);
-	buffer.position_size_rotation.push_back(physical->rot);
+	buffer.position_size_rotation.push_back(physical.x - physical.x);
+	buffer.position_size_rotation.push_back(physical.y - physical.y);
+	buffer.position_size_rotation.push_back(physical.w);
+	buffer.position_size_rotation.push_back(physical.h);
+	buffer.position_size_rotation.push_back(physical.rot);
 
-	buffer.texcoord.push_back(renderable->texcoords[0]);
-	buffer.texcoord.push_back(renderable->texcoords[1]);
-	buffer.texcoord.push_back(renderable->texcoords[2] - renderable->texcoords[0]);
-	buffer.texcoord.push_back(renderable->texcoords[3] - renderable->texcoords[1]);
+	buffer.texcoord.push_back(renderable.texcoords[0]);
+	buffer.texcoord.push_back(renderable.texcoords[1]);
+	buffer.texcoord.push_back(renderable.texcoords[2] - renderable.texcoords[0]);
+	buffer.texcoord.push_back(renderable.texcoords[3] - renderable.texcoords[1]);
 }
 
 void game::quad::send()
