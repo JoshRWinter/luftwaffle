@@ -9,6 +9,11 @@ namespace ent
 	struct entity
 	{
 		entity();
+		entity(const entity&) = delete;
+		entity(entity&&) = delete;
+
+		void operator=(const entity&) = delete;
+		void operator=(entity&&) = delete;
 
 		comp::component *components[MAX_COMPONENTS];
 

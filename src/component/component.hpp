@@ -25,6 +25,11 @@ namespace comp
 			, parent(p)
 		{}
 
+		component(const component&) = delete;
+		component(component&&) = delete;
+		void operator=(const component&) = delete;
+		void operator=(component&&) = delete;
+
 		comp::type type;
 		ent::entity &parent;
 	};

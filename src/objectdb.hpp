@@ -5,6 +5,12 @@ namespace game
 {
 	struct objectdb
 	{
+		objectdb() = default;
+		objectdb(const objectdb&) = delete;
+		objectdb(objectdb&&) = delete;
+		void operator=(const objectdb&) = delete;
+		void operator=(objectdb&&) = delete;
+
 		objectpool<ent::entity, 100> entities;
 
 		objectpool<comp::player, 1> player;
