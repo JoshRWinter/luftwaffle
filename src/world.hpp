@@ -29,7 +29,6 @@ namespace game
 		world(win::roll&);
 
 		void process();
-		void render(game::renderer&);
 		void reset();
 
 		win::point cursor;

@@ -14,6 +14,20 @@ game::renderer::renderer(win::display &display, win::roll &roll)
 	font.small = font_renderer.make_font(roll["asset/font/arial.ttf"], 0.275f);
 }
 
+void game::renderer::frame(const game::world &world)
+{
+	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderables_toaster)
+		quad.add(renderable);
+
+	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderables_player)
+		quad.add(renderable);
+
+	glBindTexture(GL_TEXTURE_2D, world.asset.atlas.texture());
+	quad.send();
+
+	drawfps();
+}
+
 void game::renderer::drawfps()
 {
 	// draw fps

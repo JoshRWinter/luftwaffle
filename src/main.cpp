@@ -33,7 +33,7 @@ int main()
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		world.process();
-		world.render(renderer);
+		renderer.frame(world);
 
 		display.swap();
 

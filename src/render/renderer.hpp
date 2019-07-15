@@ -44,10 +44,14 @@ namespace game
 	{
 		renderer(win::display&, win::roll&);
 
+		void frame(const game::world&);
+
+		win::area screen;
+
+	private:
 		void drawfps();
 
 		// render passes
-		win::area screen;
 		game::quad quad;
 
 		// fonts
