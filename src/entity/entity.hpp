@@ -17,14 +17,14 @@ namespace ent
 
 		comp::component *components[MAX_COMPONENTS];
 
-		template<typename T> T *component(const comp::type type)
+		template<typename T> T *component()
 		{
 			for(int i = 0; i < ent::MAX_COMPONENTS; ++i)
 			{
 				if(components[i] == NULL)
 					continue;
 
-				if(components[i]->type == type)
+				if(components[i]->type == T::component_type)
 					return (T*)components[i];
 			}
 
@@ -35,6 +35,8 @@ namespace ent
 		comp::component &detach(comp::type);
 	};
 
+	constexpr float PLAYER_WIDTH = 0.6f;
+	constexpr float PLAYER_HEIGHT = 0.6f;
 	void new_player(game::world&);
 }
 

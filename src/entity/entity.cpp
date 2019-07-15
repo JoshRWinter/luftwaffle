@@ -49,7 +49,7 @@ void ent::new_player(game::world &world)
 
 	ent::entity &entity = world.objectdb.entities.create();
 
-	entity.attach(world.objectdb.physicals.create(entity, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f));
+	entity.attach(world.objectdb.physicals.create(entity, 0.0f, 0.0f, PLAYER_WIDTH, PLAYER_HEIGHT, 0.0f));
 	entity.attach(world.objectdb.atlas_renderables_player.create(entity, world.asset.atlas.coords(game::asset::aid::PLAYER)));
 	entity.attach(world.objectdb.player.create(entity));
 }

@@ -65,10 +65,10 @@ void game::quad::set_center(float x, float y)
 
 void game::quad::add(const comp::atlas_renderable &renderable)
 {
-	comp::physical &physical = *renderable.parent.component<comp::physical>(comp::type::PHYSICAL);
+	comp::physical &physical = *renderable.parent.component<comp::physical>();
 
-	buffer.position_size_rotation.push_back(physical.x - physical.x);
-	buffer.position_size_rotation.push_back(physical.y - physical.y);
+	buffer.position_size_rotation.push_back(physical.x - (center.x + (physical.w / 2.0f)));
+	buffer.position_size_rotation.push_back(physical.y - (center.y + (physical.h / 2.0f)));
 	buffer.position_size_rotation.push_back(physical.w);
 	buffer.position_size_rotation.push_back(physical.h);
 	buffer.position_size_rotation.push_back(physical.rot);

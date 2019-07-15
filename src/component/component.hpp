@@ -36,6 +36,8 @@ namespace comp
 
 	struct physical : comp::component
 	{
+		constexpr static comp::type component_type = type::PHYSICAL;
+
 		physical(ent::entity &parent, float xpos, float ypos, float width, float height, float rotation)
 			: component(comp::type::PHYSICAL, parent)
 			, x(xpos)
@@ -45,11 +47,15 @@ namespace comp
 			, rot(rotation)
 		{}
 
+		void align(float, float);
+
 		float x, y, w, h, rot;
 	};
 
 	struct atlas_renderable : comp::component
 	{
+		constexpr static comp::type component_type = type::ATLAS_RENDERABLE;
+
 		atlas_renderable(ent::entity &parent, const unsigned short *tc)
 			: component(comp::type::ATLAS_RENDERABLE, parent)
 			, texcoords(tc)
@@ -60,9 +66,15 @@ namespace comp
 
 	struct player : comp::component
 	{
+		constexpr static comp::type component_type = type::PLAYER;
+
 		player(ent::entity &parent)
 			: component(comp::type::PLAYER, parent)
+			, xv(0.0f)
+			, yv(0.0f)
 		{}
+
+		float xv, yv;
 	};
 }
 

@@ -15,6 +15,7 @@ add_executable(luftwaffle
 	src/entity/entity.hpp
 
 	src/component/component.hpp
+	src/component/component.cpp
 
 	src/system/system.hpp
 	src/system/player.cpp
