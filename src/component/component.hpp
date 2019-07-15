@@ -76,6 +76,21 @@ namespace comp
 
 		float xv, yv;
 	};
+
+	struct toaster : comp::component
+	{
+		constexpr static comp::type component_type = type::TOASTER;
+
+		constexpr static int SPAWN_TIMER_LOW = 100;
+		constexpr static int SPAWN_TIMER_HIGH = 500;
+
+		toaster(ent::entity &parent)
+			: component(comp::type::TOASTER, parent)
+			, spawn_timer(mersenne(SPAWN_TIMER_LOW, SPAWN_TIMER_HIGH))
+		{}
+
+		int spawn_timer;
+	};
 }
 
 #endif

@@ -38,6 +38,10 @@ namespace ent
 	constexpr float PLAYER_WIDTH = 0.6f;
 	constexpr float PLAYER_HEIGHT = 0.6f;
 	void new_player(game::world&);
+
+	constexpr float TOASTER_WIDTH = 0.72f;
+	constexpr float TOASTER_HEIGHT = 0.9f;
+	void new_toaster(game::world&);
 }
 
 #endif

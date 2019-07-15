@@ -53,3 +53,15 @@ void ent::new_player(game::world &world)
 	entity.attach(world.objectdb.atlas_renderables_player.create(entity, world.asset.atlas.coords(game::asset::aid::PLAYER)));
 	entity.attach(world.objectdb.player.create(entity));
 }
+
+void ent::new_toaster(game::world &world)
+{
+	if(world.objectdb.toaster.count() != 0)
+		win::bug("already a toaster");
+
+	ent::entity &entity = world.objectdb.entities.create();
+
+	entity.attach(world.objectdb.physicals.create(entity, 5.0f, 0.0f, TOASTER_WIDTH, TOASTER_HEIGHT, (M_PI / 2.0f) * mersenne(0, 3)));
+	entity.attach(world.objectdb.atlas_renderables_toaster.create(entity, world.asset.atlas.coords(game::asset::aid::TOASTER)));
+	entity.attach(world.objectdb.toaster.create(entity));
+}
