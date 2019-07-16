@@ -1,5 +1,7 @@
 #include "../luftwaffle.hpp"
 
+#include <math.h>
+
 // physical component
 void comp::physical::align(float target_angle, const float step)
 {

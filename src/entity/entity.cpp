@@ -1,5 +1,7 @@
 #include "../luftwaffle.hpp"
 
+#include <math.h>
+
 ent::entity::entity()
 {
 	for(int i = 0; i < ent::MAX_COMPONENTS; ++i)

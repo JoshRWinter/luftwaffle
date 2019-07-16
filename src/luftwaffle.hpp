@@ -37,6 +37,8 @@ namespace game
 
 #undef small // lol microsoft
 
+#define _USE_MATH_DEFINES
+
 #include "objectpool.hpp"
 #include "asset.hpp"
 #include "component/component.hpp"
