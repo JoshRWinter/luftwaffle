@@ -8,7 +8,7 @@ game::renderer::renderer(win::display &display, win::roll &roll)
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glClearColor(0.0f, 0.85f, 1.0f, 1.0f);
+	glClearColor(0.0f, 0.45f, 1.0f, 1.0f);
 
 	font_renderer = display.make_font_renderer(display.width(), display.height(), screen.left, screen.right, screen.bottom, screen.top);
 	font.small = font_renderer.make_font(roll["asset/font/arial.ttf"], 0.275f);
@@ -16,10 +16,13 @@ game::renderer::renderer(win::display &display, win::roll &roll)
 
 void game::renderer::frame(const game::world &world)
 {
-	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderables_toaster)
+	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_waffles)
 		quad.add(renderable);
 
-	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderables_player)
+	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_toasters)
+		quad.add(renderable);
+
+	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_players)
 		quad.add(renderable);
 
 	glBindTexture(GL_TEXTURE_2D, world.asset.atlas.texture());

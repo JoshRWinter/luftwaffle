@@ -31,5 +31,4 @@ void sys::player(game::world &world)
 
 	physical.x += player.xv;
 	physical.y += player.yv;
-	fprintf(stderr, "x: %.2f, y: %.2f\n", physical.x, physical.y);
 }

@@ -10,6 +10,7 @@ void game::world::process()
 {
 	sys::player(*this);
 	sys::toaster(*this);
+	sys::wander(*this);
 }
 
 void game::world::reset()

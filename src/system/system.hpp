@@ -5,6 +5,8 @@ namespace sys
 {
 	void player(game::world&);
 	void toaster(game::world&);
+	void wander(game::world&);
+	void attack(game::world&);
 }
 
 #endif
