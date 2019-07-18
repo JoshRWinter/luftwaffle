@@ -10,7 +10,8 @@ namespace game
 			PLAYER = 0,
 			WAFFLE1 = 1,
 			TOASTER = 2,
-			LASER = 3
+			LASER = 3,
+			LASERGUN = 4
 		};
 
 		asset(win::roll&);

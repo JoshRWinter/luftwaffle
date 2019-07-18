@@ -20,6 +20,9 @@ void game::renderer::frame(const game::world &world)
 	const comp::physical &player = *(*world.objectdb.player.begin()).parent.component<comp::physical>();
 	quad.set_center(player.x, player.y);
 
+	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_laserguns)
+		quad.add(renderable);
+
 	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_waffles)
 		quad.add(renderable);
 

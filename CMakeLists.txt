@@ -21,6 +21,7 @@ add_executable(luftwaffle
 	src/system/player.cpp
 	src/system/toaster.cpp
 	src/system/wander.cpp
+	src/system/lasergun.cpp
 
 	src/world.cpp
 	src/world.hpp

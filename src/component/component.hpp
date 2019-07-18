@@ -15,9 +15,11 @@ namespace comp
 		PHYSICAL,
 		ATLAS_RENDERABLE,
 		PLAYER,
+		WAFFLE,
 		TOASTER,
 		WANDER,
-		ATTACK
+		ATTACK,
+		LASERGUN
 	};
 
 	struct component
@@ -81,17 +83,29 @@ namespace comp
 
 	struct toaster : comp::component
 	{
-		constexpr static comp::type component_type = type::TOASTER;
+		constexpr static comp::type component_type = comp::type::TOASTER;
 
 		constexpr static int SPAWN_TIMER_LOW = 100;
 		constexpr static int SPAWN_TIMER_HIGH = 500;
 
 		toaster(ent::entity &parent)
-			: component(comp::type::TOASTER, parent)
+			: component(component_type, parent)
 			, spawn_timer(mersenne(SPAWN_TIMER_LOW, SPAWN_TIMER_HIGH))
 		{}
 
 		int spawn_timer;
+	};
+
+	struct waffle : comp::component
+	{
+		constexpr static comp::type component_type = comp::type::WAFFLE;
+
+		waffle(ent::entity &parent)
+			: component(component_type, parent)
+			, childgun(NULL)
+		{}
+
+		ent::entity *childgun;
 	};
 
 	struct wander : comp::component
@@ -101,7 +115,7 @@ namespace comp
 		enum class wander_state { POPOUT, WANDERING };
 
 		wander(ent::entity &parent, const float x, const float y, const float angle)
-			: component(comp::type::WANDER, parent)
+			: component(component_type, parent)
 			, state(wander_state::POPOUT)
 			, initial_angle(angle)
 			, initial_x(x)
@@ -123,8 +137,24 @@ namespace comp
 		constexpr static comp::type component_type = comp::type::ATTACK;
 
 		attack(ent::entity &parent)
-			: component(comp::type::WANDER, parent)
+			: component(component_type, parent)
 		{}
+	};
+
+	struct lasergun : comp::component
+	{
+		constexpr static comp::type component_type = comp::type::LASERGUN;
+
+		lasergun(ent::entity &parent, comp::physical &waffleparent, int max_cooldown)
+			: component(component_type, parent)
+			, max_timer_cooldown(max_cooldown)
+			, timer_cooldown(0)
+			, waffle(waffleparent)
+		{}
+
+		int timer_cooldown;
+		const int max_timer_cooldown;
+		const comp::physical &waffle;
 	};
 }
 
