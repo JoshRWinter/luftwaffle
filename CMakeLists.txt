@@ -10,6 +10,8 @@ add_executable(luftwaffle
 	src/main.cpp
 	src/luftwaffle.hpp
 	src/objectdb.hpp
+	src/worldobject.cpp
+	src/worldobject.hpp
 
 	src/entity/entity.cpp
 	src/entity/entity.hpp

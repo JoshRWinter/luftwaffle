@@ -44,6 +44,7 @@ namespace game
 #include "component/component.hpp"
 #include "entity/entity.hpp"
 #include "objectdb.hpp"
+#include "worldobject.hpp"
 #include "system/system.hpp"
 #include "render/renderer.hpp"
 #include "world.hpp"

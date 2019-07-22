@@ -67,8 +67,8 @@ void game::quad::add(const comp::atlas_renderable &renderable)
 {
 	comp::physical &physical = renderable.parent.component<comp::physical>();
 
-	buffer.position_size_rotation.push_back(physical.x - (center.x + (ent::PLAYER_WIDTH / 2.0f)));
-	buffer.position_size_rotation.push_back(physical.y - (center.y + (ent::PLAYER_HEIGHT / 2.0f)));
+	buffer.position_size_rotation.push_back(physical.x - (center.x + (game::PLAYER_WIDTH / 2.0f)));
+	buffer.position_size_rotation.push_back(physical.y - (center.y + (game::PLAYER_HEIGHT / 2.0f)));
 	buffer.position_size_rotation.push_back(physical.w);
 	buffer.position_size_rotation.push_back(physical.h);
 	buffer.position_size_rotation.push_back(physical.rot);

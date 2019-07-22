@@ -4,7 +4,7 @@ void sys::player(game::world &world)
 {
 
 	if(world.objectdb.player.count() == 0)
-		ent::new_player(world);
+		game::new_player(world);
 
 	comp::player &player = *world.objectdb.player.begin();
 	ent::entity &entity = player.parent;

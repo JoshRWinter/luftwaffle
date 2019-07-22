@@ -36,7 +36,7 @@ void popout(comp::physical &physical, comp::wander &wander)
 
 void walkabout(comp::physical &physical, comp::wander &wander)
 {
-	const float angle = atan2f(wander.targety - (physical.y + ent::WAFFLE_HEIGHT / 2.0f), wander.targetx - (physical.x + (ent::WAFFLE_WIDTH / 2.0f)));
+	const float angle = atan2f(wander.targety - (physical.y + game::WAFFLE_HEIGHT / 2.0f), wander.targetx - (physical.x + (game::WAFFLE_WIDTH / 2.0f)));
 	physical.align(angle, 0.035);
 
 
@@ -47,8 +47,8 @@ void walkabout(comp::physical &physical, comp::wander &wander)
 		physical.x += cosf(physical.rot) * SPEED;
 		physical.y += sinf(physical.rot) * SPEED;
 
-		if(physical.x < wander.targetx && physical.x + ent::WAFFLE_WIDTH > wander.targetx &&
-			physical.y < wander.targety && physical.y + ent::WAFFLE_HEIGHT > wander.targety)
+		if(physical.x < wander.targetx && physical.x + game::WAFFLE_WIDTH > wander.targetx &&
+			physical.y < wander.targety && physical.y + game::WAFFLE_HEIGHT > wander.targety)
 		{
 			wander.timer = mersenne(100, 500);
 		}
