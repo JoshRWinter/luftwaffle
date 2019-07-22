@@ -4,6 +4,19 @@
 #include <vector>
 #include <memory>
 
+struct resettable
+{
+	virtual void reset() = 0;
+};
+
+static std::vector<resettable*> all_pools;
+
+inline void reset_all_pools()
+{
+	for(resettable *pool : all_pools)
+		pool->reset();
+}
+
 template <typename T> struct objectpool_node
 {
 	objectpool_node() = default;
@@ -85,7 +98,7 @@ private:
 	const objectpool_node<T> *node;
 };
 
-template <typename T, int MAXIMUM> class objectpool
+template <typename T, int MAXIMUM> class objectpool : resettable
 {
 	friend class objectpool_iterator<T>;
 
@@ -95,7 +108,9 @@ public:
 		, head(NULL)
 		, tail(NULL)
 		, storage(new objectpool_node<T>[MAXIMUM])
-	{}
+	{
+		all_pools.push_back(this);
+	}
 
 	~objectpool()
 	{
@@ -185,7 +200,7 @@ public:
 		return objectpool_const_iterator<T>(NULL);
 	}
 
-	void reset()
+	virtual void reset() override
 	{
 		for(T &t : *this)
 		{

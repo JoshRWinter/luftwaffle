@@ -29,20 +29,7 @@ namespace game
 
 		void reset()
 		{
-			entities.reset();
-
-			physicals.reset();
-			player.reset();
-			toaster.reset();
-			waffles.reset();
-			wander.reset();
-			attack.reset();
-			laserguns.reset();
-
-			atlas_renderable_players.reset();
-			atlas_renderable_toasters.reset();
-			atlas_renderable_waffles.reset();
-			atlas_renderable_laserguns.reset();
+			reset_all_pools();
 		}
 	};
 }
