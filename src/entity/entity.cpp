@@ -8,6 +8,15 @@ ent::entity::entity()
 		components[i] = NULL;
 }
 
+void ent::entity::cleanup_check()
+{
+#ifndef NDEBUG
+	for(int i = 0; i < MAX_COMPONENTS; ++i)
+		if(components[i] != NULL)
+			win::bug("zombie component found");
+#endif
+}
+
 void ent::entity::attach(comp::component &c)
 {
 	for(int i = 0; i < ent::MAX_COMPONENTS; ++i)
@@ -71,10 +80,11 @@ void ent::new_toaster(game::world &world)
 
 void ent::delete_toaster(game::world &world, ent::entity &entity)
 {
-	world.objectdb.physicals.destroy(*entity.component<comp::physical>());
-	world.objectdb.toaster.destroy(*entity.component<comp::toaster>());
-	world.objectdb.atlas_renderable_toasters.destroy(*entity.component<comp::atlas_renderable>());
+	world.objectdb.physicals.destroy(entity.take_component<comp::physical>());
+	world.objectdb.toaster.destroy(entity.take_component<comp::toaster>());
+	world.objectdb.atlas_renderable_toasters.destroy(entity.take_component<comp::atlas_renderable>());
 
+	entity.cleanup_check();
 	world.objectdb.entities.destroy(entity);
 }
 
@@ -112,19 +122,20 @@ void ent::new_waffle(game::world &world, const comp::physical &toaster)
 
 void ent::delete_waffle(game::world &world, ent::entity &entity)
 {
-
-	world.objectdb.physicals.destroy(*entity.component<comp::physical>());
-	world.objectdb.atlas_renderable_players.destroy(*entity.component<comp::atlas_renderable>());
-	world.objectdb.wander.destroy(*entity.component<comp::wander>());
-	comp::waffle &waffle = *entity.component<comp::waffle>();
+	world.objectdb.physicals.destroy(entity.take_component<comp::physical>());
+	world.objectdb.atlas_renderable_players.destroy(entity.take_component<comp::atlas_renderable>());
+	world.objectdb.wander.destroy(entity.take_component<comp::wander>());
+	comp::waffle &waffle = entity.take_component<comp::waffle>();
 	ent::entity &child = *waffle.childgun;
 	world.objectdb.waffles.destroy(waffle);
 
+	entity.cleanup_check();
 	world.objectdb.entities.destroy(entity);
 
-	world.objectdb.physicals.destroy(*child.component<comp::physical>());
-	world.objectdb.atlas_renderable_laserguns.destroy(*child.component<comp::atlas_renderable>());
-	world.objectdb.laserguns.destroy(*child.component<comp::lasergun>());
+	world.objectdb.physicals.destroy(child.take_component<comp::physical>());
+	world.objectdb.atlas_renderable_laserguns.destroy(child.take_component<comp::atlas_renderable>());
+	world.objectdb.laserguns.destroy(child.take_component<comp::lasergun>());
 
+	child.cleanup_check();
 	world.objectdb.entities.destroy(child);
 }

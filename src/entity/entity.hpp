@@ -17,7 +17,57 @@ namespace ent
 
 		comp::component *components[MAX_COMPONENTS];
 
-		template<typename T> T *component()
+		template<typename T> T &component()
+		{
+			const int index = get_component_index<T>();
+
+			if(index != -1)
+				return *(T*)components[index];
+
+			win::bug("no component " + std::string(typeid(T).name()) + " on this ent");
+		}
+
+		template<typename T> T *try_component()
+		{
+			const int index = get_component_index<T>();
+
+			return index != -1 ? (T*)components[index] : NULL;
+		}
+
+		template<typename T> T &take_component()
+		{
+			const int index = get_component_index<T>();;
+
+			if(index != -1)
+			{
+				comp::component *tmp = components[index];
+				components[index] = NULL;
+				return *(T*)tmp;
+			}
+
+			win::bug("no component " + std::string(typeid(T).name()) + " on this ent");
+		}
+
+		template<typename T> T *try_take_component()
+		{
+			const int index = get_component_index<T>();
+
+			if(index != -1)
+			{
+				comp::component *tmp = components[index];
+				components[index] = NULL;
+				return (T*)tmp;
+			}
+
+			return NULL;
+		}
+
+		void cleanup_check(); // only called in debug mode
+		void attach(comp::component&);
+		comp::component &detach(comp::type);
+
+	private:
+		template<typename T> int get_component_index()
 		{
 			for(int i = 0; i < ent::MAX_COMPONENTS; ++i)
 			{
@@ -25,14 +75,11 @@ namespace ent
 					continue;
 
 				if(components[i]->type == T::component_type)
-					return (T*)components[i];
+					return i;
 			}
 
-			return NULL;
+			return -1;
 		}
-
-		void attach(comp::component&);
-		comp::component &detach(comp::type);
 	};
 
 	constexpr float PLAYER_WIDTH = 0.6f;

@@ -17,7 +17,7 @@ game::renderer::renderer(win::display &display, win::roll &roll)
 void game::renderer::frame(const game::world &world)
 {
 	// everything is centered around the player
-	const comp::physical &player = *(*world.objectdb.player.begin()).parent.component<comp::physical>();
+	const comp::physical &player = (*world.objectdb.player.begin()).parent.component<comp::physical>();
 	quad.set_center(player.x, player.y);
 
 	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_laserguns)

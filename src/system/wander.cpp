@@ -8,7 +8,7 @@ void sys::wander(game::world &world)
 	for(comp::wander &wander : world.objectdb.wander)
 	{
 		ent::entity &entity = wander.parent;
-		comp::physical &physical = *entity.component<comp::physical>();
+		comp::physical &physical = entity.component<comp::physical>();
 
 		if(wander.state == comp::wander::wander_state::POPOUT)
 			popout(physical, wander);

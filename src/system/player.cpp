@@ -8,7 +8,7 @@ void sys::player(game::world &world)
 
 	comp::player &player = *world.objectdb.player.begin();
 	ent::entity &entity = player.parent;
-	comp::physical &physical = *entity.component<comp::physical>();
+	comp::physical &physical = entity.component<comp::physical>();
 
 	// point at the mouse
 	physical.align(atan2f(world.cursor.y, world.cursor.x), 0.2f);
