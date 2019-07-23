@@ -154,6 +154,10 @@ public:
 
 	void destroy(const T &obj)
 	{
+#ifndef NDEBUG
+		if((objectpool_node<T>*)&obj < storage.get() || (objectpool_node<T>*)&obj > storage.get() + (MAXIMUM - 1))
+			win::bug("cannot destroy object because it is out of range");
+#endif
 		// figure out what index <obj> is
 		const objectpool_node<T> *const node = (objectpool_node<T>*)&obj;
 		const unsigned long long index = node - storage.get();
