@@ -19,7 +19,8 @@ namespace comp
 		TOASTER,
 		WANDER,
 		ATTACK,
-		LASERGUN
+		LASERGUN,
+		LASER
 	};
 
 	struct component
@@ -76,8 +77,10 @@ namespace comp
 			: component(comp::type::PLAYER, parent)
 			, xv(0.0f)
 			, yv(0.0f)
+			, childgun(NULL)
 		{}
 
+		ent::entity *childgun;
 		float xv, yv;
 	};
 
@@ -145,16 +148,42 @@ namespace comp
 	{
 		constexpr static comp::type component_type = comp::type::LASERGUN;
 
-		lasergun(ent::entity &parent, comp::physical &waffleparent, int max_cooldown)
+		constexpr static int MAX_GUNS = 2;
+
+		lasergun(ent::entity &parent, comp::physical &parent_phys, int max_cooldown)
 			: component(component_type, parent)
+			, firing(false)
 			, max_timer_cooldown(max_cooldown)
 			, timer_cooldown(0)
-			, waffle(waffleparent)
-		{}
+			, parent_physical(parent_phys)
+		{
+			memset(guns, 0, sizeof(guns));
+		}
 
+		struct gunposition { float angle_offset, distance; };
+
+		bool firing;
 		int timer_cooldown;
 		const int max_timer_cooldown;
-		const comp::physical &waffle;
+		const comp::physical &parent_physical;
+		gunposition guns[MAX_GUNS];
+	};
+
+	struct laser : comp::component
+	{
+		constexpr static comp::type component_type = comp::type::LASER;
+
+		laser(ent::entity &parent, float angle, float speed, int dmg)
+			: component(component_type, parent)
+			, damage(dmg)
+			, xv(cosf(angle) * speed)
+			, yv(sinf(angle) * speed)
+			, ttl(100)
+		{}
+
+		float xv, yv;
+		int damage;
+		int ttl;
 	};
 }
 

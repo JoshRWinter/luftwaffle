@@ -12,6 +12,7 @@ void game::world::process()
 	sys::toaster(*this);
 	sys::wander(*this);
 	sys::lasergun(*this);
+	sys::laser(*this);
 }
 
 void game::world::reset()

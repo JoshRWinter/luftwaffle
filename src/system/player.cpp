@@ -2,13 +2,16 @@
 
 void sys::player(game::world &world)
 {
-
 	if(world.objectdb.player.count() == 0)
 		game::new_player(world);
 
 	comp::player &player = *world.objectdb.player.begin();
 	ent::entity &entity = player.parent;
 	comp::physical &physical = entity.component<comp::physical>();
+	comp::lasergun &gun = player.childgun->component<comp::lasergun>();
+
+	// handle firing the guns
+	gun.firing = world.input.left_click;
 
 	// point at the mouse
 	physical.align(atan2f(world.cursor.y, world.cursor.x), 0.2f);

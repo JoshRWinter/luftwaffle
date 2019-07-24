@@ -8,6 +8,7 @@ namespace sys
 	void wander(game::world&);
 	void attack(game::world&);
 	void lasergun(game::world&);
+	void laser(game::world&);
 }
 
 #endif

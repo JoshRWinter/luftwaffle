@@ -32,6 +32,9 @@ void game::renderer::frame(const game::world &world)
 	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_players)
 		quad.add(renderable);
 
+	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_lasers)
+		quad.add(renderable);
+
 	glBindTexture(GL_TEXTURE_2D, world.asset.atlas.texture());
 	quad.send();
 
