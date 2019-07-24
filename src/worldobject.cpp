@@ -1,5 +1,7 @@
 #include "luftwaffle.hpp"
 
+#include <math.h>
+
 /////////////////////////
 // player
 /////////////////////////
