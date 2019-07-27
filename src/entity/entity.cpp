@@ -46,3 +46,8 @@ comp::component &ent::entity::detach(const comp::type type)
 
 	win::bug("no such component type " + std::to_string((int)type));
 }
+
+void ent::entity::safety_check(const void *p)
+{
+	game::objectdb::safety_check(p);
+}

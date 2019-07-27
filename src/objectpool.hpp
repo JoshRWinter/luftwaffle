@@ -2,14 +2,15 @@
 #define OBJECT_POOL_HPP
 
 #include <vector>
-#include <memory>
 
 struct resettable
 {
 	virtual void reset() = 0;
+	virtual ~resettable() = 0;
 };
+inline resettable::~resettable() {}
 
-static std::vector<resettable*> all_pools;
+inline std::vector<resettable*> all_pools;
 
 inline void reset_all_pools()
 {
@@ -98,23 +99,31 @@ private:
 	const objectpool_node<T> *node;
 };
 
-template <typename T, int MAXIMUM> class objectpool : resettable
+template <typename T, int M> class objectpool : resettable
 {
 	friend class objectpool_iterator<T>;
+
+	constexpr static int MAXIMUM = M;
 
 public:
 	objectpool()
 		: num(0)
 		, head(NULL)
 		, tail(NULL)
-		, storage(new objectpool_node<T>[MAXIMUM])
+#ifndef NDEBUG
+		, highest(0)
+#endif
 	{
 		all_pools.push_back(this);
 	}
 
-	~objectpool()
+	virtual ~objectpool() override
 	{
 		reset();
+
+#ifndef NDEBUG
+		fprintf(stderr, "%s reached %d%% occupancy (%d/%d)\n", typeid(decltype(this)).name(), int(((float)highest / MAXIMUM) * 100), highest, MAXIMUM);
+#endif
 	}
 
 	template <typename... Ts> T &create(Ts&&... args)
@@ -155,12 +164,12 @@ public:
 	void destroy(const T &obj)
 	{
 #ifndef NDEBUG
-		if((objectpool_node<T>*)&obj < storage.get() || (objectpool_node<T>*)&obj > storage.get() + (MAXIMUM - 1))
+		if((objectpool_node<T>*)&obj < storage || (objectpool_node<T>*)&obj > storage + (MAXIMUM - 1))
 			win::bug("cannot destroy object because it is out of range");
 #endif
 		// figure out what index <obj> is
 		const objectpool_node<T> *const node = (objectpool_node<T>*)&obj;
-		const unsigned long long index = node - storage.get();
+		const unsigned long long index = node - storage;
 		freelist.push_back(index);
 
 		storage[index].destruct();
@@ -177,11 +186,6 @@ public:
 
 		if(--num == 0)
 			freelist.clear();
-	}
-
-	int count() const
-	{
-		return num;
 	}
 
 	objectpool_iterator<T> begin()
@@ -204,8 +208,15 @@ public:
 		return objectpool_const_iterator<T>(NULL);
 	}
 
+	int count() const
+	{
+		return num;
+	}
+
 	virtual void reset() override
 	{
+		num = 0;
+
 		for(T &t : *this)
 		{
 			destroy(t);
@@ -223,19 +234,25 @@ private:
 			abort();
 		}
 
-		return new (storage.get() + num) objectpool_node<T>(true, std::forward<Ts>(args)...);
+#ifndef NDEBUG
+		if(num + 1 > highest)
+			highest = num + 1;
+#endif
+
+		return new (storage + num) objectpool_node<T>(true, std::forward<Ts>(args)...);
 	}
 
 	template <typename... Ts> objectpool_node<T> *replace(const int index, Ts&&... args)
 	{
-		return new (storage.get() + index) objectpool_node<T>(true, std::forward<Ts>(args)...);
+		return new (storage + index) objectpool_node<T>(true, std::forward<Ts>(args)...);
 	}
 
 	int num; // number of live objects in the pool
 	objectpool_node<T> *head;
 	objectpool_node<T> *tail;
-	std::unique_ptr<objectpool_node<T>[]> storage;
+	objectpool_node<T> storage[MAXIMUM];
 	std::vector<int> freelist;
+	int highest;
 };
 
 #endif

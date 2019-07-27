@@ -75,11 +75,18 @@ namespace ent
 					continue;
 
 				if(components[i]->type == T::component_type)
+				{
+#ifndef NDEBUG
+					ent::entity::safety_check(components[i]);
+#endif
 					return i;
+				}
 			}
 
 			return -1;
 		}
+
+		static void safety_check(const void*);
 	};
 }
 

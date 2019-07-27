@@ -20,19 +20,19 @@ void game::renderer::frame(const game::world &world)
 	const comp::physical &player = (*world.objectdb.player.begin()).parent.component<comp::physical>();
 	quad.set_center(player.x, player.y);
 
-	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_laserguns)
+	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_lasergun)
 		quad.add(renderable);
 
-	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_waffles)
+	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_waffle)
 		quad.add(renderable);
 
-	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_toasters)
+	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_toaster)
 		quad.add(renderable);
 
-	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_players)
+	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_player)
 		quad.add(renderable);
 
-	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_lasers)
+	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_laser)
 		quad.add(renderable);
 
 	glBindTexture(GL_TEXTURE_2D, world.asset.atlas.texture());

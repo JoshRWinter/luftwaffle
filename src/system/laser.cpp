@@ -2,7 +2,7 @@
 
 void sys::laser(game::world &world)
 {
-	for(comp::laser &laser : world.objectdb.lasers)
+	for(comp::laser &laser : world.objectdb.laser)
 	{
 		ent::entity &entity = laser.parent;
 		comp::physical &physical = entity.component<comp::physical>();
