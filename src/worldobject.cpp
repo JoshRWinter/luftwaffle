@@ -20,20 +20,8 @@ void game::new_player(game::world &world)
 	entity.attach(renderable);
 	entity.attach(player);
 
-	// child lasergun
-	ent::entity &lg_entity = world.objectdb.entity.create();
-
-	comp::physical &lg_physical = world.objectdb.physical.create(lg_entity, 0.0f, 0.0f, 0.8f, 0.8f, physical.rot);
-	comp::atlas_renderable &lg_renderable = world.objectdb.atlas_renderable_lasergun.create(lg_entity, world.asset.atlas.coords(game::asset::aid::LASERGUN));
-	comp::lasergun &lg_lasergun = world.objectdb.lasergun.create(lg_entity, physical, 10);
-
-	lg_lasergun.guns[0].distance = 0.4f;
-
-	lg_entity.attach(lg_physical);
-	lg_entity.attach(lg_renderable);
-	lg_entity.attach(lg_lasergun);
-
-	player.childgun = &lg_entity;
+	ent::entity &childgun = game::new_lasergun(world, game::lasergun_type::PLAYER, physical);
+	player.childgun = &childgun;
 }
 
 /////////////////////////
@@ -74,29 +62,22 @@ void game::new_waffle(game::world &world, const comp::physical &toaster)
 	comp::physical &physical = world.objectdb.physical.create(entity, x, y, game::WAFFLE_WIDTH, game::WAFFLE_HEIGHT, toaster.rot);
 	comp::atlas_renderable &renderable = world.objectdb.atlas_renderable_waffle.create(entity, world.asset.atlas.coords(game::asset::aid::WAFFLE1));
 	comp::wander &wander = world.objectdb.wander.create(entity, physical.x, physical.y, toaster.rot);
-	comp::waffle &childgun = world.objectdb.waffle.create(entity);
+	comp::waffle &waffle = world.objectdb.waffle.create(entity);
 
 	entity.attach(physical);
 	entity.attach(renderable);
 	entity.attach(wander);
-	entity.attach(childgun);
+	entity.attach(waffle);
 
 	// the laser gun child entity
-	ent::entity &lasergun_entity = world.objectdb.entity.create();
-
-	comp::lasergun &lasergun = world.objectdb.lasergun.create(lasergun_entity, physical, 30);
-	comp::physical &lasergun_physical = world.objectdb.physical.create(lasergun_entity, 0.0f, 0.0f, game::WAFFLE_WIDTH * 1.2f, game::WAFFLE_HEIGHT * 1.2f, 0.0f);
-	comp::atlas_renderable &lasergun_renderable = world.objectdb.atlas_renderable_lasergun.create(lasergun_entity, world.asset.atlas.coords(game::asset::aid::LASERGUN));
-
-	lasergun_entity.attach(lasergun_physical);
-	lasergun_entity.attach(lasergun_renderable);
-	lasergun_entity.attach(lasergun);
-
-	childgun.childgun = &lasergun_entity;
+	ent::entity &childgun = game::new_lasergun(world, game::lasergun_type::WAFFLE, physical);
+	waffle.childgun = &childgun;
 }
 
 void game::delete_waffle(game::world &world, ent::entity &entity)
 {
+	game::delete_lasergun(world, *entity.component<comp::waffle>().childgun);
+
 	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
 	world.objectdb.atlas_renderable_player.destroy(entity.take_component<comp::atlas_renderable>());
 	world.objectdb.wander.destroy(entity.take_component<comp::wander>());
@@ -113,6 +94,56 @@ void game::delete_waffle(game::world &world, ent::entity &entity)
 
 	child.cleanup_check();
 	world.objectdb.entity.destroy(child);
+}
+
+
+/////////////////////////
+// laser guns
+/////////////////////////
+ent::entity &game::new_lasergun(game::world &world, const game::lasergun_type type, const comp::physical &parent_physical)
+{
+	int maxcooldown;
+	float width;
+	float height;
+	int texture;
+
+	switch(type)
+	{
+		case game::lasergun_type::WAFFLE:
+			maxcooldown = LASERGUN_WAFFLE_MAX_COOLDOWN;
+			width = LASERGUN_WAFFLE_WIDTH;
+			height = LASERGUN_WAFFLE_HEIGHT;
+			texture = game::asset::aid::LASERGUN_WAFFLE;
+			break;
+		case game::lasergun_type::PLAYER:
+			maxcooldown = LASERGUN_PLAYER_MAX_COOLDOWN;
+			width = LASERGUN_PLAYER_WIDTH;
+			height = LASERGUN_PLAYER_HEIGHT;
+			texture = game::asset::aid::LASERGUN_WAFFLE;
+			break;
+	}
+
+	ent::entity &entity = world.objectdb.entity.create();
+
+	comp::physical &physical = world.objectdb.physical.create(entity, 0.0f, 0.0f, width, height, 0.0f);
+	comp::lasergun &lasergun = world.objectdb.lasergun.create(entity, parent_physical, maxcooldown);
+	comp::atlas_renderable &renderable = world.objectdb.atlas_renderable_lasergun.create(entity, world.asset.atlas.coords(texture));
+
+	entity.attach(physical);
+	entity.attach(lasergun);
+	entity.attach(renderable);
+
+	return entity;
+}
+
+void game::delete_lasergun(game::world &world, ent::entity &entity)
+{
+	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
+	world.objectdb.lasergun.destroy(entity.take_component<comp::lasergun>());
+	world.objectdb.atlas_renderable_lasergun.destroy(entity.take_component<comp::atlas_renderable>());
+
+	entity.cleanup_check();
+	world.objectdb.entity.destroy(entity);
 }
 
 /////////////////////////

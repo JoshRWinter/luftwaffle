@@ -150,7 +150,7 @@ namespace comp
 
 		constexpr static int MAX_GUNS = 2;
 
-		lasergun(ent::entity &parent, comp::physical &parent_phys, int max_cooldown)
+		lasergun(ent::entity &parent, const comp::physical &parent_phys, int max_cooldown)
 			: component(component_type, parent)
 			, firing(false)
 			, max_timer_cooldown(max_cooldown)
