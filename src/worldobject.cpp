@@ -161,11 +161,14 @@ void game::new_laser(game::world &world, comp::physical &gun_physical, comp::las
 
 	comp::physical &physical = world.objectdb.physical.create(entity, x, y, LASER_WIDTH, LASER_HEIGHT, gun_physical.rot);
 	comp::atlas_renderable &renderable = world.objectdb.atlas_renderable_laser.create(entity, world.asset.atlas.coords(game::asset::aid::LASER));
+	comp::glow_renderable &glow_renderable = world.objectdb.glow_renderable.create(entity, win::color(255, 50, 50), 0.65f, 1.2f);
 	comp::laser &laser = world.objectdb.laser.create(entity, physical.rot, 0.1f, 100);
 
 	entity.attach(physical);
 	entity.attach(renderable);
 	entity.attach(laser);
+	entity.attach(glow_renderable);
+
 }
 
 void game::delete_laser(game::world &world, ent::entity &entity)
@@ -173,6 +176,7 @@ void game::delete_laser(game::world &world, ent::entity &entity)
 	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
 	world.objectdb.atlas_renderable_laser.destroy(entity.take_component<comp::atlas_renderable>());
 	world.objectdb.laser.destroy(entity.take_component<comp::laser>());
+	world.objectdb.glow_renderable.destroy(entity.take_component<comp::glow_renderable>());
 
 	entity.cleanup_check();
 	world.objectdb.entity.destroy(entity);

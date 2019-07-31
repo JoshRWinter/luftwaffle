@@ -4,6 +4,8 @@ asset/texture/player.tga:z
 # shader sources
 src/render/quad.vert:z
 src/render/quad.frag:z
+src/render/glow.vert:z
+src/render/glow.frag:z
 
 # atlases
 asset/common.atlas:z

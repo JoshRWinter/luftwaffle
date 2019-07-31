@@ -5,6 +5,7 @@
 game::renderer::renderer(win::display &display, win::roll &roll)
 	: screen(-8.0f, 8.0f, -4.5f, 4.5f)
 	, quad(roll, screen)
+	, glow(display, roll, screen)
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -19,6 +20,7 @@ void game::renderer::frame(const game::world &world)
 	// everything is centered around the player
 	const comp::physical &player = (*world.objectdb.player.begin()).parent.component<comp::physical>();
 	quad.set_center(player.x, player.y);
+	glow.set_center(player.x, player.y);
 
 	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_lasergun)
 		quad.add(renderable);
@@ -37,6 +39,11 @@ void game::renderer::frame(const game::world &world)
 
 	glBindTexture(GL_TEXTURE_2D, world.asset.atlas.texture());
 	quad.send();
+
+	for(const comp::glow_renderable &renderable : world.objectdb.glow_renderable)
+		glow.add(renderable);
+
+	glow.send();
 
 	drawfps();
 }

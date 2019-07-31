@@ -35,6 +35,7 @@ add_executable(luftwaffle
 	src/render/renderer.cpp
 	src/render/renderer.hpp
 	src/render/quad.cpp
+	src/render/glow.cpp
 )
 
 # all the binary assets under /assets

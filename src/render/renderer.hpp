@@ -5,6 +5,43 @@
 
 namespace game
 {
+	class glow
+	{
+	public:
+		glow(win::display &display, win::roll&, const win::area&);
+
+		void set_center(float, float);
+		void add(const comp::glow_renderable&);
+		void send();
+
+	private:
+		win::program program;
+		win::vao vao;
+		win::ebo ebo;
+
+		win::point center;
+
+		struct
+		{
+			win::vbo triangle;
+			win::vbo position_radius;
+			win::vbo color_brightness;
+		} vbo;
+
+		struct
+		{
+			std::vector<float> position_radius;
+			std::vector<unsigned char> color_brightness;
+		} buffer;
+
+		struct
+		{
+			int projection;
+			int framebuffer_dims;
+			int screen_dims;
+		} uniform;
+	};
+
 	class quad
 	{
 	public:
@@ -53,6 +90,7 @@ namespace game
 
 		// render passes
 		game::quad quad;
+		game::glow glow;
 
 		// fonts
 		struct

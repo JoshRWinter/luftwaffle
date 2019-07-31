@@ -14,6 +14,7 @@ namespace comp
 	{
 		PHYSICAL,
 		ATLAS_RENDERABLE,
+		GLOW_RENDERABLE,
 		PLAYER,
 		WAFFLE,
 		TOASTER,
@@ -67,6 +68,22 @@ namespace comp
 		{}
 
 		const unsigned short *texcoords;
+	};
+
+	struct glow_renderable : comp::component
+	{
+		constexpr static comp::type component_type = type::GLOW_RENDERABLE;
+
+		glow_renderable(ent::entity &parent, const win::color c, float bright, float rad)
+			: comp::component(comp::type::GLOW_RENDERABLE, parent)
+			, color(c)
+			, brightness(bright * 255.0f)
+			, radius(rad)
+		{}
+
+		win::color color;
+		int brightness;
+		float radius;
 	};
 
 	struct player : comp::component

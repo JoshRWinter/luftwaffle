@@ -25,6 +25,7 @@ namespace game
 		objectpool<comp::wander, 30> attack;
 		objectpool<comp::lasergun, 30> lasergun;
 		objectpool<comp::laser, 100> laser;
+		objectpool<comp::glow_renderable, 25> glow_renderable;
 
 		// atlas-renderable components are partitioned by world object type
 		objectpool<comp::atlas_renderable, 1> atlas_renderable_player;
