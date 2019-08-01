@@ -80,10 +80,17 @@ void game::delete_waffle(game::world &world, ent::entity &entity)
 
 	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
 	world.objectdb.atlas_renderable_player.destroy(entity.take_component<comp::atlas_renderable>());
-	world.objectdb.wander.destroy(entity.take_component<comp::wander>());
 	comp::waffle &waffle = entity.take_component<comp::waffle>();
 	ent::entity &child = *waffle.childgun;
 	world.objectdb.waffle.destroy(waffle);
+
+	comp::wander *wander = entity.try_take_component<comp::wander>();
+	if(wander)
+		world.objectdb.wander.destroy(*wander);
+
+	comp::attack *attack = entity.try_take_component<comp::attack>();
+	if(attack)
+		world.objectdb.attack.destroy(*attack);
 
 	entity.cleanup_check();
 

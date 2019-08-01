@@ -202,6 +202,7 @@ const char *key_name(button);
 
 // random useful utilities
 float distance(float, float, float, float);
+float align(float, float, float);
 float zerof(float, float);
 
 }

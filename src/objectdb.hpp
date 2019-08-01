@@ -22,7 +22,7 @@ namespace game
 		objectpool<comp::toaster, 1> toaster;
 		objectpool<comp::waffle, 30> waffle;
 		objectpool<comp::wander, 30> wander;
-		objectpool<comp::wander, 30> attack;
+		objectpool<comp::attack, 30> attack;
 		objectpool<comp::lasergun, 30> lasergun;
 		objectpool<comp::laser, 100> laser;
 		objectpool<comp::glow_renderable, 25> glow_renderable;

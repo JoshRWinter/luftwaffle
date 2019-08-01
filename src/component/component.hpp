@@ -156,9 +156,26 @@ namespace comp
 	{
 		constexpr static comp::type component_type = comp::type::ATTACK;
 
-		attack(ent::entity &parent)
+		struct point { float x, y, rot; };
+
+		attack(ent::entity &parent, comp::physical &spawn)
 			: component(component_type, parent)
-		{}
+			, travel_angle(0.0f)
+			, targetx(0.0f)
+			, targety(0.0f)
+			, timer(0)
+			, firing(false)
+		{
+			spawn_point.x = spawn.x + (spawn.w / 2.0f);
+			spawn_point.y = spawn.y + (spawn.h / 2.0f);
+			spawn_point.rot = spawn.rot;
+		}
+
+		point spawn_point;
+		float travel_angle;
+		float targetx, targety;
+		int timer;
+		bool firing;
 	};
 
 	struct lasergun : comp::component

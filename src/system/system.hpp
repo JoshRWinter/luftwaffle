@@ -9,6 +9,7 @@ namespace sys
 	void attack(game::world&);
 	void lasergun(game::world&);
 	void laser(game::world&);
+	void waffle(game::world&);
 }
 
 #endif

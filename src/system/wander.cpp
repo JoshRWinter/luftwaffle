@@ -37,7 +37,7 @@ void popout(comp::physical &physical, comp::wander &wander)
 void walkabout(comp::physical &physical, comp::wander &wander)
 {
 	const float angle = atan2f(wander.targety - (physical.y + game::WAFFLE_HEIGHT / 2.0f), wander.targetx - (physical.x + (game::WAFFLE_WIDTH / 2.0f)));
-	physical.align(angle, 0.035);
+	physical.align(angle, 0.035f);
 
 
 	if(wander.timer-- < 0)
