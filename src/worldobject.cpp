@@ -86,14 +86,8 @@ void game::delete_waffle(game::world &world, ent::entity &entity)
 	world.objectdb.waffle.destroy(waffle);
 
 	entity.cleanup_check();
-	world.objectdb.entity.destroy(entity);
 
-	world.objectdb.physical.destroy(child.take_component<comp::physical>());
-	world.objectdb.atlas_renderable_lasergun.destroy(child.take_component<comp::atlas_renderable>());
-	world.objectdb.lasergun.destroy(child.take_component<comp::lasergun>());
-
-	child.cleanup_check();
-	world.objectdb.entity.destroy(child);
+	game::delete_lasergun(world, child);
 }
 
 
