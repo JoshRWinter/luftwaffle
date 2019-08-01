@@ -27,7 +27,7 @@ namespace game
 
 	constexpr float LASERGUN_PLAYER_WIDTH = 0.8f;
 	constexpr float LASERGUN_PLAYER_HEIGHT = 0.8f;
-	constexpr int LASERGUN_PLAYER_MAX_COOLDOWN = 10;
+	constexpr int LASERGUN_PLAYER_MAX_COOLDOWN = 5;
 
 	enum class lasergun_type
 	{
@@ -39,8 +39,8 @@ namespace game
 	void delete_lasergun(game::world&, ent::entity&);
 
 	// lasers
-	constexpr float LASER_WIDTH = 0.5f;
-	constexpr float LASER_HEIGHT = 0.2f;
+	constexpr float LASER_WIDTH = 0.4f;
+	constexpr float LASER_HEIGHT = 0.1f;
 	void new_laser(game::world&, comp::physical&, comp::lasergun&, int);
 	void delete_laser(game::world&, ent::entity&);
 }

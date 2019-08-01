@@ -162,7 +162,7 @@ void game::new_laser(game::world &world, comp::physical &gun_physical, comp::las
 	comp::physical &physical = world.objectdb.physical.create(entity, x, y, LASER_WIDTH, LASER_HEIGHT, gun_physical.rot);
 	comp::atlas_renderable &renderable = world.objectdb.atlas_renderable_laser.create(entity, world.asset.atlas.coords(game::asset::aid::LASER));
 	comp::glow_renderable &glow_renderable = world.objectdb.glow_renderable.create(entity, win::color(255, 50, 50), 0.65f, 1.2f);
-	comp::laser &laser = world.objectdb.laser.create(entity, physical.rot, 0.1f, 100);
+	comp::laser &laser = world.objectdb.laser.create(entity, physical.rot, 0.25f, 100);
 
 	entity.attach(physical);
 	entity.attach(renderable);
