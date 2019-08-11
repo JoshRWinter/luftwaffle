@@ -2,27 +2,18 @@
 #define OBJECT_POOL_HPP
 
 #include <vector>
+#include <memory>
 
-struct resettable
+#include <string.h>
+
+namespace pool
 {
-	virtual void reset() = 0;
-	virtual ~resettable() = 0;
-};
-inline resettable::~resettable() {}
 
-inline std::vector<resettable*> all_pools;
-
-inline void reset_all_pools()
+template <typename T> struct storage_node
 {
-	for(resettable *pool : all_pools)
-		pool->reset();
-}
+	storage_node() = default;
 
-template <typename T> struct objectpool_node
-{
-	objectpool_node() = default;
-
-	template <typename... Ts> objectpool_node(bool, Ts&&... args)
+	template <typename... Ts> storage_node(bool, Ts&&... args)
 	{
 		new (object_raw) T(std::forward<Ts>(args)...);
 	}
@@ -33,20 +24,25 @@ template <typename T> struct objectpool_node
 	}
 
 	unsigned char object_raw[sizeof(T)];
-	objectpool_node<T> *next;
-	objectpool_node<T> *prev;
+	storage_node<T> *next;
+	storage_node<T> *prev;
 };
 
-template <typename T> class objectpool_iterator
+template <typename T> class storage_iterator
 {
 public:
-	objectpool_iterator(objectpool_node<T> *h)
-		: node(h)
+	storage_iterator(storage_node<T> *head)
+		: node(head)
 	{}
 
 	T &operator*()
 	{
-		return *((T*)node->object_raw);
+		return *(T*)node->object_raw;
+	}
+
+	T *operator->()
+	{
+		return (T*)node->object_raw;
 	}
 
 	void operator++()
@@ -54,30 +50,35 @@ public:
 		node = node->next;
 	}
 
-	bool operator==(const objectpool_iterator<T> &other) const
+	bool operator==(const storage_iterator<T> &other) const
 	{
 		return node == other.node;
 	}
 
-	bool operator!=(const objectpool_iterator<T> &other) const
+	bool operator!=(const storage_iterator<T> &other) const
 	{
 		return node != other.node;
 	}
 
 private:
-	objectpool_node<T> *node;
+	storage_node<T> *node;
 };
 
-template <typename T> class objectpool_const_iterator
+template <typename T> class storage_const_iterator
 {
 public:
-	objectpool_const_iterator(const objectpool_node<T> *h)
-		: node(h)
+	storage_const_iterator(storage_node<T> *head)
+		: node(head)
 	{}
 
 	const T &operator*() const
 	{
-		return *((T*)node->object_raw);
+		return *(T*)node->object_raw;
+	}
+
+	const T *operator->() const
+	{
+		return (T*)node->object_raw;
 	}
 
 	void operator++()
@@ -85,50 +86,80 @@ public:
 		node = node->next;
 	}
 
-	bool operator==(const objectpool_const_iterator<T> &other) const
+	bool operator==(const storage_const_iterator<T> &other) const
 	{
 		return node == other.node;
 	}
 
-	bool operator!=(const objectpool_const_iterator<T> &other) const
+	bool operator!=(const storage_const_iterator<T> &other) const
 	{
 		return node != other.node;
 	}
 
 private:
-	const objectpool_node<T> *node;
+	const storage_node<T> *node;
 };
 
-template <typename T, int M> class objectpool : resettable
+template <typename T, int capacity_override> struct storage_fragment
 {
-	friend class objectpool_iterator<T>;
+	storage_fragment(const storage_fragment&) = delete;
+	storage_fragment(storage_fragment&&) = delete;
+	void operator=(const storage_fragment&) = delete;
+	void operator=(storage_fragment&&) = delete;
 
-	constexpr static int MAXIMUM = M;
+	template <size_t element_size, int desired> static constexpr size_t calculate_capacity()
+	{
+		if constexpr(desired != -1)
+			return desired;
+
+		return 4'000 / element_size;
+	}
+
+	static constexpr size_t capacity = calculate_capacity<sizeof(T), capacity_override>();
+
+	storage_fragment()
+	{
+		memset(store, 0, sizeof(store));
+	}
+
+	T store[capacity];
+	std::unique_ptr<storage_fragment<T, capacity_override>> next;
+};
+
+struct storage_base
+{
+	virtual void reset() = 0;
+	virtual ~storage_base() = 0;
+
+	inline static std::vector<storage_base*> all;
+
+	static void reset_all() { for(storage_base *store : all) store->reset(); }
+};
+
+inline storage_base::~storage_base() {}
+
+template <typename T, int desired = -1> class storage : storage_base
+{
+	friend class storage_iterator<T>;
 
 public:
-	objectpool()
+	storage()
 		: num(0)
 		, head(NULL)
 		, tail(NULL)
-#ifndef NDEBUG
-		, highest(0)
-#endif
+		, store(new storage_fragment<storage_node<T>, desired>())
 	{
-		all_pools.push_back(this);
+		all.push_back(this);
 	}
 
-	virtual ~objectpool() override
+	virtual ~storage() override
 	{
 		reset();
-
-#ifndef NDEBUG
-		fprintf(stderr, "%s reached %d%% occupancy (%d/%d)\n", typeid(decltype(this)).name(), int(((float)highest / MAXIMUM) * 100), highest, MAXIMUM);
-#endif
 	}
 
 	template <typename... Ts> T &create(Ts&&... args)
 	{
-		objectpool_node<T> *node;
+		storage_node<T> *node;
 
 		if(freelist.empty())
 		{
@@ -136,43 +167,35 @@ public:
 		}
 		else
 		{
-			const int index = freelist.back();
+			node = freelist.back();
 			freelist.erase(freelist.end() - 1);
+			node_check(node);
 
-			node = replace(index, std::forward<Ts>(args)...);
+			replace(node, std::forward<Ts>(args)...);
 		}
 
 		node->prev = tail;
 		node->next = NULL;
 
 		if(tail != NULL)
-		{
 			tail->next = node;
-			tail = node;
-		}
 		else
-		{
-			// list is empty
-			head = node;
-			tail = node;
-		}
+			head = node; // list is empty
+
+		tail = node;
 
 		++num;
-		return *((T*)node->object_raw);
+		return *(T*)node->object_raw;
 	}
 
-	void destroy(const T &obj)
+	void destroy(T &obj)
 	{
-#ifndef NDEBUG
-		if((objectpool_node<T>*)&obj < storage || (objectpool_node<T>*)&obj > storage + (MAXIMUM - 1))
-			win::bug("cannot destroy object because it is out of range");
-#endif
-		// figure out what index <obj> is
-		const objectpool_node<T> *const node = (objectpool_node<T>*)&obj;
-		const unsigned long long index = node - storage;
-		freelist.push_back(index);
+		storage_node<T> *node = (storage_node<T>*)&obj;
 
-		storage[index].destruct();
+		node_check(node);
+
+		freelist.push_back(node);
+		node->destruct();
 
 		if(node->prev == NULL)
 			head = node->next;
@@ -186,26 +209,6 @@ public:
 
 		if(--num == 0)
 			freelist.clear();
-	}
-
-	objectpool_iterator<T> begin()
-	{
-		return objectpool_iterator<T>(head);
-	}
-
-	objectpool_iterator<T> end()
-	{
-		return objectpool_iterator<T>(NULL);
-	}
-
-	objectpool_const_iterator<T> begin() const
-	{
-		return objectpool_const_iterator<T>(head);
-	}
-
-	objectpool_const_iterator<T> end() const
-	{
-		return objectpool_const_iterator<T>(NULL);
 	}
 
 	int count() const
@@ -225,34 +228,83 @@ public:
 		freelist.clear();
 	}
 
-private:
-	template <typename... Ts> objectpool_node<T> *append(Ts&&... args)
+	storage_iterator<T> begin()
 	{
-		if(num >= MAXIMUM)
-		{
-			fprintf(stderr, "objectpool (%s): maximum occupancy (%d) exceeded\n", typeid(T).name(), MAXIMUM);
-			abort();
-		}
-
-#ifndef NDEBUG
-		if(num + 1 > highest)
-			highest = num + 1;
-#endif
-
-		return new (storage + num) objectpool_node<T>(true, std::forward<Ts>(args)...);
+		return storage_iterator<T>(head);
 	}
 
-	template <typename... Ts> objectpool_node<T> *replace(const int index, Ts&&... args)
+	storage_iterator<T> end()
 	{
-		return new (storage + index) objectpool_node<T>(true, std::forward<Ts>(args)...);
+		return storage_iterator<T>(NULL);
+	}
+
+	storage_const_iterator<T> begin() const
+	{
+		return storage_const_iterator<T>(head);
+	}
+
+	storage_const_iterator<T> end() const
+	{
+		return storage_const_iterator<T>(NULL);
+	}
+
+private:
+	template <typename... Ts> storage_node<T> *append(Ts&&... args)
+	{
+		// find somewhere to put it
+		int occupied = num;
+
+		storage_fragment<storage_node<T>, desired> *current = store.get();
+		while(occupied >= pool::storage_fragment<storage_node<T>, desired>::capacity)
+		{
+			occupied -= pool::storage_fragment<storage_node<T>, desired>::capacity;
+			storage_fragment<storage_node<T>, desired> *next = current->next.get();
+			if(next == NULL)
+			{
+				current->next.reset(new storage_fragment<storage_node<T>, desired>());
+				next = current->next.get();
+			}
+
+			current = next;
+		}
+
+		storage_node<T> *const spot = current->store + occupied;
+
+		node_check(spot);
+
+		new (spot) storage_node<T>(true, std::forward<Ts>(args)...);
+		return spot;
+	}
+
+	template <typename... Ts> void replace(storage_node<T> *const spot, Ts&&... args)
+	{
+		new (spot) storage_node<T>(true, std::forward<Ts>(args)...);
+	}
+
+	void node_check(const storage_node<T> *node) const
+	{
+#ifndef NDEBUG
+		storage_fragment<storage_node<T>, desired> *current = store.get();
+		do
+		{
+			const int index = node - current->store;
+			if(index >= 0 && index < storage_fragment<storage_node<T>, desired>::capacity)
+				return;
+
+			current = current->next.get();
+		} while(current != NULL);
+
+		win::bug("node of type " + std::string(typeid(T).name()) + " not in pool");
+#endif
 	}
 
 	int num; // number of live objects in the pool
-	objectpool_node<T> *head;
-	objectpool_node<T> *tail;
-	objectpool_node<T> storage[MAXIMUM];
-	std::vector<int> freelist;
-	int highest;
+	storage_node<T> *head;
+	storage_node<T> *tail;
+	std::unique_ptr<storage_fragment<storage_node<T>, desired>> store;
+	std::vector<storage_node<T>*> freelist;
 };
+
+}
 
 #endif

@@ -34,9 +34,13 @@ void game::new_toaster(game::world &world)
 
 	ent::entity &entity = world.objectdb.entity.create();
 
-	entity.attach(world.objectdb.physical.create(entity, 5.0f, 0.0f, TOASTER_WIDTH, TOASTER_HEIGHT, (M_PI / 2.0f) * mersenne(0, 3)));
-	entity.attach(world.objectdb.atlas_renderable_toaster.create(entity, world.asset.atlas.coords(game::asset::aid::TOASTER)));
-	entity.attach(world.objectdb.toaster.create(entity));
+	comp::physical &physical = world.objectdb.physical.create(entity, 5.0f, 0.0f, TOASTER_WIDTH, TOASTER_HEIGHT, (M_PI / 2.0f) * mersenne(0, 3));
+	comp::atlas_renderable &renderable = world.objectdb.atlas_renderable_toaster.create(entity, world.asset.atlas.coords(game::asset::aid::TOASTER));
+	comp::toaster &toaster = world.objectdb.toaster.create(entity);
+
+	entity.attach(physical);
+	entity.attach(renderable);
+	entity.attach(toaster);
 }
 
 void game::delete_toaster(game::world &world, ent::entity &entity)
@@ -52,7 +56,7 @@ void game::delete_toaster(game::world &world, ent::entity &entity)
 /////////////////////////
 // waffles
 /////////////////////////
-void game::new_waffle(game::world &world, const comp::physical &toaster)
+void game::new_waffle(game::world &world, comp::physical &toaster)
 {
 	ent::entity &entity = world.objectdb.entity.create();
 
@@ -76,8 +80,6 @@ void game::new_waffle(game::world &world, const comp::physical &toaster)
 
 void game::delete_waffle(game::world &world, ent::entity &entity)
 {
-	game::delete_lasergun(world, *entity.component<comp::waffle>().childgun);
-
 	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
 	world.objectdb.atlas_renderable_player.destroy(entity.take_component<comp::atlas_renderable>());
 	comp::waffle &waffle = entity.take_component<comp::waffle>();
@@ -85,14 +87,15 @@ void game::delete_waffle(game::world &world, ent::entity &entity)
 	world.objectdb.waffle.destroy(waffle);
 
 	comp::wander *wander = entity.try_take_component<comp::wander>();
-	if(wander)
+	if(wander != NULL)
 		world.objectdb.wander.destroy(*wander);
 
 	comp::attack *attack = entity.try_take_component<comp::attack>();
-	if(attack)
+	if(attack != NULL)
 		world.objectdb.attack.destroy(*attack);
 
 	entity.cleanup_check();
+	world.objectdb.entity.destroy(entity);
 
 	game::delete_lasergun(world, child);
 }
@@ -150,7 +153,7 @@ void game::delete_lasergun(game::world &world, ent::entity &entity)
 /////////////////////////
 // lasers
 /////////////////////////
-void game::new_laser(game::world &world, comp::physical &gun_physical, comp::lasergun &gun, int slot)
+void game::new_laser(game::world &world, const comp::physical &gun_physical, const comp::lasergun &gun, int slot)
 {
 	ent::entity &entity = world.objectdb.entity.create();
 
@@ -169,7 +172,6 @@ void game::new_laser(game::world &world, comp::physical &gun_physical, comp::las
 	entity.attach(renderable);
 	entity.attach(laser);
 	entity.attach(glow_renderable);
-
 }
 
 void game::delete_laser(game::world &world, ent::entity &entity)

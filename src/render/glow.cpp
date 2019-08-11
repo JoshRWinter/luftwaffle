@@ -67,7 +67,7 @@ void game::glow::set_center(float x, float y)
 
 void game::glow::add(const comp::glow_renderable &renderable)
 {
-	const comp::physical &physical = renderable.parent.component<comp::physical>();
+	const comp::physical &physical = renderable.entity.component<comp::physical>();
 
 	buffer.position_radius.push_back(physical.x + (physical.w / 2.0f) - (center.x + (game::PLAYER_WIDTH / 2.0f)));
 	buffer.position_radius.push_back(physical.y + (physical.h / 2.0f) - (center.y + (game::PLAYER_HEIGHT / 2.0f)));

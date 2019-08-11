@@ -18,7 +18,9 @@ game::renderer::renderer(win::display &display, win::roll &roll)
 void game::renderer::frame(const game::world &world)
 {
 	// everything is centered around the player
-	const comp::physical &player = (*world.objectdb.player.begin()).parent.component<comp::physical>();
+	const ent::entity &player_entity = (*world.objectdb.player.begin()).entity;
+	const comp::physical &player = player_entity.component<comp::physical>();
+
 	quad.set_center(player.x, player.y);
 	glow.set_center(player.x, player.y);
 

@@ -6,8 +6,8 @@ void sys::player(game::world &world)
 		game::new_player(world);
 
 	comp::player &player = *world.objectdb.player.begin();
-	ent::entity &entity = player.parent;
-	comp::physical &physical = entity.component<comp::physical>();
+
+	comp::physical &physical = player.entity.component<comp::physical>();
 	comp::lasergun &gun = player.childgun->component<comp::lasergun>();
 
 	// handle firing the guns

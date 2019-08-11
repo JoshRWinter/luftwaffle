@@ -4,8 +4,10 @@ void sys::attack(game::world &world)
 {
 	for(comp::attack &attack : world.objectdb.attack)
 	{
-		comp::physical &physical = attack.parent.component<comp::physical>();
-		comp::physical &player_physical = (*world.objectdb.player.begin()).parent.component<comp::physical>();
+		comp::physical &physical = attack.entity.component<comp::physical>();
+
+		ent::entity &player_entity = (*world.objectdb.player.begin()).entity;
+		comp::physical &player_physical = player_entity.component<comp::physical>();
 
 		if(!attack.firing && mersenne(120))
 			attack.firing = true;

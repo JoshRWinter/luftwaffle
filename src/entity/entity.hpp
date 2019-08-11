@@ -5,6 +5,12 @@
 
 namespace ent
 {
+	struct component_store
+	{
+		comp::type type;
+		comp::component *component;
+	};
+
 	constexpr int MAX_COMPONENTS = 4;
 	struct entity
 	{
@@ -15,78 +21,52 @@ namespace ent
 		void operator=(const entity&) = delete;
 		void operator=(entity&&) = delete;
 
-		comp::component *components[MAX_COMPONENTS];
-
-		template<typename T> T &component()
+		template <typename T> T &component() const
 		{
-			const int index = get_component_index<T>();
-
-			if(index != -1)
-				return *(T*)components[index];
+			for(int i = 0; i < MAX_COMPONENTS; ++i)
+				if(components[i].type == T::component_type)
+					return *(T*)components[i].component;
 
 			win::bug("no component " + std::string(typeid(T).name()) + " on this ent");
 		}
 
-		template<typename T> T *try_component()
+		template <typename T> T *try_component() const
 		{
-			const int index = get_component_index<T>();
-
-			return index != -1 ? (T*)components[index] : NULL;
-		}
-
-		template<typename T> T &take_component()
-		{
-			const int index = get_component_index<T>();;
-
-			if(index != -1)
-			{
-				comp::component *tmp = components[index];
-				components[index] = NULL;
-				return *(T*)tmp;
-			}
-
-			win::bug("no component " + std::string(typeid(T).name()) + " on this ent");
-		}
-
-		template<typename T> T *try_take_component()
-		{
-			const int index = get_component_index<T>();
-
-			if(index != -1)
-			{
-				comp::component *tmp = components[index];
-				components[index] = NULL;
-				return (T*)tmp;
-			}
+			for(int i = 0; i < MAX_COMPONENTS; ++i)
+				if(components[i].type == T::component_type)
+					return (T*)components[i].component;
 
 			return NULL;
 		}
 
-		void cleanup_check(); // only called in debug mode
-		void attach(comp::component&);
-		comp::component &detach(comp::type);
-
-	private:
-		template<typename T> int get_component_index()
+		template <typename T> T &take_component()
 		{
-			for(int i = 0; i < ent::MAX_COMPONENTS; ++i)
-			{
-				if(components[i] == NULL)
-					continue;
-
-				if(components[i]->type == T::component_type)
+			for(int i = 0; i < MAX_COMPONENTS; ++i)
+				if(components[i].type == T::component_type)
 				{
-#ifndef NDEBUG
-					ent::entity::safety_check(components[i]);
-#endif
-					return i;
+					components[i].type = comp::type::NONE;
+					return *(T*)components[i].component;
 				}
-			}
 
-			return -1;
+			win::bug("no component " + std::string(typeid(T).name()) + " on this ent");
 		}
 
-		static void safety_check(const void*);
+		template <typename T> T *try_take_component()
+		{
+			for(int i = 0; i < MAX_COMPONENTS; ++i)
+				if(components[i].type == T::component_type)
+				{
+					components[i].type = comp::type::NONE;
+					return (T*)components[i].component;
+				}
+
+			return NULL;
+		}
+
+		void attach(comp::component&);
+		void cleanup_check() const;
+
+		component_store components[MAX_COMPONENTS];
 	};
 }
 

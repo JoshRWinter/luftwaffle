@@ -17,7 +17,7 @@ namespace game
 	// waffle
 	constexpr float WAFFLE_WIDTH = 0.6f;
 	constexpr float WAFFLE_HEIGHT = 0.6f;
-	void new_waffle(game::world&, const comp::physical&);
+	void new_waffle(game::world&, comp::physical&);
 	void delete_waffle(game::world&, ent::entity&);
 
 	// laser guns
@@ -41,7 +41,7 @@ namespace game
 	// lasers
 	constexpr float LASER_WIDTH = 0.4f;
 	constexpr float LASER_HEIGHT = 0.1f;
-	void new_laser(game::world&, comp::physical&, comp::lasergun&, int);
+	void new_laser(game::world&, const comp::physical&, const comp::lasergun&, int);
 	void delete_laser(game::world&, ent::entity&);
 }
 

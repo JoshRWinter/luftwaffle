@@ -3,51 +3,29 @@
 ent::entity::entity()
 {
 	for(int i = 0; i < ent::MAX_COMPONENTS; ++i)
-		components[i] = NULL;
-}
-
-void ent::entity::cleanup_check()
-{
-#ifndef NDEBUG
-	for(int i = 0; i < MAX_COMPONENTS; ++i)
-		if(components[i] != NULL)
-			win::bug("zombie component found");
-#endif
+		components[i].type = comp::type::NONE;
 }
 
 void ent::entity::attach(comp::component &c)
 {
 	for(int i = 0; i < ent::MAX_COMPONENTS; ++i)
 	{
-		if(components[i] != NULL)
+		if(components[i].type != comp::type::NONE)
 			continue;
 
-		components[i] = &c;
+		components[i].type = c.type;
+		components[i].component = &c;
 		return;
 	}
 
-	win::bug("exceeded max components for an entity");
+	win::bug("exceeded max components for an entity (" + std::to_string((int)c.type) + ")");
 }
 
-comp::component &ent::entity::detach(const comp::type type)
+void ent::entity::cleanup_check() const
 {
-	for(int i = 0; i < ent::MAX_COMPONENTS; ++i)
-	{
-		if(components[i] == NULL)
-			continue;
-
-		if(components[i]->type != type)
-			continue;
-
-		comp::component &c = *components[i];
-		components[i] = NULL;
-		return c;
-	}
-
-	win::bug("no such component type " + std::to_string((int)type));
-}
-
-void ent::entity::safety_check(const void *p)
-{
-	game::objectdb::safety_check(p);
+#ifndef NDEBUG
+	for(int i = 0; i < MAX_COMPONENTS; ++i)
+		if(components[i].type != comp::type::NONE)
+			win::bug("zombie component found of type " + std::to_string((int)components[i].type));
+#endif
 }

@@ -12,6 +12,7 @@ namespace comp
 {
 	enum class type
 	{
+		NONE,
 		PHYSICAL,
 		ATLAS_RENDERABLE,
 		GLOW_RENDERABLE,
@@ -26,9 +27,9 @@ namespace comp
 
 	struct component
 	{
-		component(comp::type t, ent::entity &p)
+		component(comp::type t, ent::entity &parent)
 			: type(t)
-			, parent(p)
+			, entity(parent)
 		{}
 
 		component(const component&) = delete;
@@ -37,15 +38,15 @@ namespace comp
 		void operator=(component&&) = delete;
 
 		comp::type type;
-		ent::entity &parent;
+		ent::entity &entity;
 	};
 
 	struct physical : comp::component
 	{
-		constexpr static comp::type component_type = type::PHYSICAL;
+		static constexpr comp::type component_type = comp::type::PHYSICAL;
 
-		physical(ent::entity &parent, float xpos, float ypos, float width, float height, float rotation)
-			: component(comp::type::PHYSICAL, parent)
+		physical(ent::entity &entity, float xpos, float ypos, float width, float height, float rotation)
+			: component(component_type, entity)
 			, x(xpos)
 			, y(ypos)
 			, w(width)
@@ -60,10 +61,10 @@ namespace comp
 
 	struct atlas_renderable : comp::component
 	{
-		constexpr static comp::type component_type = type::ATLAS_RENDERABLE;
+		static constexpr comp::type component_type = comp::type::ATLAS_RENDERABLE;
 
-		atlas_renderable(ent::entity &parent, const unsigned short *tc)
-			: component(comp::type::ATLAS_RENDERABLE, parent)
+		atlas_renderable(ent::entity &entity, const unsigned short *tc)
+			: component(component_type, entity)
 			, texcoords(tc)
 		{}
 
@@ -72,10 +73,10 @@ namespace comp
 
 	struct glow_renderable : comp::component
 	{
-		constexpr static comp::type component_type = type::GLOW_RENDERABLE;
+		static constexpr comp::type component_type = comp::type::GLOW_RENDERABLE;
 
-		glow_renderable(ent::entity &parent, const win::color c, float bright, float rad)
-			: comp::component(comp::type::GLOW_RENDERABLE, parent)
+		glow_renderable(ent::entity &entity, const win::color c, float bright, float rad)
+			: component(component_type, entity)
 			, color(c)
 			, brightness(bright * 255.0f)
 			, radius(rad)
@@ -88,10 +89,10 @@ namespace comp
 
 	struct player : comp::component
 	{
-		constexpr static comp::type component_type = type::PLAYER;
+		static constexpr comp::type component_type = comp::type::PLAYER;
 
-		player(ent::entity &parent)
-			: component(comp::type::PLAYER, parent)
+		player(ent::entity &entity)
+			: component(component_type, entity)
 			, xv(0.0f)
 			, yv(0.0f)
 			, childgun(NULL)
@@ -103,13 +104,13 @@ namespace comp
 
 	struct toaster : comp::component
 	{
-		constexpr static comp::type component_type = comp::type::TOASTER;
+		static constexpr comp::type component_type = comp::type::TOASTER;
 
 		constexpr static int SPAWN_TIMER_LOW = 100;
 		constexpr static int SPAWN_TIMER_HIGH = 500;
 
-		toaster(ent::entity &parent)
-			: component(component_type, parent)
+		toaster(ent::entity &entity)
+			: component(comp::type::TOASTER, entity)
 			, spawn_timer(mersenne(SPAWN_TIMER_LOW, SPAWN_TIMER_HIGH))
 		{}
 
@@ -118,10 +119,10 @@ namespace comp
 
 	struct waffle : comp::component
 	{
-		constexpr static comp::type component_type = comp::type::WAFFLE;
+		static constexpr comp::type component_type = comp::type::WAFFLE;
 
-		waffle(ent::entity &parent)
-			: component(component_type, parent)
+		waffle(ent::entity &entity)
+			: component(component_type, entity)
 			, childgun(NULL)
 		{}
 
@@ -130,12 +131,12 @@ namespace comp
 
 	struct wander : comp::component
 	{
-		constexpr static comp::type component_type = comp::type::WANDER;
+		static constexpr comp::type component_type = comp::type::WANDER;
 
 		enum class wander_state { POPOUT, WANDERING };
 
-		wander(ent::entity &parent, const float x, const float y, const float angle)
-			: component(component_type, parent)
+		wander(ent::entity &entity, const float x, const float y, const float angle)
+			: component(component_type, entity)
 			, state(wander_state::POPOUT)
 			, initial_angle(angle)
 			, initial_x(x)
@@ -154,12 +155,12 @@ namespace comp
 
 	struct attack : comp::component
 	{
-		constexpr static comp::type component_type = comp::type::ATTACK;
+		static constexpr comp::type component_type = comp::type::ATTACK;
 
 		struct point { float x, y, rot; };
 
-		attack(ent::entity &parent, comp::physical &spawn)
-			: component(component_type, parent)
+		attack(ent::entity &entity, comp::physical &spawn)
+			: component(component_type, entity)
 			, travel_angle(0.0f)
 			, targetx(0.0f)
 			, targety(0.0f)
@@ -180,12 +181,12 @@ namespace comp
 
 	struct lasergun : comp::component
 	{
-		constexpr static comp::type component_type = comp::type::LASERGUN;
+		static constexpr comp::type component_type = comp::type::LASERGUN;
 
 		constexpr static int MAX_GUNS = 2;
 
-		lasergun(ent::entity &parent, const comp::physical &parent_phys, int max_cooldown)
-			: component(component_type, parent)
+		lasergun(ent::entity &entity, const comp::physical &parent_phys, int max_cooldown)
+			: component(component_type, entity)
 			, firing(false)
 			, max_timer_cooldown(max_cooldown)
 			, timer_cooldown(0)
@@ -205,10 +206,10 @@ namespace comp
 
 	struct laser : comp::component
 	{
-		constexpr static comp::type component_type = comp::type::LASER;
+		static constexpr comp::type component_type = comp::type::LASER;
 
-		laser(ent::entity &parent, float angle, float speed, int dmg)
-			: component(component_type, parent)
+		laser(ent::entity &entity, float angle, float speed, int dmg)
+			: component(component_type, entity)
 			, damage(dmg)
 			, xv(cosf(angle) * speed)
 			, yv(sinf(angle) * speed)

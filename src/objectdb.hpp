@@ -5,49 +5,35 @@ namespace game
 {
 	struct objectdb
 	{
-#ifdef NDEBUG
 		objectdb() = default;
-#else
-		objectdb() { if(global == NULL) global = this; }
-#endif
 		objectdb(const objectdb&) = delete;
 		objectdb(objectdb&&) = delete;
 		void operator=(const objectdb&) = delete;
 		void operator=(objectdb&&) = delete;
 
-		objectpool<ent::entity, 100> entity;
+		pool::storage<ent::entity> entity;
 
-		objectpool<comp::physical, 100> physical;
-		objectpool<comp::player, 1> player;
-		objectpool<comp::toaster, 1> toaster;
-		objectpool<comp::waffle, 30> waffle;
-		objectpool<comp::wander, 30> wander;
-		objectpool<comp::attack, 30> attack;
-		objectpool<comp::lasergun, 30> lasergun;
-		objectpool<comp::laser, 100> laser;
-		objectpool<comp::glow_renderable, 25> glow_renderable;
+		pool::storage<comp::physical> physical;
+		pool::storage<comp::player, 1> player;
+		pool::storage<comp::toaster, 1> toaster;
+		pool::storage<comp::waffle> waffle;
+		pool::storage<comp::wander> wander;
+		pool::storage<comp::attack> attack;
+		pool::storage<comp::lasergun> lasergun;
+		pool::storage<comp::laser> laser;
+		pool::storage<comp::glow_renderable> glow_renderable;
 
 		// atlas-renderable components are partitioned by world object type
-		objectpool<comp::atlas_renderable, 1> atlas_renderable_player;
-		objectpool<comp::atlas_renderable, 1> atlas_renderable_toaster;
-		objectpool<comp::atlas_renderable, 30> atlas_renderable_waffle;
-		objectpool<comp::atlas_renderable, 30> atlas_renderable_lasergun;
-		objectpool<comp::atlas_renderable, 100> atlas_renderable_laser;
+		pool::storage<comp::atlas_renderable, 1> atlas_renderable_player;
+		pool::storage<comp::atlas_renderable, 1> atlas_renderable_toaster;
+		pool::storage<comp::atlas_renderable> atlas_renderable_waffle;
+		pool::storage<comp::atlas_renderable> atlas_renderable_lasergun;
+		pool::storage<comp::atlas_renderable> atlas_renderable_laser;
 
 		void reset()
 		{
-			reset_all_pools();
+			pool::storage_base::reset_all();
 		}
-
-#ifndef NDEBUG
-		static void safety_check(const void *p)
-		{
-			if(p < global || p >= global + sizeof(objectdb))
-				win::bug("invalid reference to pool object");
-		}
-	private:
-		inline static objectdb *global = NULL;
-#endif
 	};
 }
 
