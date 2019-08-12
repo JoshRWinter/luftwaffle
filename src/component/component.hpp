@@ -121,11 +121,15 @@ namespace comp
 	{
 		static constexpr comp::type component_type = comp::type::WAFFLE;
 
-		waffle(ent::entity &entity)
+		enum class waffle_type { NORMAL, MID };
+
+		waffle(ent::entity &entity, waffle_type t)
 			: component(component_type, entity)
+			, type(t)
 			, childgun(NULL)
 		{}
 
+		waffle_type type;
 		ent::entity *childgun;
 	};
 

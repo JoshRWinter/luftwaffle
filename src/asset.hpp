@@ -11,7 +11,8 @@ namespace game
 			WAFFLE1 = 1,
 			TOASTER = 2,
 			LASER = 3,
-			LASERGUN_WAFFLE = 4
+			LASERGUN_WAFFLE = 4,
+			MIDWAFFLE = 5
 		};
 
 		asset(win::roll&);

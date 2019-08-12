@@ -56,17 +56,35 @@ void game::delete_toaster(game::world &world, ent::entity &entity)
 /////////////////////////
 // waffles
 /////////////////////////
-void game::new_waffle(game::world &world, comp::physical &toaster)
+void game::new_waffle(game::world &world, comp::physical &toaster, const comp::waffle::waffle_type type)
 {
+	int tex;
+	float width;
+	float height;
+
+	switch(type)
+	{
+		case comp::waffle::waffle_type::NORMAL:
+			tex = game::asset::aid::WAFFLE1;
+			width = WAFFLE_WIDTH;
+			height = WAFFLE_HEIGHT;
+			break;
+
+		case comp::waffle::waffle_type::MID:
+			tex = game::asset::aid::MIDWAFFLE;
+			width = WAFFLE_MID_WIDTH;
+			height = WAFFLE_MID_HEIGHT;
+			break;
+	}
 	auto &entity = world.objectdb.entity.create();
 
 	const float x = toaster.x + (game::TOASTER_WIDTH / 2.0f) - (game::WAFFLE_WIDTH / 2.0f);
 	const float y = toaster.y + (game::TOASTER_HEIGHT / 2.0f) - (game::WAFFLE_HEIGHT / 2.0f);
 
-	auto &physical = world.objectdb.physical.create(entity, x, y, game::WAFFLE_WIDTH, game::WAFFLE_HEIGHT, toaster.rot);
-	auto &renderable = world.objectdb.atlas_renderable_waffle.create(entity, world.asset.atlas.coords(game::asset::aid::WAFFLE1));
+	auto &physical = world.objectdb.physical.create(entity, x, y, width, height, toaster.rot);
+	auto &renderable = world.objectdb.atlas_renderable_waffle.create(entity, world.asset.atlas.coords(tex));
 	auto &wander = world.objectdb.wander.create(entity, physical.x, physical.y, toaster.rot);
-	auto &waffle = world.objectdb.waffle.create(entity);
+	auto &waffle = world.objectdb.waffle.create(entity, type);
 
 	entity.attach(physical);
 	entity.attach(renderable);
