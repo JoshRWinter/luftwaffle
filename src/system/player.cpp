@@ -14,7 +14,7 @@ void sys::player(game::world &world)
 	gun.firing = world.input.left_click;
 
 	// point at the mouse
-	physical.align(atan2f(world.cursor.y, world.cursor.x), 0.2f);
+	physical.rot = win::align(physical.rot, atan2f(world.cursor.y, world.cursor.x), 0.2f);
 
 	// movement
 	const float DECEL = 0.0005f;

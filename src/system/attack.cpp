@@ -47,7 +47,7 @@ void sys::attack(game::world &world)
 		else
 		{
 			const float target_face_angle = atan2f((player_physical.y + (game::PLAYER_HEIGHT / 2.0f)) - (physical.y + (physical.h / 2.0f)), (player_physical.x + (game::PLAYER_WIDTH / 2.0f)) - (physical.x + (physical.w / 2.0f)));
-			physical.align(target_face_angle, 0.085f);
+			physical.rot = win::align(physical.rot, target_face_angle, 0.085f);
 		}
 	}
 }
