@@ -106,31 +106,44 @@ void game::delete_waffle(game::world &world, ent::entity &entity)
 /////////////////////////
 ent::entity &game::new_lasergun(game::world &world, const game::lasergun_type type, const comp::physical &parent_physical)
 {
+	int texture;
 	int maxcooldown;
 	float width;
 	float height;
-	int texture;
+	float speed;
+	float damage;
+	win::color color;
 
 	switch(type)
 	{
 		case game::lasergun_type::WAFFLE:
+			texture = game::asset::aid::LASERGUN_WAFFLE;
 			maxcooldown = LASERGUN_WAFFLE_MAX_COOLDOWN;
 			width = LASERGUN_WAFFLE_WIDTH;
 			height = LASERGUN_WAFFLE_HEIGHT;
-			texture = game::asset::aid::LASERGUN_WAFFLE;
+			speed = LASERGUN_WAFFLE_SPEED;
+			damage = LASERGUN_WAFFLE_DAMAGE;
+			color.red = 0.0f;
+			color.green = 1.0f;
+			color.blue = 0.0f;
 			break;
 		case game::lasergun_type::PLAYER:
+			texture = game::asset::aid::LASERGUN_WAFFLE;
 			maxcooldown = LASERGUN_PLAYER_MAX_COOLDOWN;
 			width = LASERGUN_PLAYER_WIDTH;
 			height = LASERGUN_PLAYER_HEIGHT;
-			texture = game::asset::aid::LASERGUN_WAFFLE;
+			speed = LASERGUN_PLAYER_SPEED;
+			damage = LASERGUN_PLAYER_DAMAGE;
+			color.red = 1.0f;
+			color.green = 0.0f;
+			color.blue = 0.0f;
 			break;
 	}
 
 	ent::entity &entity = world.objectdb.entity.create();
 
 	comp::physical &physical = world.objectdb.physical.create(entity, 0.0f, 0.0f, width, height, 0.0f);
-	comp::lasergun &lasergun = world.objectdb.lasergun.create(entity, parent_physical, maxcooldown);
+	comp::lasergun &lasergun = world.objectdb.lasergun.create(entity, parent_physical, maxcooldown, color, speed, damage);
 	comp::atlas_renderable &renderable = world.objectdb.atlas_renderable_lasergun.create(entity, world.asset.atlas.coords(texture));
 
 	entity.attach(physical);
@@ -153,7 +166,7 @@ void game::delete_lasergun(game::world &world, ent::entity &entity)
 /////////////////////////
 // lasers
 /////////////////////////
-void game::new_laser(game::world &world, const comp::physical &gun_physical, const comp::lasergun &gun, int slot)
+void game::new_laser(game::world &world, const comp::physical &gun_physical, const comp::lasergun &gun, int slot, const win::color &color, float speed, int dmg)
 {
 	ent::entity &entity = world.objectdb.entity.create();
 
@@ -165,8 +178,8 @@ void game::new_laser(game::world &world, const comp::physical &gun_physical, con
 
 	comp::physical &physical = world.objectdb.physical.create(entity, x, y, LASER_WIDTH, LASER_HEIGHT, gun_physical.rot);
 	comp::atlas_renderable &renderable = world.objectdb.atlas_renderable_laser.create(entity, world.asset.atlas.coords(game::asset::aid::LASER));
-	comp::glow_renderable &glow_renderable = world.objectdb.glow_renderable.create(entity, win::color(255, 50, 50), 0.65f, 1.2f);
-	comp::laser &laser = world.objectdb.laser.create(entity, physical.rot, 0.25f, 100);
+	comp::glow_renderable &glow_renderable = world.objectdb.glow_renderable.create(entity, color, 0.55f, 0.8f);
+	comp::laser &laser = world.objectdb.laser.create(entity, physical.rot, speed, dmg);
 
 	entity.attach(physical);
 	entity.attach(renderable);

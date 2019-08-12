@@ -185,12 +185,15 @@ namespace comp
 
 		constexpr static int MAX_GUNS = 2;
 
-		lasergun(ent::entity &entity, const comp::physical &parent_phys, int max_cooldown)
+		lasergun(ent::entity &entity, const comp::physical &parent_phys, int max_cooldown, const win::color &c, float spd, float dmg)
 			: component(component_type, entity)
 			, firing(false)
 			, max_timer_cooldown(max_cooldown)
 			, timer_cooldown(0)
 			, parent_physical(parent_phys)
+			, color(c)
+			, speed(spd)
+			, damage(dmg)
 		{
 			memset(guns, 0, sizeof(guns));
 		}
@@ -202,6 +205,9 @@ namespace comp
 		const int max_timer_cooldown;
 		const comp::physical &parent_physical;
 		gunposition guns[MAX_GUNS];
+		win::color color;
+		float speed;
+		float damage;
 	};
 
 	struct laser : comp::component
