@@ -5,8 +5,8 @@ void sys::toaster(game::world &world)
 	if(world.objectdb.toaster.count() != 1)
 		game::new_toaster(world);
 
-	comp::toaster &toaster = *world.objectdb.toaster.begin();
-	comp::physical &physical = toaster.entity.component<comp::physical>();
+	auto &toaster = *world.objectdb.toaster.begin();
+	auto &physical = toaster.entity.component<comp::physical>();
 
 	if(--toaster.spawn_timer == 0)
 	{

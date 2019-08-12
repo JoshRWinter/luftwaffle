@@ -4,12 +4,12 @@ void sys::attack(game::world &world)
 {
 	for(comp::attack &attack : world.objectdb.attack)
 	{
-		comp::physical &physical = attack.entity.component<comp::physical>();
+		auto &physical = attack.entity.component<comp::physical>();
 
-		ent::entity &player_entity = (*world.objectdb.player.begin()).entity;
-		comp::physical &player_physical = player_entity.component<comp::physical>();
+		auto &player_entity = (*world.objectdb.player.begin()).entity;
+		auto &player_physical = player_entity.component<comp::physical>();
 
-		comp::lasergun &lasergun = attack.entity.component<comp::waffle>().childgun->component<comp::lasergun>();
+		auto &lasergun = attack.entity.component<comp::waffle>().childgun->component<comp::lasergun>();
 
 		// angle between waffle and player
 		const float target_face_angle = atan2f((player_physical.y + (game::PLAYER_HEIGHT / 2.0f)) - (physical.y + (physical.h / 2.0f)), (player_physical.x + (game::PLAYER_WIDTH / 2.0f)) - (physical.x + (physical.w / 2.0f)));

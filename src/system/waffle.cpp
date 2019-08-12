@@ -4,13 +4,13 @@ void sys::waffle(game::world &world)
 {
 	for(comp::waffle &waffle : world.objectdb.waffle)
 	{
-		comp::attack *attack = waffle.entity.try_component<comp::attack>();
-		comp::wander *wander = waffle.entity.try_component<comp::wander>();
+		auto *attack = waffle.entity.try_component<comp::attack>();
+		auto *wander = waffle.entity.try_component<comp::wander>();
 
-		comp::physical &physical = waffle.entity.component<comp::physical>();
+		auto &physical = waffle.entity.component<comp::physical>();
 
-		comp::player &player = *world.objectdb.player.begin();
-		comp::physical &player_physical = player.entity.component<comp::physical>();
+		auto &player = *world.objectdb.player.begin();
+		auto &player_physical = player.entity.component<comp::physical>();
 
 		const float dist = win::distance(physical.x + (physical.w / 2.0f), physical.y + (physical.h / 2.0f), player_physical.x + (game::PLAYER_WIDTH / 2.0f), player_physical.y + (game::PLAYER_HEIGHT / 2.0f));
 		if(dist < 3.0f)

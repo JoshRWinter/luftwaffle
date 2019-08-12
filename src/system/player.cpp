@@ -5,10 +5,10 @@ void sys::player(game::world &world)
 	if(world.objectdb.player.count() == 0)
 		game::new_player(world);
 
-	comp::player &player = *world.objectdb.player.begin();
+	auto &player = *world.objectdb.player.begin();
 
-	comp::physical &physical = player.entity.component<comp::physical>();
-	comp::lasergun &gun = player.childgun->component<comp::lasergun>();
+	auto &physical = player.entity.component<comp::physical>();
+	auto &gun = player.childgun->component<comp::lasergun>();
 
 	// handle firing the guns
 	gun.firing = world.input.left_click;

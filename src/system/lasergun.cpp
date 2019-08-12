@@ -4,8 +4,8 @@ void sys::lasergun(game::world &world)
 {
 	for(comp::lasergun &lasergun : world.objectdb.lasergun)
 	{
-		comp::physical &physical = lasergun.entity.component<comp::physical>();
-		const comp::physical &parent_physical = lasergun.parent_physical;
+		auto &physical = lasergun.entity.component<comp::physical>();
+		const auto &parent_physical = lasergun.parent_physical;
 
 		physical.x = parent_physical.x + (parent_physical.w / 2.0f) - (physical.w / 2.0f);
 		physical.y = parent_physical.y + (parent_physical.h / 2.0f) - (physical.h / 2.0f);
