@@ -603,21 +603,23 @@ float win::distance(float x1, float y1, float x2, float y2)
 	return std::sqrt(std::pow(x1 - x2, 2) + std::pow(y1 - y2, 2));
 }
 
-float win::align(float angle, float target, const float step)
+static float normalize(float a)
 {
 	const float PI2 = 2.0f * M_PI;
 
-	while(target > PI2)
-		target -= PI2;
+	while(a > PI2)
+		a -= PI2;
 
-	while(target < 0.0f)
-		target += PI2;
+	while(a < 0.0f)
+		a += PI2;
 
-	while(angle > PI2)
-		angle -= PI2;
+	return a;
+}
 
-	while(angle < 0.0f)
-		angle += PI2;
+float win::align(float angle, float target, const float step)
+{
+	target = normalize(target);
+	angle = normalize(angle);
 
 	if(target > angle)
 	{
@@ -665,6 +667,18 @@ float win::align(float angle, float target, const float step)
 	}
 
 	return angle;
+}
+
+float win::angle_diff(float a, float b)
+{
+	a = normalize(a);
+	b = normalize(b);
+
+	const float diff = fabs(a - b);
+	if(diff > M_PI)
+		return diff - M_PI;
+
+	return diff;
 }
 
 float win::zerof(float f, float approach)
