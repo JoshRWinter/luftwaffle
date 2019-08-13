@@ -51,10 +51,13 @@ game::quad::quad(win::roll &roll, const win::area &screen)
 	glEnableVertexAttribArray(4);
 
 	// texcoord data
-	glBindBuffer(GL_ARRAY_BUFFER, vbo.texcoords);
-	glVertexAttribPointer(5, 4, GL_UNSIGNED_SHORT, true, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo.texcoords_alpha);
+	glVertexAttribPointer(5, 4, GL_UNSIGNED_SHORT, true, sizeof(unsigned short) * 5, NULL);
 	glVertexAttribDivisor(5, 1);
 	glEnableVertexAttribArray(5);
+	glVertexAttribPointer(6, 1, GL_UNSIGNED_SHORT, true, sizeof(unsigned short) * 5, (void*)(sizeof(unsigned short) * 4));
+	glVertexAttribDivisor(6, 1);
+	glEnableVertexAttribArray(6);
 }
 
 void game::quad::set_center(float x, float y)
@@ -73,10 +76,12 @@ void game::quad::add(const comp::atlas_renderable &renderable)
 	buffer.position_size_rotation.push_back(physical.h);
 	buffer.position_size_rotation.push_back(physical.rot);
 
-	buffer.texcoord.push_back(renderable.texcoords[0]);
-	buffer.texcoord.push_back(renderable.texcoords[1]);
-	buffer.texcoord.push_back(renderable.texcoords[2] - renderable.texcoords[0]);
-	buffer.texcoord.push_back(renderable.texcoords[3] - renderable.texcoords[1]);
+	buffer.texcoord_alpha.push_back(renderable.texcoords[0]);
+	buffer.texcoord_alpha.push_back(renderable.texcoords[1]);
+	buffer.texcoord_alpha.push_back(renderable.texcoords[2] - renderable.texcoords[0]);
+	buffer.texcoord_alpha.push_back(renderable.texcoords[3] - renderable.texcoords[1]);
+
+	buffer.texcoord_alpha.push_back(renderable.alpha * 65535);
 }
 
 void game::quad::send()
@@ -87,11 +92,11 @@ void game::quad::send()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo.position_size_rotation);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * buffer.position_size_rotation.size(), buffer.position_size_rotation.data(), GL_DYNAMIC_DRAW);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo.texcoords);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned short) * buffer.texcoord.size(), buffer.texcoord.data(), GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo.texcoords_alpha);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned short) * buffer.texcoord_alpha.size(), buffer.texcoord_alpha.data(), GL_DYNAMIC_DRAW);
 
 	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL, buffer.position_size_rotation.size() / 5);
 
 	buffer.position_size_rotation.clear();
-	buffer.texcoord.clear();
+	buffer.texcoord_alpha.clear();
 }

@@ -16,6 +16,7 @@ void game::world::process()
 	sys::laser(*this);
 	sys::waffle(*this);
 	sys::missile(*this);
+	sys::particle_smoke(*this);
 }
 
 void game::world::reset()

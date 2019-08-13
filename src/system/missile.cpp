@@ -13,7 +13,17 @@ void sys::missile(game::world &world)
 		physical.x += missile.xv;
 		physical.y += missile.yv;
 
+		missile.max_smoke_timer -= 0.15f;
+		missile.max_smoke_timer = std::clamp(missile.max_smoke_timer, 1.999f, 100.0f);
+
 		if(--missile.ttl < 1)
 			game::delete_missile(world, missile.entity);
+
+		if(--missile.smoke_timer < 1)
+		{
+			missile.smoke_timer = missile.max_smoke_timer;
+
+			game::new_particle_smoke(world, (physical.x + (game::MISSILE_WIDTH / 2.0f)) - missile.xv, (physical.y + (game::MISSILE_HEIGHT / 2.0f)) - missile.yv, 0.2f);
+		}
 	}
 }

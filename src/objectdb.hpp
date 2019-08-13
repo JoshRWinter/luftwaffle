@@ -22,6 +22,7 @@ namespace game
 		pool::storage<comp::lasergun> lasergun;
 		pool::storage<comp::laser> laser;
 		pool::storage<comp::missile> missile;
+		pool::storage<comp::particle_smoke> particle_smoke;
 		pool::storage<comp::glow_renderable> glow_renderable;
 
 		// atlas-renderable components are partitioned by world object type
@@ -31,6 +32,7 @@ namespace game
 		pool::storage<comp::atlas_renderable> atlas_renderable_lasergun;
 		pool::storage<comp::atlas_renderable> atlas_renderable_laser;
 		pool::storage<comp::atlas_renderable> atlas_renderable_missile;
+		pool::storage<comp::atlas_renderable> atlas_renderable_particle_smoke;
 
 		void reset()
 		{

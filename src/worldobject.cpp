@@ -249,3 +249,29 @@ void game::delete_missile(game::world &world, ent::entity &entity)
 	world.objectdb.entity.destroy(entity);
 }
 
+/////////////////////////
+// particle: smoke
+/////////////////////////
+
+void game::new_particle_smoke(game::world &world, const float x, const float y, const float size)
+{
+	auto &entity = world.objectdb.entity.create();
+
+	auto &physical = world.objectdb.physical.create(entity, x - (size / 2.0f), y - (size / 2.0f), size, size, mersenne(0, 2 * M_PI));
+	auto &smoke = world.objectdb.particle_smoke.create(entity);
+	auto &renderable = world.objectdb.atlas_renderable_particle_smoke.create(entity, world.asset.atlas.coords(game::asset::aid::SMOKE), 0.8f);
+
+	entity.attach(physical);
+	entity.attach(smoke);
+	entity.attach(renderable);
+}
+
+void game::delete_particle_smoke(game::world &world, ent::entity &entity)
+{
+	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
+	world.objectdb.particle_smoke.destroy(entity.take_component<comp::particle_smoke>());
+	world.objectdb.atlas_renderable_particle_smoke.destroy(entity.take_component<comp::atlas_renderable>());
+
+	entity.cleanup_check();
+	world.objectdb.entity.destroy(entity);
+}

@@ -6,10 +6,12 @@ layout (location = 2) in vec2 position;
 layout (location = 3) in vec2 size;
 layout (location = 4) in float rot;
 layout (location = 5) in vec4 texcoords;
+layout (location = 6) in float alpha;
 
 uniform mat4 projection;
 
 out vec2 ftexcoord;
+out float falpha;
 
 void main()
 {
@@ -19,4 +21,6 @@ void main()
 	gl_Position = projection * translate * rotate * vec4(vertex.x * size.x, vertex.y * size.y, 0.0, 1.0);
 
 	ftexcoord = vec2(texcoords.x + (texcoords.z * tcoffset.x), texcoords.y + (texcoords.w * tcoffset.y));
+
+	falpha = alpha;
 }

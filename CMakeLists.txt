@@ -27,6 +27,7 @@ add_executable(luftwaffle
 	src/system/attack.cpp
 	src/system/waffle.cpp
 	src/system/missile.cpp
+	src/system/particle_smoke.cpp
 
 	src/world.cpp
 	src/world.hpp

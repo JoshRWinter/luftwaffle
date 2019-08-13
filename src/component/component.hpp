@@ -23,7 +23,8 @@ namespace comp
 		ATTACK,
 		LASERGUN,
 		LASER,
-		MISSILE
+		MISSILE,
+		PARTICLE_SMOKE
 	};
 
 	struct component
@@ -64,11 +65,13 @@ namespace comp
 	{
 		static constexpr comp::type component_type = comp::type::ATLAS_RENDERABLE;
 
-		atlas_renderable(ent::entity &entity, const unsigned short *tc)
+		atlas_renderable(ent::entity &entity, const unsigned short *tc, const float a = 1.0f)
 			: component(component_type, entity)
+			, alpha(a)
 			, texcoords(tc)
 		{}
 
+		float alpha;
 		const unsigned short *texcoords;
 	};
 
@@ -240,6 +243,8 @@ namespace comp
 
 		missile(ent::entity &entity, float a)
 			: component(component_type, entity)
+			, smoke_timer(0.0f)
+			, max_smoke_timer(8.0f) // value to reset smoke_timer to
 			, xv(0.0f)
 			, yv(0.0f)
 			, speed(0.01f)
@@ -247,10 +252,21 @@ namespace comp
 			, ttl(100)
 		{}
 
+		float smoke_timer;
+		float max_smoke_timer;
 		float xv, yv;
 		float speed;
 		float angle;
 		int ttl;
+	};
+
+	struct particle_smoke : comp::component
+	{
+		static constexpr comp::type component_type = comp::type::PARTICLE_SMOKE;
+
+		particle_smoke(ent::entity &entity)
+			: component(component_type, entity)
+			{}
 	};
 }
 

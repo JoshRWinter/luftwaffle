@@ -59,6 +59,10 @@ namespace game
 	constexpr float MISSILE_HEIGHT = 0.17f;
 	void new_missile(game::world&, const comp::physical &gun_physical, const comp::lasergun &gun, int slot);
 	void delete_missile(game::world&, ent::entity&);
+
+	// smoke particles
+	void new_particle_smoke(game::world&, float, float, float);
+	void delete_particle_smoke(game::world&, ent::entity&);
 }
 
 #endif
