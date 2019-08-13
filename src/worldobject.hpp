@@ -53,6 +53,12 @@ namespace game
 	constexpr float LASER_HEIGHT = 0.1f;
 	void new_laser(game::world&, const comp::physical&, const comp::lasergun&, int, const win::color&, float, int);
 	void delete_laser(game::world&, ent::entity&);
+
+	// missiles
+	constexpr float MISSILE_WIDTH = 0.55f;
+	constexpr float MISSILE_HEIGHT = 0.17f;
+	void new_missile(game::world&, const comp::physical &gun_physical, const comp::lasergun &gun, int slot);
+	void delete_missile(game::world&, ent::entity&);
 }
 
 #endif

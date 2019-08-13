@@ -46,15 +46,11 @@ void sys::attack(game::world &world)
 			}
 		}
 
+		lasergun.firing_laser = attack.firing;
+
 		if(!attack.firing)
-		{
-			lasergun.firing = false;
 			physical.rot = win::align(physical.rot, attack.travel_angle, 0.155f);
-		}
 		else
-		{
-			lasergun.firing = true;
 			physical.rot = win::align(physical.rot, target_face_angle, 0.085f);
-		}
 	}
 }

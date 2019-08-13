@@ -22,7 +22,8 @@ namespace comp
 		WANDER,
 		ATTACK,
 		LASERGUN,
-		LASER
+		LASER,
+		MISSILE
 	};
 
 	struct component
@@ -191,7 +192,7 @@ namespace comp
 
 		lasergun(ent::entity &entity, const comp::physical &parent_phys, int max_cooldown, const win::color &c, float spd, float dmg)
 			: component(component_type, entity)
-			, firing(false)
+			, firing_laser(false)
 			, max_timer_cooldown(max_cooldown)
 			, timer_cooldown(0)
 			, parent_physical(parent_phys)
@@ -204,7 +205,9 @@ namespace comp
 
 		struct gunposition { float angle_offset, distance; };
 
-		bool firing;
+		bool firing_laser;
+		bool firing_missile;
+
 		int timer_cooldown;
 		const int max_timer_cooldown;
 		const comp::physical &parent_physical;
@@ -228,6 +231,25 @@ namespace comp
 
 		float xv, yv;
 		int damage;
+		int ttl;
+	};
+
+	struct missile : comp::component
+	{
+		static constexpr comp::type component_type = comp::type::MISSILE;
+
+		missile(ent::entity &entity, float a)
+			: component(component_type, entity)
+			, xv(0.0f)
+			, yv(0.0f)
+			, speed(0.01f)
+			, angle(a)
+			, ttl(100)
+		{}
+
+		float xv, yv;
+		float speed;
+		float angle;
 		int ttl;
 	};
 }

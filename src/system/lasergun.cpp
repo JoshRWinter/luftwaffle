@@ -13,10 +13,16 @@ void sys::lasergun(game::world &world)
 
 		if(lasergun.timer_cooldown > 0)
 			--lasergun.timer_cooldown;
-		else if(lasergun.firing)
+
+		else if(lasergun.firing_laser)
 		{
 			game::new_laser(world, physical, lasergun, 0, lasergun.color, lasergun.speed, lasergun.damage);
 			lasergun.timer_cooldown = lasergun.max_timer_cooldown;
+		}
+		else if(lasergun.firing_missile)
+		{
+			game::new_missile(world, physical, lasergun, 2);
+			lasergun.timer_cooldown = lasergun.max_timer_cooldown * 2;
 		}
 	}
 }

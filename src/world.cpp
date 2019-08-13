@@ -15,6 +15,7 @@ void game::world::process()
 	sys::lasergun(*this);
 	sys::laser(*this);
 	sys::waffle(*this);
+	sys::missile(*this);
 }
 
 void game::world::reset()

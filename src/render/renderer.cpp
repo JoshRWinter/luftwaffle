@@ -24,25 +24,28 @@ void game::renderer::frame(const game::world &world)
 	quad.set_center(player.x, player.y);
 	glow.set_center(player.x, player.y);
 
-	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_lasergun)
+	for(const auto &renderable : world.objectdb.atlas_renderable_lasergun)
 		quad.add(renderable);
 
-	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_waffle)
+	for(const auto &renderable : world.objectdb.atlas_renderable_waffle)
 		quad.add(renderable);
 
-	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_toaster)
+	for(const auto &renderable : world.objectdb.atlas_renderable_toaster)
 		quad.add(renderable);
 
-	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_player)
+	for(const auto &renderable : world.objectdb.atlas_renderable_player)
 		quad.add(renderable);
 
-	for(const comp::atlas_renderable &renderable : world.objectdb.atlas_renderable_laser)
+	for(const auto &renderable : world.objectdb.atlas_renderable_laser)
+		quad.add(renderable);
+
+	for(const auto &renderable : world.objectdb.atlas_renderable_missile)
 		quad.add(renderable);
 
 	glBindTexture(GL_TEXTURE_2D, world.asset.atlas.texture());
 	quad.send();
 
-	for(const comp::glow_renderable &renderable : world.objectdb.glow_renderable)
+	for(const auto &renderable : world.objectdb.glow_renderable)
 		glow.add(renderable);
 
 	glow.send();

@@ -11,7 +11,8 @@ void sys::player(game::world &world)
 	auto &gun = player.childgun->component<comp::lasergun>();
 
 	// handle firing the guns
-	gun.firing = world.input.left_click;
+	gun.firing_laser = world.input.left_click;
+	gun.firing_missile = world.input.right_click;
 
 	// point at the mouse
 	physical.rot = win::align(physical.rot, atan2f(world.cursor.y, world.cursor.x), 0.2f);
