@@ -24,6 +24,7 @@ namespace game
 		pool::storage<comp::missile> missile;
 		pool::storage<comp::health> health;
 		pool::storage<comp::explosion_cloud> explosion_cloud;
+		pool::storage<comp::explosion_arm> explosion_arm;
 		pool::storage<comp::particle_smoke> particle_smoke;
 		pool::storage<comp::glow_renderable> glow_renderable;
 

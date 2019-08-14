@@ -254,7 +254,7 @@ void game::delete_missile(game::world &world, ent::entity &entity)
 /////////////////////////
 // explosion
 /////////////////////////
-void game::new_explosion(game::world &world, const float x, const float y, const float size)
+void game::new_explosion(game::world &world, const float x, const float y, const float scale)
 {
 	// cloud
 	{
@@ -262,12 +262,55 @@ void game::new_explosion(game::world &world, const float x, const float y, const
 
 		auto &physical = world.objectdb.physical.create(entity, x - (CLOUD_STARTING_SIZE / 2.0f), y - (CLOUD_STARTING_SIZE / 2.0f), CLOUD_STARTING_SIZE, CLOUD_STARTING_SIZE, mersenne(0, M_PI * 2.0));
 		auto &renderable = world.objectdb.atlas_renderable_explosion_cloud.create(entity, world.asset.atlas.coords(game::asset::aid::EXPLOSION_CLOUD));
-		auto &cloud = world.objectdb.explosion_cloud.create(entity, size);
+		auto &cloud = world.objectdb.explosion_cloud.create(entity, scale);
 
 		entity.attach(physical);
 		entity.attach(renderable);
 		entity.attach(cloud);
 	}
+
+	// arms
+	int arms;
+	if(scale < 2.0f)
+		arms = 3;
+	else if(scale < 3)
+		arms = 5;
+	else
+		arms = 7;
+
+	const float spacing = (M_PI * 2.0) / arms;
+	for(int i = 0; i < arms; ++i)
+	{
+		auto &entity = world.objectdb.entity.create();
+
+		const float variance = 0.35f;
+		float angle = (spacing * i) + mersenne(-variance, variance);
+
+		auto &physical = world.objectdb.physical.create(entity, x, y, 0.0f, 0.0f, 0.0f);
+		auto &arm = world.objectdb.explosion_arm.create(entity, angle, scale);
+
+		entity.attach(physical);
+		entity.attach(arm);
+	}
+}
+
+void game::delete_explosion_cloud(game::world &world, ent::entity &entity)
+{
+	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
+	world.objectdb.atlas_renderable_explosion_cloud.destroy(entity.take_component<comp::atlas_renderable>());
+	world.objectdb.explosion_cloud.destroy(entity.take_component<comp::explosion_cloud>());
+
+	entity.cleanup_check();
+	world.objectdb.entity.destroy(entity);
+}
+
+void game::delete_explosion_arm(game::world &world, ent::entity &entity)
+{
+	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
+	world.objectdb.explosion_arm.destroy(entity.take_component<comp::explosion_arm>());
+
+	entity.cleanup_check();
+	world.objectdb.entity.destroy(entity);
 }
 
 /////////////////////////

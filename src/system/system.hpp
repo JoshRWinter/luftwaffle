@@ -12,6 +12,7 @@ namespace sys
 	void waffle(game::world&);
 	void missile(game::world&);
 	void explosion_cloud(game::world&);
+	void explosion_arm(game::world&);
 	void particle_smoke(game::world&);
 }
 
