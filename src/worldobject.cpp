@@ -36,10 +36,12 @@ void game::new_toaster(game::world &world)
 
 	auto &physical = world.objectdb.physical.create(entity, 5.0f, 0.0f, TOASTER_WIDTH, TOASTER_HEIGHT, (M_PI / 2.0f) * mersenne(0, 3));
 	auto &renderable = world.objectdb.atlas_renderable_toaster.create(entity, world.asset.atlas.coords(game::asset::aid::TOASTER));
+	auto &health = world.objectdb.health.create(entity, 250);
 	auto &toaster = world.objectdb.toaster.create(entity);
 
 	entity.attach(physical);
 	entity.attach(renderable);
+	entity.attach(health);
 	entity.attach(toaster);
 }
 
@@ -250,9 +252,27 @@ void game::delete_missile(game::world &world, ent::entity &entity)
 }
 
 /////////////////////////
+// explosion
+/////////////////////////
+void game::new_explosion(game::world &world, const float x, const float y, const float size)
+{
+	// cloud
+	{
+		auto &entity = world.objectdb.entity.create();
+
+		auto &physical = world.objectdb.physical.create(entity, x - (CLOUD_STARTING_SIZE / 2.0f), y - (CLOUD_STARTING_SIZE / 2.0f), CLOUD_STARTING_SIZE, CLOUD_STARTING_SIZE, mersenne(0, M_PI * 2.0));
+		auto &renderable = world.objectdb.atlas_renderable_explosion_cloud.create(entity, world.asset.atlas.coords(game::asset::aid::EXPLOSION_CLOUD));
+		auto &cloud = world.objectdb.explosion_cloud.create(entity, size);
+
+		entity.attach(physical);
+		entity.attach(renderable);
+		entity.attach(cloud);
+	}
+}
+
+/////////////////////////
 // particle: smoke
 /////////////////////////
-
 void game::new_particle_smoke(game::world &world, const float x, const float y, const float size)
 {
 	auto &entity = world.objectdb.entity.create();

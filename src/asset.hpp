@@ -14,7 +14,8 @@ namespace game
 			LASERGUN_WAFFLE = 4,
 			MIDWAFFLE = 5,
 			MISSILE = 6,
-			SMOKE = 7
+			EXPLOSION_CLOUD = 7,
+			SMOKE = 8
 		};
 
 		asset(win::roll&);

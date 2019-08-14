@@ -60,6 +60,10 @@ namespace game
 	void new_missile(game::world&, const comp::physical &gun_physical, const comp::lasergun &gun, int slot);
 	void delete_missile(game::world&, ent::entity&);
 
+	// explosion
+	constexpr float CLOUD_STARTING_SIZE = 0.5f;
+	void new_explosion(game::world&, float, float, float);
+
 	// smoke particles
 	void new_particle_smoke(game::world&, float, float, float);
 	void delete_particle_smoke(game::world&, ent::entity&);

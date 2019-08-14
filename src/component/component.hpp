@@ -24,6 +24,8 @@ namespace comp
 		LASERGUN,
 		LASER,
 		MISSILE,
+		HEALTH,
+		EXPLOSION_CLOUD,
 		PARTICLE_SMOKE
 	};
 
@@ -55,6 +57,11 @@ namespace comp
 			, h(height)
 			, rot(rotation)
 		{}
+
+		bool collide(const physical &rhs) const
+		{
+			return x + w > rhs.x && x < rhs.x + rhs.w && y + h > rhs.y && y < rhs.y + rhs.h;
+		}
 
 		void align(float, float);
 
@@ -260,13 +267,37 @@ namespace comp
 		int ttl;
 	};
 
+	struct health : comp::component
+	{
+		static constexpr comp::type component_type = comp::type::HEALTH;
+
+		health(ent::entity &entity, int h)
+			: component(component_type, entity)
+			, hitpoints(h)
+		{}
+
+		int hitpoints;
+	};
+
+	struct explosion_cloud : comp::component
+	{
+		static constexpr comp::type component_type = comp::type::EXPLOSION_CLOUD;
+
+		explosion_cloud(ent::entity &entity, const float s)
+			: component(component_type, entity)
+			, scale(s)
+		{}
+
+		float scale;
+	};
+
 	struct particle_smoke : comp::component
 	{
 		static constexpr comp::type component_type = comp::type::PARTICLE_SMOKE;
 
 		particle_smoke(ent::entity &entity)
 			: component(component_type, entity)
-			{}
+		{}
 	};
 }
 

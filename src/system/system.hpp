@@ -11,6 +11,7 @@ namespace sys
 	void laser(game::world&);
 	void waffle(game::world&);
 	void missile(game::world&);
+	void explosion_cloud(game::world&);
 	void particle_smoke(game::world&);
 }
 

@@ -17,6 +17,7 @@ void game::world::process()
 	sys::waffle(*this);
 	sys::missile(*this);
 	sys::particle_smoke(*this);
+	sys::explosion_cloud(*this);
 }
 
 void game::world::reset()
