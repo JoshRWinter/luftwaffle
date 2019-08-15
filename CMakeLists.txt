@@ -31,6 +31,7 @@ add_executable(luftwaffle
 	src/system/explosion_arm.cpp
 	src/system/explosion_particle.cpp
 	src/system/particle_smoke.cpp
+	src/system/goring.cpp
 
 	src/world.cpp
 	src/world.hpp

@@ -28,21 +28,26 @@ namespace game
 	constexpr float LASERGUN_WAFFLE_WIDTH = 1.0f;
 	constexpr float LASERGUN_WAFFLE_HEIGHT = 0.8f;
 	constexpr int LASERGUN_WAFFLE_MAX_COOLDOWN = 10;
+	constexpr float LASERGUN_WAFFLE_SPEED = 0.14f;
+	constexpr int LASERGUN_WAFFLE_DAMAGE = 10;
 
 	constexpr float LASERGUN_PLAYER_WIDTH = 0.8f;
 	constexpr float LASERGUN_PLAYER_HEIGHT = 0.8f;
 	constexpr int LASERGUN_PLAYER_MAX_COOLDOWN = 5;
-
-	constexpr float LASERGUN_WAFFLE_SPEED = 0.14f;
 	constexpr float LASERGUN_PLAYER_SPEED = 0.2f;
-
-	constexpr int LASERGUN_WAFFLE_DAMAGE = 10;
 	constexpr int LASERGUN_PLAYER_DAMAGE = 10;
+
+	constexpr float LASERGUN_GORING_WIDTH = 3.0f;
+	constexpr float LASERGUN_GORING_HEIGHT = 1.0f;
+	constexpr int LASERGUN_GORING_MAX_COOLDOWN = 13;
+	constexpr float LASERGUN_GORING_SPEED = 0.1f;
+	constexpr int LASERGUN_GORING_DAMAGE = 40;
 
 	enum class lasergun_type
 	{
 		PLAYER,
-		WAFFLE
+		WAFFLE,
+		GORING
 	};
 
 	ent::entity &new_lasergun(game::world&, game::lasergun_type, const comp::physical&);
@@ -70,6 +75,11 @@ namespace game
 	// smoke particles
 	void new_particle_smoke(game::world&, float, float, float);
 	void delete_particle_smoke(game::world&, ent::entity&);
+
+	// goring
+	constexpr float GORING_SIZE = 2.55f;
+	void new_goring(game::world&, float, float);
+	void delete_goring(game::world&, ent::entity&);
 }
 
 #endif

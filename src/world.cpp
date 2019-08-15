@@ -20,6 +20,7 @@ void game::world::process()
 	sys::explosion_cloud(*this);
 	sys::explosion_arm(*this);
 	sys::explosion_particle(*this);
+	sys::goring(*this);
 }
 
 void game::world::reset()

@@ -158,6 +158,17 @@ ent::entity &game::new_lasergun(game::world &world, const game::lasergun_type ty
 			color.green = 0.0f;
 			color.blue = 0.0f;
 			break;
+		case game::lasergun_type::GORING:
+			texture = game::asset::aid::GORING_GUN;
+			maxcooldown = LASERGUN_GORING_MAX_COOLDOWN;
+			width = LASERGUN_GORING_WIDTH;
+			height = LASERGUN_GORING_HEIGHT;
+			speed = LASERGUN_GORING_SPEED;
+			damage = LASERGUN_GORING_DAMAGE;
+			color.red = 1.0f;
+			color.green = 0.0f;
+			color.blue = 1.0f;
+			break;
 	}
 
 	auto &entity = world.objectdb.entity.create();
@@ -369,4 +380,39 @@ void game::delete_particle_smoke(game::world &world, ent::entity &entity)
 
 	entity.cleanup_check();
 	world.objectdb.entity.destroy(entity);
+}
+
+/////////////////////////
+// goring
+/////////////////////////
+void game::new_goring(game::world &world, const float xpos, const float ypos)
+{
+	auto &entity = world.objectdb.entity.create();
+
+	auto &physical = world.objectdb.physical.create(entity, xpos, ypos, GORING_SIZE, GORING_SIZE, 0.0f);
+	auto &renderable = world.objectdb.atlas_renderable_goring.create(entity, world.asset.atlas.coords(game::asset::aid::GORING));
+	auto &health = world.objectdb.health.create(entity, 200);
+	auto &goring = world.objectdb.goring.create(entity);
+
+	auto &childgun = new_lasergun(world, game::lasergun_type::GORING, physical);
+	goring.childgun = &childgun;
+
+	entity.attach(physical);
+	entity.attach(renderable);
+	entity.attach(health);
+	entity.attach(goring);
+}
+
+void game::delete_goring(game::world &world, ent::entity &entity)
+{
+	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
+	world.objectdb.atlas_renderable_goring.destroy(entity.take_component<comp::atlas_renderable>());
+	auto &goring = entity.take_component<comp::goring>();
+	auto childgun = goring.childgun;
+	world.objectdb.goring.destroy(goring);
+
+	entity.cleanup_check();
+	world.objectdb.entity.destroy(entity);
+
+	game::delete_lasergun(world, *childgun);
 }

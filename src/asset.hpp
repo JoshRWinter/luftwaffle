@@ -18,7 +18,9 @@ namespace game
 			EXPLOSION_PARTICLE_RED = 8,
 			EXPLOSION_PARTICLE_YELLOW = 9,
 			EXPLOSION_PARTICLE_ORANGE = 10,
-			SMOKE = 11
+			SMOKE = 11,
+			GORING = 12,
+			GORING_GUN = 13
 		};
 
 		asset(win::roll&);
