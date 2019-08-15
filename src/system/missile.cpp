@@ -25,7 +25,7 @@ void sys::missile(game::world &world)
 			if(phys.collide(physical))
 			{
 				health.hitpoints -= 20;
-				new_explosion(world, physical.x + (game::MISSILE_WIDTH / 2.0f), physical.y + (game::MISSILE_HEIGHT / 2.0f), 1.5f);
+				new_explosion(world, physical.x + (game::MISSILE_WIDTH / 2.0f), physical.y + (game::MISSILE_HEIGHT / 2.0f), 0.6f);
 				delete_missile(world, missile.entity);
 				stop = true;
 				break;

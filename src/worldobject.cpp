@@ -292,6 +292,31 @@ void game::new_explosion(game::world &world, const float x, const float y, const
 		entity.attach(physical);
 		entity.attach(arm);
 	}
+
+	int particles;
+	if(scale < 2.0f)
+		particles = 5;
+	if(scale < 3.0f)
+		particles = 7;
+	else
+		particles = 9;
+
+	for(int i = 0; i < particles; ++i)
+	{
+		auto &entity = world.objectdb.entity.create();
+
+		const float box = scale / 3.0f;
+		const float xpos = x + mersenne(-box, box);
+		const float ypos = y + mersenne(-box, box);
+
+		auto &physical = world.objectdb.physical.create(entity, xpos, ypos, 0.0f, 0.0f, 0.0f);
+		auto &renderable = world.objectdb.atlas_renderable_explosion_particle.create(entity, world.asset.atlas.coords(game::asset::aid::EXPLOSION_PARTICLE_RED + mersenne(0, 2)));
+		auto &particle = world.objectdb.explosion_particle.create(entity, scale);
+
+		entity.attach(physical);
+		entity.attach(renderable);
+		entity.attach(particle);
+	}
 }
 
 void game::delete_explosion_cloud(game::world &world, ent::entity &entity)
@@ -311,6 +336,13 @@ void game::delete_explosion_arm(game::world &world, ent::entity &entity)
 
 	entity.cleanup_check();
 	world.objectdb.entity.destroy(entity);
+}
+
+void game::delete_explosion_particle(game::world &world, ent::entity &entity)
+{
+	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
+	world.objectdb.atlas_renderable_explosion_particle.destroy(entity.take_component<comp::atlas_renderable>());
+	world.objectdb.explosion_particle.destroy(entity.take_component<comp::explosion_particle>());
 }
 
 /////////////////////////

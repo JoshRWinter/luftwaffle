@@ -15,7 +15,10 @@ namespace game
 			MIDWAFFLE = 5,
 			MISSILE = 6,
 			EXPLOSION_CLOUD = 7,
-			SMOKE = 8
+			EXPLOSION_PARTICLE_RED = 8,
+			EXPLOSION_PARTICLE_YELLOW = 9,
+			EXPLOSION_PARTICLE_ORANGE = 10,
+			SMOKE = 11
 		};
 
 		asset(win::roll&);

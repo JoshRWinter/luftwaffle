@@ -51,6 +51,9 @@ void game::renderer::frame(const game::world &world)
 	for(const auto &renderable : world.objectdb.atlas_renderable_particle_smoke)
 		quad.add(renderable);
 
+	for(const auto &renderable : world.objectdb.atlas_renderable_explosion_particle)
+		quad.add(renderable);
+
 	glBindTexture(GL_TEXTURE_2D, world.asset.atlas.texture());
 	quad.send();
 

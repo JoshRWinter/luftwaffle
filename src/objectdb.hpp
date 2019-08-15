@@ -25,6 +25,7 @@ namespace game
 		pool::storage<comp::health> health;
 		pool::storage<comp::explosion_cloud> explosion_cloud;
 		pool::storage<comp::explosion_arm> explosion_arm;
+		pool::storage<comp::explosion_particle> explosion_particle;
 		pool::storage<comp::particle_smoke> particle_smoke;
 		pool::storage<comp::glow_renderable> glow_renderable;
 
@@ -36,6 +37,7 @@ namespace game
 		pool::storage<comp::atlas_renderable> atlas_renderable_laser;
 		pool::storage<comp::atlas_renderable> atlas_renderable_missile;
 		pool::storage<comp::atlas_renderable> atlas_renderable_explosion_cloud;
+		pool::storage<comp::atlas_renderable> atlas_renderable_explosion_particle;
 		pool::storage<comp::atlas_renderable> atlas_renderable_particle_smoke;
 
 		void reset()

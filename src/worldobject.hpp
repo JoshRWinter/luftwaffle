@@ -65,6 +65,7 @@ namespace game
 	void new_explosion(game::world&, float, float, float);
 	void delete_explosion_cloud(game::world&, ent::entity&);
 	void delete_explosion_arm(game::world&, ent::entity&);
+	void delete_explosion_particle(game::world&, ent::entity&);
 
 	// smoke particles
 	void new_particle_smoke(game::world&, float, float, float);
