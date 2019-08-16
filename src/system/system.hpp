@@ -15,6 +15,7 @@ namespace sys
 	void explosion_arm(game::world&);
 	void explosion_particle(game::world&);
 	void particle_smoke(game::world&);
+	void particle_laser(game::world&);
 	void goring(game::world&);
 	void hitler(game::world&);
 }

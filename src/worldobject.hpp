@@ -83,6 +83,12 @@ namespace game
 	void new_particle_smoke(game::world&, float, float, float);
 	void delete_particle_smoke(game::world&, ent::entity&);
 
+	// laser particles
+	constexpr float PARTICLE_LASER_WIDTH = 0.35f;
+	constexpr float PARTICLE_LASER_HEIGHT = 0.04f;
+	void new_particle_laser(game::world&, float, float, float, const win::color&);
+	void delete_particle_laser(game::world&, ent::entity&);
+
 	// goring
 	constexpr float GORING_SIZE = 2.55f;
 	void new_goring(game::world&, float, float);

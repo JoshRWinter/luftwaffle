@@ -29,6 +29,7 @@ namespace comp
 		EXPLOSION_ARM,
 		EXPLOSION_PARTICLE,
 		PARTICLE_SMOKE,
+		PARTICLE_LASER,
 		GORING,
 		HITLER
 	};
@@ -76,13 +77,13 @@ namespace comp
 	{
 		static constexpr comp::type component_type = comp::type::ATLAS_RENDERABLE;
 
-		atlas_renderable(ent::entity &entity, const unsigned short *tc, const float a = 1.0f)
+		atlas_renderable(ent::entity &entity, const unsigned short *tc, const win::color &c = win::color(1.0f, 1.0f, 1.0f, 1.0f))
 			: component(component_type, entity)
-			, alpha(a)
+			, color(c)
 			, texcoords(tc)
 		{}
 
-		float alpha;
+		win::color color;
 		const unsigned short *texcoords;
 	};
 
@@ -243,7 +244,7 @@ namespace comp
 			, xv(cosf(angle) * speed)
 			, yv(sinf(angle) * speed)
 			, ttl(100)
-			, arming_timer(10)
+			, arming_timer(9)
 		{}
 
 		float xv, yv;
@@ -347,6 +348,24 @@ namespace comp
 			: component(component_type, entity)
 		{}
 
+	};
+
+	struct particle_laser : comp::component
+	{
+		static constexpr comp::type component_type = comp::type::PARTICLE_LASER;
+
+
+		particle_laser(ent::entity &entity, const float angle)
+			: component(component_type, entity)
+			, ttl(12)
+			, speed(mersenne(0.12f, 0.16f))
+			, xv(cosf(angle) * speed)
+			, yv(sinf(angle) * speed)
+		{}
+
+		int ttl;
+		float speed;
+		float xv, yv;
 	};
 
 	struct goring : comp::component

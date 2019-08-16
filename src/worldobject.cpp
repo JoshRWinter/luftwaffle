@@ -396,7 +396,7 @@ void game::new_particle_smoke(game::world &world, const float x, const float y, 
 
 	auto &physical = world.objectdb.physical.create(entity, x - (size / 2.0f), y - (size / 2.0f), size, size, mersenne(0, 2 * M_PI));
 	auto &smoke = world.objectdb.particle_smoke.create(entity);
-	auto &renderable = world.objectdb.atlas_renderable_particle_smoke.create(entity, world.asset.atlas.coords(game::asset::aid::SMOKE), 0.8f);
+	auto &renderable = world.objectdb.atlas_renderable_particle_smoke.create(entity, world.asset.atlas.coords(game::asset::aid::SMOKE));
 
 	entity.attach(physical);
 	entity.attach(smoke);
@@ -408,6 +408,39 @@ void game::delete_particle_smoke(game::world &world, ent::entity &entity)
 	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
 	world.objectdb.particle_smoke.destroy(entity.take_component<comp::particle_smoke>());
 	world.objectdb.atlas_renderable_particle_smoke.destroy(entity.take_component<comp::atlas_renderable>());
+
+	entity.cleanup_check();
+	world.objectdb.entity.destroy(entity);
+}
+
+/////////////////////////
+// particle: laser
+/////////////////////////
+void game::new_particle_laser(game::world &world, const float xpos, const float ypos, const float angle, const win::color &color)
+{
+	const int count = mersenne(2, 4);
+	for(int i = 0; i < count; ++i)
+	{
+		auto &entity = world.objectdb.entity.create();
+
+		const float adjust = 0.35f;
+		const float adjusted_angle = angle + mersenne(-adjust, adjust);
+
+		auto &physical = world.objectdb.physical.create(entity, xpos, ypos, game::PARTICLE_LASER_WIDTH, game::PARTICLE_LASER_HEIGHT, adjusted_angle);
+		auto &particle = world.objectdb.particle_laser.create(entity, adjusted_angle);
+		auto &renderable = world.objectdb.atlas_renderable_particle_laser.create(entity, world.asset.atlas.coords(game::asset::aid::LASER), color);
+
+		entity.attach(physical);
+		entity.attach(particle);
+		entity.attach(renderable);
+	}
+}
+
+void game::delete_particle_laser(game::world &world, ent::entity &entity)
+{
+	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
+	world.objectdb.particle_laser.destroy(entity.take_component<comp::particle_laser>());
+	world.objectdb.atlas_renderable_particle_laser.destroy(entity.take_component<comp::atlas_renderable>());
 
 	entity.cleanup_check();
 	world.objectdb.entity.destroy(entity);

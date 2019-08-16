@@ -62,13 +62,15 @@ namespace game
 		{
 			win::vbo vertex_tcoffset;
 			win::vbo position_size_rotation;
-			win::vbo texcoords_alpha;
+			win::vbo color;
+			win::vbo texcoords;
 		} vbo;
 
 		struct
 		{
 			std::vector<float> position_size_rotation;
-			std::vector<unsigned short> texcoord_alpha;
+			std::vector<unsigned char> color;
+			std::vector<unsigned short> texcoord;
 		} buffer;
 
 		struct

@@ -6,12 +6,12 @@ layout (location = 2) in vec2 position;
 layout (location = 3) in vec2 size;
 layout (location = 4) in float rot;
 layout (location = 5) in vec4 texcoords;
-layout (location = 6) in float alpha;
+layout (location = 6) in vec4 color;
 
 uniform mat4 projection;
 
 out vec2 ftexcoord;
-out float falpha;
+out vec4 fcolor;
 
 void main()
 {
@@ -22,5 +22,5 @@ void main()
 
 	ftexcoord = vec2(texcoords.x + (texcoords.z * tcoffset.x), texcoords.y + (texcoords.w * tcoffset.y));
 
-	falpha = alpha;
+	fcolor = color;
 }

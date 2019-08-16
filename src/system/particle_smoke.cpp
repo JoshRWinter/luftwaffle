@@ -14,8 +14,8 @@ void sys::particle_smoke(game::world &world)
 		physical.x -= grow / 2.0f;
 		physical.y -= grow / 2.0f;
 
-		renderable.alpha -= 0.02f;
-		if(renderable.alpha < 0.0f)
+		renderable.color.alpha -= 0.02f;
+		if(renderable.color.alpha < 0.0f)
 			game::delete_particle_smoke(world, smoke.entity);
 	}
 }

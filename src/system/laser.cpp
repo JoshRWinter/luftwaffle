@@ -22,6 +22,7 @@ void sys::laser(game::world &world)
 			{
 				health.hitpoints -= laser.damage;
 
+				game::new_particle_laser(world, physical.x + (game::LASER_WIDTH / 2.0f) + (laser.xv / 2.0f), physical.y + (game::LASER_HEIGHT / 2.0f) + (laser.yv / 2.0f), physical.rot, win::color(1.0f, 1.0f, 0.0f, 1.0f));
 				game::delete_laser(world, laser.entity);
 				stop = true;
 				break;

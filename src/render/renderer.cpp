@@ -48,6 +48,9 @@ void game::renderer::frame(const game::world &world)
 	for(const auto &renderable : world.objectdb.atlas_renderable_particle_smoke)
 		quad.add(renderable);
 
+	for(const auto &renderable : world.objectdb.atlas_renderable_particle_laser)
+		quad.add(renderable);
+
 	for(const auto &renderable : world.objectdb.atlas_renderable_missile)
 		quad.add(renderable);
 
