@@ -480,6 +480,7 @@ void game::delete_goring(game::world &world, ent::entity &entity)
 	auto &goring = entity.take_component<comp::goring>();
 	auto childgun = goring.childgun;
 	world.objectdb.goring.destroy(goring);
+	world.objectdb.health.destroy(entity.take_component<comp::health>());
 
 	entity.cleanup_check();
 	world.objectdb.entity.destroy(entity);
@@ -515,6 +516,7 @@ void game::delete_hitler(game::world &world, ent::entity &entity)
 	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
 	world.objectdb.atlas_renderable_hitler.destroy(entity.take_component<comp::atlas_renderable>());
 	world.objectdb.hitler.destroy(hitler);
+	world.objectdb.health.destroy(entity.take_component<comp::health>());
 
 	game::delete_lasergun(world, *childgun);
 

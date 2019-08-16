@@ -20,5 +20,15 @@ void sys::toaster(game::world &world)
 		game::delete_toaster(world, toaster.entity);
 		++world.toaster_sequence;
 		game::new_explosion(world, physical.x + (game::TOASTER_WIDTH / 2.0f), physical.y + (game::TOASTER_HEIGHT / 2.0f), 2.6f);
+
+		switch(world.toaster_sequence)
+		{
+			case 1:
+				game::new_goring(world, physical.x + 5.0f, physical.y);
+				break;
+			case 2:
+				game::new_hitler(world, physical.x - 5.0f, physical.y);
+				break;
+		}
 	}
 }

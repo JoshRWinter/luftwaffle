@@ -3,12 +3,20 @@
 void sys::goring(game::world &world)
 {
 	if(world.objectdb.goring.count() != 1)
-		return;// game::new_goring(world, 5, 1);
+		return;
 
 	auto &goring = *world.objectdb.goring.begin();
 	auto &physical = goring.entity.component<comp::physical>();
 	auto &player_physical = world.objectdb.player.begin()->entity.component<comp::physical>();
 	auto &gun = goring.childgun->component<comp::lasergun>();
+	auto &health = goring.entity.component<comp::health>();
+
+	if(health.hitpoints < 1)
+	{
+		game::new_explosion(world, physical.x + (game::GORING_SIZE / 2.0f), physical.y + (game::GORING_SIZE / 2.0f), 4.0f);
+		game::delete_goring(world, goring.entity);
+		return;
+	}
 
 	const float player_angle = atan2f((player_physical.y + (game::PLAYER_HEIGHT / 2.0f)) - (physical.y + (game::GORING_SIZE / 2.0f)),
 							(player_physical.x + (game::PLAYER_WIDTH / 2.0f)) - (physical.x + (game::GORING_SIZE / 2.0f)));

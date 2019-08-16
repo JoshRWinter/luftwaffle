@@ -89,7 +89,7 @@ void game::renderer::drawhud(const game::world &world, game::quad &quad)
 	snprintf(healthtext, sizeof(healthtext), "Health: %d", health.hitpoints);
 	font_renderer.draw(font.med, healthtext, screen.left + 1.0f, screen.bottom + 0.5f, win::color(1.0f, 1.0f, 1.0f));
 
-	if(world.objectdb.toaster.count() < 1)
+	if(world.objectdb.toaster.count() < 1 || world.objectdb.hitler.count() > 0 || world.objectdb.goring.count() > 0)
 		return;
 	const auto &toaster = *world.objectdb.toaster.begin();
 	const auto &toaster_physical = toaster.entity.component<comp::physical>();

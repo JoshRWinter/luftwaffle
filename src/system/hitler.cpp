@@ -3,12 +3,20 @@
 void sys::hitler(game::world &world)
 {
 	if(world.objectdb.hitler.count() != 1)
-		game::new_hitler(world, 5, 1);
+		return;
 
 	auto &hitler = world.objectdb.hitler.begin()->entity.component<comp::hitler>();
 	auto &physical = hitler.entity.component<comp::physical>();
 	auto &player_physical = world.objectdb.player.begin()->entity.component<comp::physical>();
 	auto &gun = hitler.childgun->component<comp::lasergun>();
+	auto &health = hitler.entity.component<comp::health>();
+
+	if(health.hitpoints < 1)
+	{
+		game::new_explosion(world, physical.x + (game::HITLER_SIZE / 2.0f), physical.y + (game::HITLER_SIZE / 2.0f), 5.0f);
+		game::delete_hitler(world, hitler.entity);
+		return;
+	}
 
 	const float player_angle = atan2f((player_physical.y + (game::PLAYER_HEIGHT / 2.0f)) - (physical.y + (game::HITLER_SIZE / 2.0f)),
 							(player_physical.x + (game::PLAYER_WIDTH / 2.0f)) - (physical.x + (game::HITLER_SIZE / 2.0f)));
