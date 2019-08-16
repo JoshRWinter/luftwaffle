@@ -15,6 +15,16 @@ void sys::bomb(game::world &world)
 		{
 			game::new_explosion(world, physical.x + (game::BOMB_WIDTH / 2.0f), physical.y + (game::BOMB_HEIGHT / 2.0f), 1.75f);
 			game::delete_bomb(world, bomb.entity);
+
+			// find some nearby healths
+			for(auto &health : world.objectdb.health)
+			{
+				auto &phys = health.entity.component<comp::physical>();
+
+				const float dist = physical.distance(phys);
+				if(dist < 2.0f)
+					health.hitpoints -= 65;
+			}
 		}
 	}
 }

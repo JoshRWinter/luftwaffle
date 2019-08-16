@@ -13,6 +13,7 @@ game::renderer::renderer(win::display &display, win::roll &roll)
 
 	font_renderer = display.make_font_renderer(display.width(), display.height(), screen.left, screen.right, screen.bottom, screen.top);
 	font.small = font_renderer.make_font(roll["asset/font/arial.ttf"], 0.275f);
+	font.med = font_renderer.make_font(roll["asset/font/arial.ttf"], 0.325f);
 }
 
 void game::renderer::frame(const game::world &world)
@@ -74,7 +75,18 @@ void game::renderer::frame(const game::world &world)
 
 	glow.send();
 
+	drawhud(world);
 	drawfps();
+}
+
+void game::renderer::drawhud(const game::world &world)
+{
+	const auto &player = *world.objectdb.player.begin();
+	const auto &health = player.entity.component<comp::health>();
+
+	char healthtext[30];
+	snprintf(healthtext, sizeof(healthtext), "Health: %d", health.hitpoints);
+	font_renderer.draw(font.med, healthtext, screen.left + 1.0f, screen.bottom + 0.5f, win::color(1.0f, 1.0f, 1.0f));
 }
 
 void game::renderer::drawfps()

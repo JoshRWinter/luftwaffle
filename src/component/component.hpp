@@ -69,6 +69,11 @@ namespace comp
 			return x + w > rhs.x && x < rhs.x + rhs.w && y + h > rhs.y && y < rhs.y + rhs.h;
 		}
 
+		float distance(const physical &rhs) const
+		{
+			return win::distance(x, y, rhs.x, rhs.y);
+		}
+
 		void align(float, float);
 
 		float x, y, w, h, rot;

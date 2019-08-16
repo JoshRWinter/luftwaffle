@@ -88,6 +88,7 @@ namespace game
 		win::area screen;
 
 	private:
+		void drawhud(const game::world&);
 		void drawfps();
 
 		// render passes
@@ -98,6 +99,7 @@ namespace game
 		struct
 		{
 			win::font small;
+			win::font med;
 		} font;
 		win::font_renderer font_renderer;
 	};
