@@ -12,7 +12,6 @@ void game::world::process()
 	sys::toaster(*this);
 	sys::wander(*this);
 	sys::attack(*this);
-	sys::lasergun(*this);
 	sys::laser(*this);
 	sys::waffle(*this);
 	sys::missile(*this);
@@ -21,6 +20,8 @@ void game::world::process()
 	sys::explosion_arm(*this);
 	sys::explosion_particle(*this);
 	sys::goring(*this);
+	sys::hitler(*this);
+	sys::lasergun(*this);
 }
 
 void game::world::reset()

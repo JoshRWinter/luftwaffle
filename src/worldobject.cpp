@@ -196,6 +196,12 @@ ent::entity &game::new_lasergun(game::world &world, const game::lasergun_type ty
 			lasergun.guns[1].distance = 2.1f;
 			lasergun.guns[1].angle_offset = -0.17f;
 		break;
+		case game::lasergun_type::HITLER:
+			lasergun.guns[0].distance = 1.7f;
+			lasergun.guns[0].angle_offset = 0.17f;
+			lasergun.guns[1].distance = 1.7f;
+			lasergun.guns[1].angle_offset = -0.17f;
+		break;
 		default: break;
 	}
 
@@ -437,4 +443,39 @@ void game::delete_goring(game::world &world, ent::entity &entity)
 	world.objectdb.entity.destroy(entity);
 
 	game::delete_lasergun(world, *childgun);
+}
+
+/////////////////////////
+// hitler
+/////////////////////////
+void game::new_hitler(game::world &world, const float xpos, const float ypos)
+{
+	auto &entity = world.objectdb.entity.create();
+
+	auto &physical = world.objectdb.physical.create(entity, xpos, ypos, game::HITLER_SIZE, game::HITLER_SIZE, 0.0f);
+	auto &renderable = world.objectdb.atlas_renderable_hitler.create(entity, world.asset.atlas.coords(game::asset::aid::HITLER));
+	auto &health = world.objectdb.health.create(entity, 400);
+	auto &hitler = world.objectdb.hitler.create(entity);
+
+	hitler.childgun = &game::new_lasergun(world, game::lasergun_type::HITLER, physical);
+
+	entity.attach(physical);
+	entity.attach(renderable);
+	entity.attach(health);
+	entity.attach(hitler);
+}
+
+void game::delete_hitler(game::world &world, ent::entity &entity)
+{
+	auto &hitler = entity.take_component<comp::hitler>();
+	auto childgun = hitler.childgun;
+
+	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
+	world.objectdb.atlas_renderable_hitler.destroy(entity.take_component<comp::atlas_renderable>());
+	world.objectdb.hitler.destroy(hitler);
+
+	game::delete_lasergun(world, *childgun);
+
+	entity.cleanup_check();
+	world.objectdb.entity.destroy(entity);
 }

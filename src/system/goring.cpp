@@ -3,7 +3,7 @@
 void sys::goring(game::world &world)
 {
 	if(world.objectdb.goring.count() != 1)
-		new_goring(world, 5, 1);
+		return;// game::new_goring(world, 5, 1);
 
 	auto &goring = *world.objectdb.goring.begin();
 	auto &physical = goring.entity.component<comp::physical>();

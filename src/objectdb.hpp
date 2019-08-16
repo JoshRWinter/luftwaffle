@@ -29,6 +29,7 @@ namespace game
 		pool::storage<comp::particle_smoke> particle_smoke;
 		pool::storage<comp::glow_renderable> glow_renderable;
 		pool::storage<comp::goring, 1> goring;
+		pool::storage<comp::hitler, 1> hitler;
 
 		// atlas-renderable components are partitioned by world object type
 		pool::storage<comp::atlas_renderable, 1> atlas_renderable_player;
@@ -41,6 +42,7 @@ namespace game
 		pool::storage<comp::atlas_renderable> atlas_renderable_explosion_particle;
 		pool::storage<comp::atlas_renderable> atlas_renderable_particle_smoke;
 		pool::storage<comp::atlas_renderable, 1> atlas_renderable_goring;
+		pool::storage<comp::atlas_renderable, 1> atlas_renderable_hitler;
 
 		void reset()
 		{

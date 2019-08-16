@@ -20,7 +20,8 @@ namespace game
 			EXPLOSION_PARTICLE_ORANGE = 10,
 			SMOKE = 11,
 			GORING = 12,
-			GORING_GUN = 13
+			GORING_GUN = 13,
+			HITLER = 14
 		};
 
 		asset(win::roll&);

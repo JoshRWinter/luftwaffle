@@ -43,11 +43,18 @@ namespace game
 	constexpr float LASERGUN_GORING_SPEED = 0.1f;
 	constexpr int LASERGUN_GORING_DAMAGE = 40;
 
+	constexpr float LASERGUN_HITLER_WIDTH = 3.0f;
+	constexpr float LASERGUN_HITLER_HEIGHT = 1.0f;
+	constexpr int LASERGUN_HITLER_MAX_COOLDOWN = 13;
+	constexpr float LASERGUN_HITLER_SPEED = 0.1f;
+	constexpr int LASERGUN_HITLER_DAMAGE = 40;
+
 	enum class lasergun_type
 	{
 		PLAYER,
 		WAFFLE,
-		GORING
+		GORING,
+		HITLER
 	};
 
 	ent::entity &new_lasergun(game::world&, game::lasergun_type, const comp::physical&);
@@ -80,6 +87,11 @@ namespace game
 	constexpr float GORING_SIZE = 2.55f;
 	void new_goring(game::world&, float, float);
 	void delete_goring(game::world&, ent::entity&);
+
+	// hitler
+	constexpr float HITLER_SIZE = 3.0f;
+	void new_hitler(game::world&, float, float);
+	void delete_hitler(game::world&, ent::entity&);
 }
 
 #endif
