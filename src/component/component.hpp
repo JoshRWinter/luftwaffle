@@ -212,6 +212,7 @@ namespace comp
 			, color(c)
 			, speed(spd)
 			, damage(dmg)
+			, last_slot(0)
 		{
 			memset(guns, 0, sizeof(guns));
 		}
@@ -228,6 +229,7 @@ namespace comp
 		win::color color;
 		float speed;
 		float damage;
+		int last_slot;
 	};
 
 	struct laser : comp::component

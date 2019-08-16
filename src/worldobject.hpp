@@ -37,7 +37,7 @@ namespace game
 	constexpr float LASERGUN_PLAYER_SPEED = 0.2f;
 	constexpr int LASERGUN_PLAYER_DAMAGE = 10;
 
-	constexpr float LASERGUN_GORING_WIDTH = 3.0f;
+	constexpr float LASERGUN_GORING_WIDTH = 4.0f;
 	constexpr float LASERGUN_GORING_HEIGHT = 1.0f;
 	constexpr int LASERGUN_GORING_MAX_COOLDOWN = 13;
 	constexpr float LASERGUN_GORING_SPEED = 0.1f;

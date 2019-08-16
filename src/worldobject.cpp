@@ -169,6 +169,17 @@ ent::entity &game::new_lasergun(game::world &world, const game::lasergun_type ty
 			color.green = 0.0f;
 			color.blue = 1.0f;
 			break;
+		case game::lasergun_type::HITLER:
+			texture = game::asset::aid::GORING_GUN;
+			maxcooldown = LASERGUN_HITLER_MAX_COOLDOWN;
+			width = LASERGUN_HITLER_WIDTH;
+			height = LASERGUN_HITLER_HEIGHT;
+			speed = LASERGUN_HITLER_SPEED;
+			damage = LASERGUN_HITLER_DAMAGE;
+			color.red = 1.0f;
+			color.green = 0.0f;
+			color.blue = 1.0f;
+			break;
 	}
 
 	auto &entity = world.objectdb.entity.create();
@@ -176,6 +187,17 @@ ent::entity &game::new_lasergun(game::world &world, const game::lasergun_type ty
 	auto &physical = world.objectdb.physical.create(entity, 0.0f, 0.0f, width, height, 0.0f);
 	auto &lasergun = world.objectdb.lasergun.create(entity, parent_physical, maxcooldown, color, speed, damage);
 	auto &renderable = world.objectdb.atlas_renderable_lasergun.create(entity, world.asset.atlas.coords(texture));
+
+	switch(type)
+	{
+		case game::lasergun_type::GORING:
+			lasergun.guns[0].distance = 2.1f;
+			lasergun.guns[0].angle_offset = 0.17f;
+			lasergun.guns[1].distance = 2.1f;
+			lasergun.guns[1].angle_offset = -0.17f;
+		break;
+		default: break;
+	}
 
 	entity.attach(physical);
 	entity.attach(lasergun);
