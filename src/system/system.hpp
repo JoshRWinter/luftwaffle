@@ -18,6 +18,7 @@ namespace sys
 	void particle_laser(game::world&);
 	void goring(game::world&);
 	void hitler(game::world&);
+	void bomb(game::world&);
 }
 
 #endif

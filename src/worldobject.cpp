@@ -515,3 +515,35 @@ void game::delete_hitler(game::world &world, ent::entity &entity)
 	entity.cleanup_check();
 	world.objectdb.entity.destroy(entity);
 }
+
+/////////////////////////
+// hitler
+/////////////////////////
+void game::new_bomb(game::world &world, const comp::physical &gun_physical, const comp::lasergun &gun, const int slot)
+{
+	auto &entity = world.objectdb.entity.create();
+
+	float x = gun_physical.x + (gun_physical.w / 2.0f) - (LASER_WIDTH / 2.0f);
+	float y = gun_physical.y + (gun_physical.h / 2.0f) - (LASER_HEIGHT / 2.0f);
+
+	x = x + cosf(gun_physical.rot + gun.guns[slot].angle_offset) * gun.guns[slot].distance;
+	y = y + sinf(gun_physical.rot + gun.guns[slot].angle_offset) * gun.guns[slot].distance;
+
+	auto &physical = world.objectdb.physical.create(entity, x, y, game::BOMB_WIDTH, game::BOMB_HEIGHT, mersenne(0, M_PI * 2.0f));
+	auto &renderable = world.objectdb.atlas_renderable_bomb.create(entity, world.asset.atlas.coords(game::asset::aid::BOMB));
+	auto &bomb = world.objectdb.bomb.create(entity, gun_physical.rot);
+
+	entity.attach(physical);
+	entity.attach(renderable);
+	entity.attach(bomb);
+}
+
+void game::delete_bomb(game::world &world, ent::entity &entity)
+{
+	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
+	world.objectdb.atlas_renderable_bomb.destroy(entity.take_component<comp::atlas_renderable>());
+	world.objectdb.bomb.destroy(entity.take_component<comp::bomb>());
+
+	entity.cleanup_check();
+	world.objectdb.entity.destroy(entity);
+}

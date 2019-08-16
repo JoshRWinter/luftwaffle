@@ -22,7 +22,8 @@ namespace game
 			GORING = 12,
 			GORING_GUN = 13,
 			HITLER_GUN = 14,
-			HITLER = 15
+			HITLER = 15,
+			BOMB = 16
 		};
 
 		asset(win::roll&);

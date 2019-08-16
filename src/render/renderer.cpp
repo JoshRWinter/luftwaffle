@@ -42,6 +42,9 @@ void game::renderer::frame(const game::world &world)
 	for(const auto &renderable : world.objectdb.atlas_renderable_player)
 		quad.add(renderable);
 
+	for(const auto &renderable : world.objectdb.atlas_renderable_bomb)
+		quad.add(renderable);
+
 	for(const auto &renderable : world.objectdb.atlas_renderable_laser)
 		quad.add(renderable);
 

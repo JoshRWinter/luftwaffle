@@ -28,6 +28,7 @@ namespace game
 		pool::storage<comp::explosion_particle> explosion_particle;
 		pool::storage<comp::particle_smoke> particle_smoke;
 		pool::storage<comp::particle_laser> particle_laser;
+		pool::storage<comp::bomb> bomb;
 		pool::storage<comp::glow_renderable> glow_renderable;
 		pool::storage<comp::goring, 1> goring;
 		pool::storage<comp::hitler, 1> hitler;
@@ -43,6 +44,7 @@ namespace game
 		pool::storage<comp::atlas_renderable> atlas_renderable_explosion_particle;
 		pool::storage<comp::atlas_renderable> atlas_renderable_particle_smoke;
 		pool::storage<comp::atlas_renderable> atlas_renderable_particle_laser;
+		pool::storage<comp::atlas_renderable> atlas_renderable_bomb;
 		pool::storage<comp::atlas_renderable, 1> atlas_renderable_goring;
 		pool::storage<comp::atlas_renderable, 1> atlas_renderable_hitler;
 

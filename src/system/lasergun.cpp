@@ -21,7 +21,12 @@ void sys::lasergun(game::world &world)
 		}
 		else if(lasergun.firing_missile)
 		{
-			game::new_missile(world, physical, lasergun, 2);
+			game::new_missile(world, physical, lasergun, lasergun.last_slot = !lasergun.last_slot);
+			lasergun.timer_cooldown = lasergun.max_timer_cooldown * 2;
+		}
+		else if(lasergun.firing_bomb)
+		{
+			game::new_bomb(world, physical, lasergun, lasergun.last_slot = !lasergun.last_slot);
 			lasergun.timer_cooldown = lasergun.max_timer_cooldown * 2;
 		}
 	}

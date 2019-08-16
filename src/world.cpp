@@ -15,6 +15,7 @@ void game::world::process()
 	sys::laser(*this);
 	sys::waffle(*this);
 	sys::missile(*this);
+	sys::bomb(*this);
 	sys::particle_smoke(*this);
 	sys::particle_laser(*this);
 	sys::explosion_cloud(*this);

@@ -34,6 +34,7 @@ add_executable(luftwaffle
 	src/system/particle_laser.cpp
 	src/system/goring.cpp
 	src/system/hitler.cpp
+	src/system/bomb.cpp
 
 	src/world.cpp
 	src/world.hpp

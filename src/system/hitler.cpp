@@ -3,7 +3,7 @@
 void sys::hitler(game::world &world)
 {
 	if(world.objectdb.hitler.count() != 1)
-		return; //game::new_hitler(world, 5, 1);
+		game::new_hitler(world, 5, 1);
 
 	auto &hitler = world.objectdb.hitler.begin()->entity.component<comp::hitler>();
 	auto &physical = hitler.entity.component<comp::physical>();
@@ -21,7 +21,7 @@ void sys::hitler(game::world &world)
 	// jump around
 	if(--hitler.timer_next_jump < 1 && !hitler.jumping)
 	{
-		hitler.timer_next_jump = mersenne(150, 190);
+		hitler.timer_next_jump = mersenne(190, 230);
 		hitler.jumping = true;
 		hitler.target_angle += mersenne(2) ? (-M_PI / 2.0f) : (M_PI / 2.0f);
 
@@ -50,5 +50,15 @@ void sys::hitler(game::world &world)
 			gun.firing_laser = false;
 		if(!gun.firing_laser && mersenne(45))
 			gun.firing_laser = true;
+
+		if(gun.firing_bomb && mersenne(30))
+			gun.firing_bomb = false;
+		if(!gun.firing_bomb && mersenne(70))
+			gun.firing_bomb = true;
+	}
+	else
+	{
+		gun.firing_laser = false;
+		gun.firing_bomb = false;
 	}
 }

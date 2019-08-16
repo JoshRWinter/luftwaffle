@@ -98,6 +98,12 @@ namespace game
 	constexpr float HITLER_SIZE = 2.5f;
 	void new_hitler(game::world&, float, float);
 	void delete_hitler(game::world&, ent::entity&);
+
+	// bomb
+	constexpr float BOMB_WIDTH = 0.6f;
+	constexpr float BOMB_HEIGHT = 0.22f;
+	void new_bomb(game::world&, const comp::physical&, const comp::lasergun&, int);
+	void delete_bomb(game::world&, ent::entity&);
 }
 
 #endif
