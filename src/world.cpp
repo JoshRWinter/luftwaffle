@@ -45,4 +45,5 @@ void game::world::lose()
 void game::world::reset()
 {
 	objectdb.reset();
+	toaster_sequence = 0;
 }

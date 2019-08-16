@@ -20,8 +20,45 @@ void sys::player(game::world &world)
 	}
 
 	// handle firing the guns
-	gun.firing_laser = world.input.left_click;
-	gun.firing_missile = world.input.right_click;
+	if(world.input.left_click)
+	{
+		if(player.laser_count > 0)
+		{
+			gun.firing_laser = true;
+			player.laser_refill_timer = 60;
+		}
+	}
+	else gun.firing_laser = false;
+
+	if(world.input.right_click)
+	{
+		if(player.rocket_count > 0)
+		{
+			gun.firing_missile = true;
+			player.rocket_refill_timer = 200;
+		}
+	}
+	else gun.firing_missile = false;
+
+	if(--player.laser_refill_timer < 1)
+	{
+		if(--player.laser_refill_rate_timer < 1)
+		{
+			player.laser_refill_rate_timer = 5;
+			if(++player.laser_count > comp::player::MAX_LASER_COUNT)
+				player.laser_count = comp::player::MAX_LASER_COUNT;
+		}
+	}
+
+	if(--player.rocket_refill_timer < 1)
+	{
+		if(--player.rocket_refill_rate_timer < 1)
+		{
+			player.rocket_refill_rate_timer = 10;
+			if(++player.rocket_count > comp::player::MAX_ROCKET_COUNT)
+				player.rocket_count = comp::player::MAX_ROCKET_COUNT;
+		}
+	}
 
 	// point at the mouse
 	physical.rot = win::align(physical.rot, atan2f(world.cursor.y, world.cursor.x), 0.2f);

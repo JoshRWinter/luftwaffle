@@ -85,9 +85,14 @@ void game::renderer::drawhud(const game::world &world, game::quad &quad)
 	const auto &player_physical = player.entity.component<comp::physical>();
 	const auto &health = player.entity.component<comp::health>();
 
-	char healthtext[30];
+	// health and ammo
+	char healthtext[15];
 	snprintf(healthtext, sizeof(healthtext), "Health: %d", health.hitpoints);
 	font_renderer.draw(font.med, healthtext, screen.left + 1.0f, screen.bottom + 0.5f, win::color(1.0f, 1.0f, 1.0f));
+
+	char ammotext[30];
+	snprintf(ammotext, sizeof(ammotext), "Lasers: %d Rockets: %d", player.laser_count, player.rocket_count);
+	font_renderer.draw(font.med, ammotext, 0.0f, screen.bottom + 0.5f, win::color(1.0f, 1.0f, 1.0f, 1.0f));
 
 	if(world.objectdb.toaster.count() < 1 || world.objectdb.hitler.count() > 0 || world.objectdb.goring.count() > 0)
 		return;
