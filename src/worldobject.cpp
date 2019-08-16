@@ -15,10 +15,12 @@ void game::new_player(game::world &world)
 	auto &physical = world.objectdb.physical.create(entity, -PLAYER_WIDTH / 2.0f, -PLAYER_HEIGHT / 2.0f, PLAYER_WIDTH, PLAYER_HEIGHT, 0.0f);
 	auto &renderable = world.objectdb.atlas_renderable_player.create(entity, world.asset.atlas.coords(game::asset::aid::PLAYER));
 	auto &player = world.objectdb.player.create(entity);
+	auto &health = world.objectdb.health.create(entity, 250);
 
 	entity.attach(physical);
 	entity.attach(renderable);
 	entity.attach(player);
+	entity.attach(health);
 
 	auto &childgun = game::new_lasergun(world, game::lasergun_type::PLAYER, physical);
 	player.childgun = &childgun;

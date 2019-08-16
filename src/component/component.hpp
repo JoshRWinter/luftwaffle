@@ -110,11 +110,13 @@ namespace comp
 
 		player(ent::entity &entity)
 			: component(component_type, entity)
+			, dead_timer(0)
 			, xv(0.0f)
 			, yv(0.0f)
 			, childgun(NULL)
 		{}
 
+		int dead_timer;
 		ent::entity *childgun;
 		float xv, yv;
 	};
@@ -261,6 +263,7 @@ namespace comp
 
 		missile(ent::entity &entity, float a)
 			: component(component_type, entity)
+			, arming_timer(30)
 			, smoke_timer(0.0f)
 			, max_smoke_timer(8.0f) // value to reset smoke_timer to
 			, xv(0.0f)
@@ -270,6 +273,7 @@ namespace comp
 			, ttl(100)
 		{}
 
+		int arming_timer;
 		float smoke_timer;
 		float max_smoke_timer;
 		float xv, yv;

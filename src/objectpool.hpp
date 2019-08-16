@@ -218,13 +218,13 @@ public:
 
 	virtual void reset() override
 	{
-		num = 0;
 
 		for(T &t : *this)
 		{
 			destroy(t);
 		}
 
+		num = 0;
 		freelist.clear();
 	}
 

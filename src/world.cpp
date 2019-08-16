@@ -8,6 +8,8 @@ game::world::world(win::roll &roll)
 
 void game::world::process()
 {
+	lose();
+
 	sys::player(*this);
 	sys::toaster(*this);
 	sys::wander(*this);
@@ -24,6 +26,19 @@ void game::world::process()
 	sys::goring(*this);
 	sys::hitler(*this);
 	sys::lasergun(*this);
+}
+
+void game::world::lose()
+{
+	if(objectdb.player.count() != 1)
+		return;
+
+	auto &player = *objectdb.player.begin();
+
+	if(player.dead_timer > 100)
+	{
+		reset();
+	}
 }
 
 void game::world::reset()

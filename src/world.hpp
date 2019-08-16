@@ -30,6 +30,7 @@ namespace game
 
 		void process();
 		void reset();
+		void lose();
 
 		win::point cursor;
 		game::input input;

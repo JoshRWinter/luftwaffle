@@ -18,6 +18,7 @@ void sys::missile(game::world &world)
 
 		// look for healths to collide with
 		bool stop = false;
+		if(--missile.arming_timer < 1)
 		for(auto &health : world.objectdb.health)
 		{
 			const auto &phys = health.entity.component<comp::physical>();

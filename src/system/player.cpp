@@ -9,6 +9,15 @@ void sys::player(game::world &world)
 
 	auto &physical = player.entity.component<comp::physical>();
 	auto &gun = player.childgun->component<comp::lasergun>();
+	auto &health = player.entity.component<comp::health>();
+
+	if(health.hitpoints < 1)
+	{
+		if(player.dead_timer++ == 0)
+			game::new_explosion(world, physical.x + (game::PLAYER_WIDTH / 2.0f), physical.y + (game::PLAYER_HEIGHT / 2.0f), 1.25f);
+
+		return;
+	}
 
 	// handle firing the guns
 	gun.firing_laser = world.input.left_click;
