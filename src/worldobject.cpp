@@ -41,7 +41,7 @@ void game::new_toaster(game::world &world, int sequence)
 
 	auto &physical = world.objectdb.physical.create(entity, xpos, ypos, TOASTER_WIDTH, TOASTER_HEIGHT, (M_PI / 2.0f) * mersenne(0, 3));
 	auto &renderable = world.objectdb.atlas_renderable_toaster.create(entity, world.asset.atlas.coords(game::asset::aid::TOASTER));
-	auto &health = world.objectdb.health.create(entity, 250);
+	auto &health = world.objectdb.health.create(entity, 750);
 	auto &toaster = world.objectdb.toaster.create(entity);
 
 	entity.attach(physical);
