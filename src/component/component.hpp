@@ -243,11 +243,13 @@ namespace comp
 			, xv(cosf(angle) * speed)
 			, yv(sinf(angle) * speed)
 			, ttl(100)
+			, arming_timer(10)
 		{}
 
 		float xv, yv;
 		int damage;
 		int ttl;
+		int arming_timer;
 	};
 
 	struct missile : comp::component

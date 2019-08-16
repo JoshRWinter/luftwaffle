@@ -11,7 +11,7 @@ namespace ent
 		comp::component *component;
 	};
 
-	constexpr int MAX_COMPONENTS = 4;
+	constexpr int MAX_COMPONENTS = 5;
 	struct entity
 	{
 		entity();

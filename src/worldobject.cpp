@@ -86,11 +86,13 @@ void game::new_waffle(game::world &world, comp::physical &toaster, const comp::w
 	auto &physical = world.objectdb.physical.create(entity, x, y, width, height, toaster.rot);
 	auto &renderable = world.objectdb.atlas_renderable_waffle.create(entity, world.asset.atlas.coords(tex));
 	auto &wander = world.objectdb.wander.create(entity, physical.x, physical.y, toaster.rot);
+	auto &health = world.objectdb.health.create(entity, type == comp::waffle::waffle_type::NORMAL ? 100 : 200);
 	auto &waffle = world.objectdb.waffle.create(entity, type);
 
 	entity.attach(physical);
 	entity.attach(renderable);
 	entity.attach(wander);
+	entity.attach(health);
 	entity.attach(waffle);
 
 	// the laser gun child entity
@@ -101,7 +103,8 @@ void game::new_waffle(game::world &world, comp::physical &toaster, const comp::w
 void game::delete_waffle(game::world &world, ent::entity &entity)
 {
 	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
-	world.objectdb.atlas_renderable_player.destroy(entity.take_component<comp::atlas_renderable>());
+	world.objectdb.atlas_renderable_waffle.destroy(entity.take_component<comp::atlas_renderable>());
+	world.objectdb.health.destroy(entity.take_component<comp::health>());
 	auto &waffle = entity.take_component<comp::waffle>();
 	auto &child = *waffle.childgun;
 	world.objectdb.waffle.destroy(waffle);

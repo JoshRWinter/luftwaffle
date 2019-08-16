@@ -3,7 +3,7 @@
 void sys::hitler(game::world &world)
 {
 	if(world.objectdb.hitler.count() != 1)
-		game::new_hitler(world, 5, 1);
+		return;//game::new_hitler(world, 5, 1);
 
 	auto &hitler = world.objectdb.hitler.begin()->entity.component<comp::hitler>();
 	auto &physical = hitler.entity.component<comp::physical>();

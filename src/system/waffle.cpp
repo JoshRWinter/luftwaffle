@@ -8,6 +8,13 @@ void sys::waffle(game::world &world)
 		auto *wander = waffle.entity.try_component<comp::wander>();
 
 		auto &physical = waffle.entity.component<comp::physical>();
+		auto &health = waffle.entity.component<comp::health>();
+
+		if(health.hitpoints < 1)
+		{
+			game::delete_waffle(world, waffle.entity);
+			game::new_explosion(world, physical.x + (physical.w / 2.0f), physical.y + (physical.h / 2.0f), waffle.type == comp::waffle::waffle_type::NORMAL ? 1.0f : 1.5f);
+		}
 
 		auto &player = *world.objectdb.player.begin();
 		auto &player_physical = player.entity.component<comp::physical>();
