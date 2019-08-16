@@ -461,7 +461,7 @@ void game::new_goring(game::world &world, const float xpos, const float ypos)
 
 	auto &physical = world.objectdb.physical.create(entity, xpos, ypos, GORING_SIZE, GORING_SIZE, 0.0f);
 	auto &renderable = world.objectdb.atlas_renderable_goring.create(entity, world.asset.atlas.coords(game::asset::aid::GORING));
-	auto &health = world.objectdb.health.create(entity, 200);
+	auto &health = world.objectdb.health.create(entity, 900);
 	auto &goring = world.objectdb.goring.create(entity);
 
 	auto &childgun = new_lasergun(world, game::lasergun_type::GORING, physical);
@@ -497,7 +497,7 @@ void game::new_hitler(game::world &world, const float xpos, const float ypos)
 
 	auto &physical = world.objectdb.physical.create(entity, xpos, ypos, game::HITLER_SIZE, game::HITLER_SIZE, 0.0f);
 	auto &renderable = world.objectdb.atlas_renderable_hitler.create(entity, world.asset.atlas.coords(game::asset::aid::HITLER));
-	auto &health = world.objectdb.health.create(entity, 400);
+	auto &health = world.objectdb.health.create(entity, 1200);
 	auto &hitler = world.objectdb.hitler.create(entity);
 
 	hitler.childgun = &game::new_lasergun(world, game::lasergun_type::HITLER, physical);
@@ -525,7 +525,7 @@ void game::delete_hitler(game::world &world, ent::entity &entity)
 }
 
 /////////////////////////
-// hitler
+// bomb
 /////////////////////////
 void game::new_bomb(game::world &world, const comp::physical &gun_physical, const comp::lasergun &gun, const int slot)
 {
