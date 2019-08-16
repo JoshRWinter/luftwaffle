@@ -90,6 +90,25 @@ void game::quad::add(const comp::atlas_renderable &renderable)
 	buffer.color.push_back(renderable.color.alpha * 255);
 }
 
+void game::quad::add_raw(const float x, const float y, const float w, const float h, const float rot, const unsigned short *texcoords)
+{
+	buffer.position_size_rotation.push_back(x);
+	buffer.position_size_rotation.push_back(y);
+	buffer.position_size_rotation.push_back(w);
+	buffer.position_size_rotation.push_back(h);
+	buffer.position_size_rotation.push_back(rot);
+
+	buffer.texcoord.push_back(texcoords[0]);
+	buffer.texcoord.push_back(texcoords[1]);
+	buffer.texcoord.push_back(texcoords[2] - texcoords[0]);
+	buffer.texcoord.push_back(texcoords[3] - texcoords[1]);
+
+	buffer.color.push_back(255);
+	buffer.color.push_back(255);
+	buffer.color.push_back(255);
+	buffer.color.push_back(255);
+}
+
 void game::quad::send()
 {
 	glBindVertexArray(vao);

@@ -75,18 +75,35 @@ void game::renderer::frame(const game::world &world)
 
 	glow.send();
 
-	drawhud(world);
+	drawhud(world, quad);
 	drawfps();
 }
 
-void game::renderer::drawhud(const game::world &world)
+void game::renderer::drawhud(const game::world &world, game::quad &quad)
 {
 	const auto &player = *world.objectdb.player.begin();
+	const auto &player_physical = player.entity.component<comp::physical>();
 	const auto &health = player.entity.component<comp::health>();
 
 	char healthtext[30];
 	snprintf(healthtext, sizeof(healthtext), "Health: %d", health.hitpoints);
 	font_renderer.draw(font.med, healthtext, screen.left + 1.0f, screen.bottom + 0.5f, win::color(1.0f, 1.0f, 1.0f));
+
+	if(world.objectdb.toaster.count() < 1)
+		return;
+	const auto &toaster = *world.objectdb.toaster.begin();
+	const auto &toaster_physical = toaster.entity.component<comp::physical>();
+	// draw toaster arrow
+	if(player_physical.distance(toaster_physical) > 10.0f)
+	{
+		const float angle = atan2f((toaster_physical.y + (game::TOASTER_HEIGHT / 2.0f)) - (player_physical.y + (game::PLAYER_HEIGHT / 2.0f)), (toaster_physical.x + (game::TOASTER_WIDTH / 2.0f)) - (player_physical.x + (game::PLAYER_WIDTH / 2.0f)));
+
+		const float dist = 3.0f;
+		const float xpos = cosf(angle) * dist;
+		const float ypos = sinf(angle) * dist;
+
+		quad.add_raw(xpos, ypos, 0.7f, 0.6f, angle, world.asset.atlas.coords(game::asset::aid::ARROW));
+	}
 }
 
 void game::renderer::drawfps()

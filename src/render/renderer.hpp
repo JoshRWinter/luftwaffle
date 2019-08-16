@@ -49,6 +49,7 @@ namespace game
 
 		void set_center(float, float);
 		void add(const comp::atlas_renderable&);
+		void add_raw(float, float, float, float, float, const unsigned short*);
 		void send();
 
 	private:
@@ -88,7 +89,7 @@ namespace game
 		win::area screen;
 
 	private:
-		void drawhud(const game::world&);
+		void drawhud(const game::world&, game::quad&);
 		void drawfps();
 
 		// render passes
