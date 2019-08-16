@@ -1,5 +1,7 @@
 #include "../luftwaffle.hpp"
 
+#include <math.h>
+
 void sys::hitler(game::world &world)
 {
 	if(world.objectdb.hitler.count() != 1)

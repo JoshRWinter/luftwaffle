@@ -1,5 +1,7 @@
 #include "../luftwaffle.hpp"
 
+#include <math.h>
+
 void sys::goring(game::world &world)
 {
 	if(world.objectdb.goring.count() != 1)
