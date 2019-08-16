@@ -32,6 +32,7 @@ namespace game
 		void reset();
 		void lose();
 
+		int toaster_sequence;
 		win::point cursor;
 		game::input input;
 

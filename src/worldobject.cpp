@@ -29,14 +29,17 @@ void game::new_player(game::world &world)
 /////////////////////////
 // toaster
 /////////////////////////
-void game::new_toaster(game::world &world)
+void game::new_toaster(game::world &world, int sequence)
 {
 	if(world.objectdb.toaster.count() != 0)
 		win::bug("already a toaster");
 
 	auto &entity = world.objectdb.entity.create();
 
-	auto &physical = world.objectdb.physical.create(entity, 5.0f, 0.0f, TOASTER_WIDTH, TOASTER_HEIGHT, (M_PI / 2.0f) * mersenne(0, 3));
+	float xpos = sequence == 0 ? 5.0f : mersenne(-30, 30);
+	float ypos = sequence == 0 ? 1.0f : mersenne(-30, 30);
+
+	auto &physical = world.objectdb.physical.create(entity, xpos, ypos, TOASTER_WIDTH, TOASTER_HEIGHT, (M_PI / 2.0f) * mersenne(0, 3));
 	auto &renderable = world.objectdb.atlas_renderable_toaster.create(entity, world.asset.atlas.coords(game::asset::aid::TOASTER));
 	auto &health = world.objectdb.health.create(entity, 250);
 	auto &toaster = world.objectdb.toaster.create(entity);
@@ -52,6 +55,7 @@ void game::delete_toaster(game::world &world, ent::entity &entity)
 	world.objectdb.physical.destroy(entity.take_component<comp::physical>());
 	world.objectdb.toaster.destroy(entity.take_component<comp::toaster>());
 	world.objectdb.atlas_renderable_toaster.destroy(entity.take_component<comp::atlas_renderable>());
+	world.objectdb.health.destroy(entity.take_component<comp::health>());
 
 	entity.cleanup_check();
 	world.objectdb.entity.destroy(entity);

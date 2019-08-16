@@ -11,7 +11,7 @@ namespace game
 	// toaster
 	constexpr float TOASTER_WIDTH = 0.72f;
 	constexpr float TOASTER_HEIGHT = 0.9f;
-	void new_toaster(game::world&);
+	void new_toaster(game::world&, int);
 	void delete_toaster(game::world&, ent::entity&);
 
 	// waffle

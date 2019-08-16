@@ -1,7 +1,8 @@
 #include "luftwaffle.hpp"
 
 game::world::world(win::roll &roll)
-	: asset(roll)
+	: toaster_sequence(0)
+	, asset(roll)
 {
 	reset();
 }
