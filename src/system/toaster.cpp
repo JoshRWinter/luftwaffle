@@ -9,7 +9,7 @@ void sys::toaster(game::world &world)
 	auto &physical = toaster.entity.component<comp::physical>();
 	auto &health = toaster.entity.component<comp::health>();
 
-	if(--toaster.spawn_timer == 0)
+	if(--toaster.spawn_timer == 0 || world.objectdb.waffle.count() < 5)
 	{
 		toaster.spawn_timer = mersenne(comp::toaster::SPAWN_TIMER_LOW, comp::toaster::SPAWN_TIMER_HIGH);
 		game::new_waffle(world, physical, mersenne(4) ? comp::waffle::waffle_type::MID : comp::waffle::waffle_type::NORMAL);
