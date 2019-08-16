@@ -26,13 +26,13 @@ namespace game
 
 	// laser guns
 	constexpr float LASERGUN_WAFFLE_WIDTH = 1.0f;
-	constexpr float LASERGUN_WAFFLE_HEIGHT = 0.8f;
+	constexpr float LASERGUN_WAFFLE_HEIGHT = 0.2f;
 	constexpr int LASERGUN_WAFFLE_MAX_COOLDOWN = 10;
 	constexpr float LASERGUN_WAFFLE_SPEED = 0.14f;
 	constexpr int LASERGUN_WAFFLE_DAMAGE = 30;
 
 	constexpr float LASERGUN_PLAYER_WIDTH = 0.8f;
-	constexpr float LASERGUN_PLAYER_HEIGHT = 0.8f;
+	constexpr float LASERGUN_PLAYER_HEIGHT = 0.2f;
 	constexpr int LASERGUN_PLAYER_MAX_COOLDOWN = 5;
 	constexpr float LASERGUN_PLAYER_SPEED = 0.2f;
 	constexpr int LASERGUN_PLAYER_DAMAGE = 10;

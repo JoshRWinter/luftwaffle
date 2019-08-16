@@ -199,6 +199,18 @@ ent::entity &game::new_lasergun(game::world &world, const game::lasergun_type ty
 
 	switch(type)
 	{
+		case game::lasergun_type::WAFFLE:
+			lasergun.guns[0].distance = 0.6f;
+			lasergun.guns[0].angle_offset = 0.15f;
+			lasergun.guns[1].distance = 0.6f;
+			lasergun.guns[1].angle_offset = -0.15f;
+		break;
+		case game::lasergun_type::PLAYER:
+			lasergun.guns[0].distance = 0.6f;
+			lasergun.guns[0].angle_offset = 0.15f;
+			lasergun.guns[1].distance = 0.6f;
+			lasergun.guns[1].angle_offset = -0.15f;
+		break;
 		case game::lasergun_type::GORING:
 			lasergun.guns[0].distance = 2.1f;
 			lasergun.guns[0].angle_offset = 0.17f;
