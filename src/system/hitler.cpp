@@ -17,6 +17,7 @@ void sys::hitler(game::world &world)
 	{
 		game::new_explosion(world, physical.x + (game::HITLER_SIZE / 2.0f), physical.y + (game::HITLER_SIZE / 2.0f), 5.0f);
 		game::delete_hitler(world, hitler.entity);
+		world.win = true;
 		return;
 	}
 

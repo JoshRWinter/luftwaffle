@@ -3,12 +3,20 @@
 game::world::world(win::roll &roll)
 	: toaster_sequence(0)
 	, asset(roll)
+	, win(false)
 {
 	reset();
 }
 
 void game::world::process()
 {
+	if(win)
+	{
+		if(++win_timer > 100)
+			reset();
+		else
+			return;
+	}
 	lose();
 
 	sys::player(*this);
@@ -44,6 +52,8 @@ void game::world::lose()
 
 void game::world::reset()
 {
+	win = false;
+	win_timer = 0;
 	objectdb.reset();
 	toaster_sequence = 0;
 }

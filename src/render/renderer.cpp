@@ -14,6 +14,7 @@ game::renderer::renderer(win::display &display, win::roll &roll)
 	font_renderer = display.make_font_renderer(display.width(), display.height(), screen.left, screen.right, screen.bottom, screen.top);
 	font.small = font_renderer.make_font(roll["asset/font/arial.ttf"], 0.275f);
 	font.med = font_renderer.make_font(roll["asset/font/arial.ttf"], 0.325f);
+	font.big = font_renderer.make_font(roll["asset/font/Germania.otf"], 0.825f);
 }
 
 void game::renderer::frame(const game::world &world)
@@ -77,6 +78,9 @@ void game::renderer::frame(const game::world &world)
 
 	drawhud(world, quad);
 	drawfps();
+
+	if(world.win)
+		font_renderer.draw(font.big, "Victory", 0.0f, 0.0f, win::color(0.0f, 0.0f, 0.0f, 1.0f), win::font_renderer::CENTERED);
 }
 
 void game::renderer::drawhud(const game::world &world, game::quad &quad)

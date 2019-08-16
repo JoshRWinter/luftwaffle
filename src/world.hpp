@@ -32,6 +32,8 @@ namespace game
 		void reset();
 		void lose();
 
+		bool win;
+		int win_timer;
 		int toaster_sequence;
 		win::point cursor;
 		game::input input;

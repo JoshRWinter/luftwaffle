@@ -101,6 +101,7 @@ namespace game
 		{
 			win::font small;
 			win::font med;
+			win::font big;
 		} font;
 		win::font_renderer font_renderer;
 	};
