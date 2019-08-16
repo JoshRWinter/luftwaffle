@@ -43,8 +43,8 @@ namespace game
 	constexpr float LASERGUN_GORING_SPEED = 0.1f;
 	constexpr int LASERGUN_GORING_DAMAGE = 40;
 
-	constexpr float LASERGUN_HITLER_WIDTH = 3.0f;
-	constexpr float LASERGUN_HITLER_HEIGHT = 1.0f;
+	constexpr float LASERGUN_HITLER_WIDTH = 3.8f;
+	constexpr float LASERGUN_HITLER_HEIGHT = 5.0f;
 	constexpr int LASERGUN_HITLER_MAX_COOLDOWN = 13;
 	constexpr float LASERGUN_HITLER_SPEED = 0.1f;
 	constexpr int LASERGUN_HITLER_DAMAGE = 40;
@@ -95,7 +95,7 @@ namespace game
 	void delete_goring(game::world&, ent::entity&);
 
 	// hitler
-	constexpr float HITLER_SIZE = 3.0f;
+	constexpr float HITLER_SIZE = 2.5f;
 	void new_hitler(game::world&, float, float);
 	void delete_hitler(game::world&, ent::entity&);
 }

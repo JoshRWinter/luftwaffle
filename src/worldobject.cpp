@@ -173,7 +173,7 @@ ent::entity &game::new_lasergun(game::world &world, const game::lasergun_type ty
 			color.blue = 1.0f;
 			break;
 		case game::lasergun_type::HITLER:
-			texture = game::asset::aid::GORING_GUN;
+			texture = game::asset::aid::HITLER_GUN;
 			maxcooldown = LASERGUN_HITLER_MAX_COOLDOWN;
 			width = LASERGUN_HITLER_WIDTH;
 			height = LASERGUN_HITLER_HEIGHT;
