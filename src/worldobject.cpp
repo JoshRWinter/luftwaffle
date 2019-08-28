@@ -2,6 +2,27 @@
 
 #include <math.h>
 
+#include "component/atlas_renderable.hpp"
+#include "component/attack.hpp"
+#include "component/bomb.hpp"
+#include "component/explosion_arm.hpp"
+#include "component/explosion_cloud.hpp"
+#include "component/explosion_particle.hpp"
+#include "component/glow_renderable.hpp"
+#include "component/goring.hpp"
+#include "component/health.hpp"
+#include "component/hitler.hpp"
+#include "component/laser.hpp"
+#include "component/lasergun.hpp"
+#include "component/missile.hpp"
+#include "component/particle_laser.hpp"
+#include "component/particle_smoke.hpp"
+#include "component/physical.hpp"
+#include "component/player.hpp"
+#include "component/toaster.hpp"
+#include "component/waffle.hpp"
+#include "component/wander.hpp"
+
 /////////////////////////
 // player
 /////////////////////////

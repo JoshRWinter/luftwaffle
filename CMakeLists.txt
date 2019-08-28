@@ -36,6 +36,27 @@ add_executable(luftwaffle
 	src/system/hitler.cpp
 	src/system/bomb.cpp
 
+	src/component/atlas_renderable.hpp
+	src/component/attack.hpp
+	src/component/bomb.hpp
+	src/component/explosion_arm.hpp
+	src/component/explosion_cloud.hpp
+	src/component/explosion_particle.hpp
+	src/component/glow_renderable.hpp
+	src/component/goring.hpp
+	src/component/health.hpp
+	src/component/hitler.hpp
+	src/component/laser.hpp
+	src/component/lasergun.hpp
+	src/component/missile.hpp
+	src/component/particle_laser.hpp
+	src/component/particle_smoke.hpp
+	src/component/physical.hpp
+	src/component/player.hpp
+	src/component/toaster.hpp
+	src/component/waffle.hpp
+	src/component/wander.hpp
+
 	src/world.cpp
 	src/world.hpp
 
